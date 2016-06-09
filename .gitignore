@@ -3,6 +3,14 @@
 # suggested that you use the "grails integrate-with --git" command
 # to generate your .gitignore file.
 
+# linux backup files
+*~
+
+# new for grails 3
+.gradle
+/build
+
+# from grails 2
 # web application files
 /web-app/WEB-INF/classes
 
