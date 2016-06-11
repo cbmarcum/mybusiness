@@ -9,6 +9,7 @@
 # new for grails 3
 .gradle
 /build
+.idea
 
 # from grails 2
 # web application files
@@ -39,3 +40,4 @@
 
 # "temporary" build files
 /target
+
