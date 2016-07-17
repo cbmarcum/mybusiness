@@ -12,8 +12,8 @@ buildscript {
     }
 }
 
-version "0.1"
-group "mybusiness"
+version "0.5"
+group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
 apply plugin:"idea"

@@ -1,4 +1,4 @@
-package mybusiness
+package net.codebuilders.mybusiness
 
 import grails.plugins.*
 
