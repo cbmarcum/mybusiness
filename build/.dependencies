@@ -7,6 +7,7 @@ dependencies:
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails/grails-web-boot/3.1.8/9a21e52b73071733e977fa510b42ce8cd3824caa/grails-web-boot-3.1.8.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails.plugins/cache/3.0.2/519bc1bffb2afa10c93b92e872d49a5238e96558/cache-3.0.2.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails.plugins/scaffolding/3.2.1/82b56d19aff8da7818a17e723c8a49f7499caf26/scaffolding-3.2.1.jar
+- file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails.plugins/spring-security-core/3.1.1/62998dc11053792cedfb979ffc94921d346eaeb6/spring-security-core-3.1.1.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails/grails-plugin-services/3.1.8/d3186707300e95630216f76aa7d14c71ca87c32c/grails-plugin-services-3.1.8.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails/grails-plugin-domain-class/3.1.8/dacdb8de42827c1226978fd9be8b471a76b5c8/grails-plugin-domain-class-3.1.8.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/com.bertramlabs.plugins/asset-pipeline-grails/2.8.2/97bceaa633ee9f01b272e0b7fe9d960309ae43ab/asset-pipeline-grails-2.8.2.jar
@@ -47,6 +48,9 @@ dependencies:
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails/grails-web-common/3.1.8/8885ac4a29cafe14609e237fc21f936944399151/grails-web-common-3.1.8.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219db5b/javassist-3.18.1-GA.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails.plugins/fields/2.1.2/45019a9e6ad24418ad4c92b948b018ea613293e/fields-2.1.2.jar
+- file:/home/carl/.gradle/caches/modules-2/files-2.1/net.sf.ehcache/ehcache/2.10.2/744b565432353cc7e20170debd4e2b30d3180477/ehcache-2.10.2.jar
+- file:/home/carl/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/4.0.4.RELEASE/67e6eccc73a9887a7ca262c7cac20f9b36ce5a5d/spring-security-core-4.0.4.RELEASE.jar
+- file:/home/carl/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/4.0.4.RELEASE/c52e77d38a48b33f955ab25156f15e564c9b616f/spring-security-web-4.0.4.RELEASE.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails/grails-plugin-datasource/3.1.8/c5419cdecde9d888c236634459090b0ced3f2e5/grails-plugin-datasource-3.1.8.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails/grails-plugin-events/3.1.8/3020cb61e5b910e78cd27483c589abacd019a6f4/grails-plugin-events-3.1.8.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails/grails-validation/3.1.8/bb1ff9fdf01bf312fb573764430c99c238fd22bd/grails-validation-3.1.8.jar
@@ -99,6 +103,7 @@ dependencies:
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.6.RELEASE/7c7ea475d33287e0e3a92e98ccbe0ad6a0dbb9ca/spring-webmvc-4.2.6.RELEASE.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.6.RELEASE/3b249b371a9afed1ae5fe06f100d80ae14115921/spring-context-support-4.2.6.RELEASE.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar
+- file:/home/carl/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-logging-log4j/8.0.33/2607f5b35f7641042414f76cdf2a9d5ec8033294/tomcat-embed-logging-log4j-8.0.33.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.2.6.RELEASE/16075bfb0901a5b89c5be975365ff09b2df04abb/spring-jdbc-4.2.6.RELEASE.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-sql/2.4.6/cd366c813eea35552ead52f07b64c59375b81dc6/groovy-sql-2.4.6.jar
@@ -130,7 +135,6 @@ dependencies:
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.2.16.v20160414/e0accd393d4f2db45d39ebe14265301408b29fb6/jetty-util-9.2.16.v20160414.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/9.2.16.v20160414/21b9bd4a4d9e497e5089d351e9256c885563888b/jetty-io-9.2.16.v20160414.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-common/9.2.16.v20160414/7ae2933fbb2f1d63bfbfd7ff922f43777c918d15/websocket-common-9.2.16.v20160414.jar
-- file:/home/carl/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-ant/2.4.6/77fc24973dd4205d3cd2d6707b39c8ea9e0aa624/groovy-ant-2.4.6.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.6.6/7ef6440e71531604aa44a5eb62d4b466ffbf7e8f/jackson-annotations-2.6.6.jar
 - file:/home/carl/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.6.6/2eb801df67aacaf5b1deb4ac626e1964508e47b/jackson-core-2.6.6.jar
