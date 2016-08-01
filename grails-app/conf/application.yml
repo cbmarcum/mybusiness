@@ -2,7 +2,7 @@
 grails:
     profile: web-plugin
     codegen:
-        defaultPackage: mybusiness
+        defaultPackage: net.codebuilders.mybusiness
     spring:
         transactionManagement:
             proxies: false
