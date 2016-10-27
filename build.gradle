@@ -12,7 +12,7 @@ buildscript {
     }
 }
 
-version "0.7"
+version "0.8.0"
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -51,6 +51,9 @@ dependencies {
     compile "org.grails.plugins:scaffolding"
 
     compile 'org.grails.plugins:spring-security-core:3.1.1'
+    // compile 'domurtag.plugins:grails-simple-captcha:1.0.0-grails3'
+    compile "org.grails.plugins:recaptcha:3.0.1"
+    compile 'org.grails.plugins:mail:2.0.0.RC6'
 
     console "org.grails:grails-console"
     profile "org.grails.profiles:web-plugin:3.1.8"
@@ -84,3 +87,5 @@ grailsPublish {
 assets {
     packagePlugin = true
 }
+
+
