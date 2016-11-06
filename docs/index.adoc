@@ -1,0 +1,94 @@
+= MyBusiness Plugin Documentation
+Carl Marcum
+:toc: left
+
+== Plugin Usage
+
+=== Create a Grails Web Application
+```
+grails create-app helloworld
+```
+
+=== Add Plugin to build.gradle
+Add to dependencies section
+```
+compile "net.codebuilders.mybusiness:mybusiness-master:0.7.13"
+```
+
+=== Add Spring Security to application.groovy
+Add to grails-app/config.application.groovy
+```
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'net.codebuilders.mybusiness.SecUser'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'net.codebuilders.mybusiness.SecUserSecRole'
+grails.plugin.springsecurity.authority.className = 'net.codebuilders.mybusiness.SecRole'
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+	[pattern: '/',               access: ['permitAll']],
+	[pattern: '/error',          access: ['permitAll']],
+	[pattern: '/index',          access: ['permitAll']],
+	[pattern: '/index.gsp',      access: ['permitAll']],
+	[pattern: '/shutdown',       access: ['permitAll']],
+	[pattern: '/assets/**',      access: ['permitAll']],
+	[pattern: '/**/js/**',       access: ['permitAll']],
+	[pattern: '/**/css/**',      access: ['permitAll']],
+	[pattern: '/**/images/**',   access: ['permitAll']],
+	[pattern: '/**/favicon.ico', access: ['permitAll']],
+    [pattern: '/contact/**',     access: ['permitAll']]
+]
+```
+If you do not yet have a logout link and need to do it by URL, add the following also.
+```
+// for tutorial only - remove after logout gsp is created
+grails.plugin.springsecurity.logout.postOnly = false
+```
+=== Internationalization
+Add to i18n
+```
+administration.index.title
+```
+
+=== Contact Mail
+Add e-mail addresses to grails-app/config.application.groovy
+```
+// for mybusiness contact
+mybusiness.contactMap = [
+  "Contact_Name_1" : "contact.name.1@changeme.com",
+  "Contact_Name_2" : "contact.name.2@changeme.com"
+]
+```
+=== Mail Plugin
+Add mail server settings to grails-app/config.application.groovy
+See http://plugins.grails.org/plugin/mail for more information on the Mail plugin
+```
+grails {
+   mail {
+     host = "smtp.gmail.com"
+     port = 465
+     username = "youracount@gmail.com"
+     password = "yourpassword"
+     props = ["mail.smtp.auth":"true",
+              "mail.smtp.socketFactory.port":"465",
+              "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+              "mail.smtp.socketFactory.fallback":"false"]
+   }
+}
+```
+=== Server URL
+Add server URL to grails-app/config.application.groovy
+```
+environments {
+    production {
+        grails.serverURL = "http://www.changeme.com"
+    }
+}
+```
+
+=== Using Application Variables in Controllers
+```
+def grailsApplication // may not be needed in grails 3
+
+def myAction = {
+    def bar = grailsApplication.config.my.property
+    // map example
+    Map contactMap = grailsApplication.config.getProperty('mybusiness.contactMap', Map)
+}
+```
