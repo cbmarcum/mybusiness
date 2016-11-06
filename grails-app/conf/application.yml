@@ -72,3 +72,11 @@ grails:
 endpoints:
     jmx:
         unique-names: true
+
+---
+recaptcha:
+    publicKey: "your public key"
+    privateKey: "your private key"
+    includeScript: true
+    includeNoScript: true
+
