@@ -57,3 +57,11 @@ grails {
 
 // used for mail when no from address is given
 grails.mail.default.from="server@myfakedomain.com"
+
+
+
+mybusiness.ebay.security.appname = "mybusiness-1234-5678-aaaa-bbbbccccdddd"
+mybusiness.ebay.storeName = "mystorename"
+
+// light or dark
+mybusiness.recaptcha.style = "light"
