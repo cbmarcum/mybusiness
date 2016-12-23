@@ -12,7 +12,7 @@ grails create-app helloworld
 === Add Plugin to build.gradle
 Add to dependencies section
 ```
-compile "net.codebuilders.mybusiness:mybusiness-master:0.7.13"
+compile "net.codebuilders.mybusiness:mybusiness:X.X.X"
 ```
 
 === Add Spring Security to application.groovy

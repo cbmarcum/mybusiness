@@ -89,8 +89,8 @@
 
             <!-- cc me checkbox -->
             <div class="checkbox col-md-12">
-                <label for="ccMe"><g:message code="default.form.ccme.label" default="cc Me"/></label>
                 <g:checkBox name="ccMe" value="${true}"/>
+                <label for="ccMe"><g:message code="default.form.ccme.label" default="cc Me"/></label>
             </div>
 
 
@@ -102,17 +102,17 @@
                             style="height:150px; width:400px"/>
             </div>
 
-            <!-- using simple-captcha plugin -->
+            <!-- using recaptcha plugin -->
             <div class="form-group col-md-6">
 
                 <recaptcha:ifEnabled>
-                    <recaptcha:recaptcha theme="light"/>
+                    <recaptcha:recaptcha theme="${grailsApplication.config.mybusiness.recaptcha.style}"/>
                 </recaptcha:ifEnabled>
             </div>
 
             <div class="form-group col-sm-10 col-md-6">
 
-                <g:actionSubmit action="email"
+                <g:actionSubmit class="btn btn-default" action="email"
                                 value="${message(code: 'default.button.submit.label', default: 'Submit')}"/>
             </div>
         </div> <!-- /.row -->
