@@ -12,11 +12,7 @@ buildscript {
     }
 }
 
-version "0.8.19" +
-        "" +
-        "" +
-        "" +
-        ""
+version "0.8.19"
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
