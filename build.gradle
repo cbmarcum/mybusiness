@@ -12,7 +12,7 @@ buildscript {
     }
 }
 
-version "0.8.19"
+version "0.9.0"
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -90,4 +90,10 @@ grailsPublish {
 
 assets {
     packagePlugin = true
+}
+
+// exclude assets that are already present in main app
+jar {
+    exclude "**/META-INF/assets/**"
+    exclude "**/META-INF/assets.list"
 }

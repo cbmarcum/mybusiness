@@ -184,5 +184,5 @@ dependencies:
 profiles:
 - file:/home/carl/.m2/repository/org/grails/profiles/web-plugin/3.1.8/web-plugin-3.1.8.jar
 - file:/home/carl/.m2/repository/org/grails/profiles/plugin/3.1.8/plugin-3.1.8.jar
-- file:/home/carl/.m2/repository/org/grails/profiles/web/3.1.8/web-3.1.8.jar
-- file:/home/carl/.m2/repository/org/grails/profiles/base/3.1.8/base-3.1.8.jar
+- file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails.profiles/web/3.1.8/ac9b82de5f9bb1e67df90417f062b2a3bef7c4a2/web-3.1.8.jar
+- file:/home/carl/.gradle/caches/modules-2/files-2.1/org.grails.profiles/base/3.1.8/1102ea2944b7775bcf30e4491d227b6c3cedce0f/base-3.1.8.jar

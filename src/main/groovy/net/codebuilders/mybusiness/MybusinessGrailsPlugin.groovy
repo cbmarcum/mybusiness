@@ -8,39 +8,42 @@ class MybusinessGrailsPlugin extends Plugin {
     def grailsVersion = "3.1.8 > *"
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-        "grails-app/views/error.gsp"
+            "grails-app/views/error.gsp",
+            "grails-app/assets/**",
+            "grails-app/views/index.gsp"
     ]
 
     // TODO Fill in these fields
-    def title = "Mybusiness" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def title = "MyBusiness" // Headline display name of the plugin
+    def author = "Carl Marcum"
+    def authorEmail = "carl.marcum@codebuilders.net"
     def description = '''\
-Brief summary/description of the plugin.
+A Grails 3 plugin for online product e-commerce.
 '''
     def profiles = ['web']
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/mybusiness"
+    def documentation = "http://cbmarcum.github.io/mybusiness/"
 
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
-//    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
+    def organization = [name: "Code Builders, LLC", url: "http://codebuilders.net/"]
 
     // Any additional developers beyond the author specified above.
-//    def developers = [ [ name: "Joe Bloggs", email: "joe@bloggs.net" ]]
+    def developers = [[name: "Carl Marcum", email: "carl.marcum@codebuilders.net"]]
 
     // Location of the plugin's issue tracker.
-//    def issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
+    def issueManagement = [system: "GitHub", url: "https://github.com/cbmarcum/mybusiness/issues"]
 
     // Online location of the plugin's browseable source code.
-//    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
+    def scm = [url: "https://github.com/cbmarcum/mybusiness"]
 
-    Closure doWithSpring() { {->
+    Closure doWithSpring() {
+        { ->
             // TODO Implement runtime spring config (optional)
         }
     }
