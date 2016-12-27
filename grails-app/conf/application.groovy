@@ -16,7 +16,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/**/css/**',        access: ['permitAll']],
         [pattern: '/**/images/**',     access: ['permitAll']],
         [pattern: '/**/favicon.ico',   access: ['permitAll']],
-        [pattern: '/contact/**',       access: ['permitAll']]
+        [pattern: '/contact/**',       access: ['permitAll']],
+        [pattern: '/ebay/**',          access: ['permitAll']],
+        [pattern: '/gapi/**',          access: ['permitAll']]
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [
@@ -51,9 +53,8 @@ grails {
     }
 }
 
-// REMOVE AFTER DOCUMENTATION
-// for mail plugin used on contact form FOR TEST ONLY - REMOVE FROM PRODUCTION
-// grails.mail.overrideAddress = "carl.marcum@codebuilders.net"
+// for mail plugin
+grails.mail.overrideAddress = "me@myfakedomain.com"
 
 // used for mail when no from address is given
 grails.mail.default.from="server@myfakedomain.com"
@@ -65,3 +66,12 @@ mybusiness.ebay.storeName = "mystorename"
 
 // light or dark
 mybusiness.recaptcha.style = "light"
+
+// google places api key (dev key - override in production with domain specific key
+// mybusiness.places.key = "YOUR_API_KEY"
+
+// google places api id
+// mybusiness.places.id = "YOUR_PLACES_ID"
+
+// google map src
+mybusiness.map.src = "https://www.google.com/maps/embed?pb=!1m19!1m8!1m3!1d48969.617373514775!2d-84.227148!3d39.9055628!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x883f7eb8cdfed0f1%3A0x7d07f86955cce608!2sWright+Brothers+Aeroplane%2C+3555+Hangar+Dr%2C+Vandalia%2C+OH+45377!3m2!1d39.903591399999996!2d-84.2050347!5e0!3m2!1sen!2sus!4v1482770754729"
