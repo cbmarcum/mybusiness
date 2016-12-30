@@ -14,9 +14,9 @@ class Bootstrap {
         def adminRole = new SecRole(authority: 'ROLE_ADMIN').save()
         def userRole = new SecRole(authority: 'ROLE_USER').save()
 
-        def testUser = new SecUser(username: 'me', password: 'password').save()
+        def adminUser = new SecUser(username: 'admin', password: 'password').save()
 
-        SecUserSecRole.create testUser, adminRole
+        SecUserSecRole.create adminUser, adminRole
 
         SecUserSecRole.withSession {
             it.flush()
@@ -26,6 +26,8 @@ class Bootstrap {
         assert SecUser.count() == 1
         assert SecRole.count() == 2
         assert SecUserSecRole.count() == 1
+
+        println "Bootstrap Ran !!"
     }
 
 }
