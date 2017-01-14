@@ -18,21 +18,46 @@ compile "net.codebuilders.mybusiness:mybusiness:X.X.X"
 === Add Spring Security to application.groovy
 Add to grails-app/config.application.groovy
 ```
+// for Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'net.codebuilders.mybusiness.SecUser'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'net.codebuilders.mybusiness.SecUserSecRole'
 grails.plugin.springsecurity.authority.className = 'net.codebuilders.mybusiness.SecRole'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-	[pattern: '/',               access: ['permitAll']],
-	[pattern: '/error',          access: ['permitAll']],
-	[pattern: '/index',          access: ['permitAll']],
-	[pattern: '/index.gsp',      access: ['permitAll']],
-	[pattern: '/shutdown',       access: ['permitAll']],
-	[pattern: '/assets/**',      access: ['permitAll']],
-	[pattern: '/**/js/**',       access: ['permitAll']],
-	[pattern: '/**/css/**',      access: ['permitAll']],
-	[pattern: '/**/images/**',   access: ['permitAll']],
-	[pattern: '/**/favicon.ico', access: ['permitAll']],
-    [pattern: '/contact/**',     access: ['permitAll']]
+        [pattern: '/', access: ['permitAll']],
+        [pattern: '/error', access: ['permitAll']],
+        [pattern: '/index', access: ['permitAll']],
+        [pattern: '/index.gsp', access: ['permitAll']],
+        [pattern: '/shutdown', access: ['permitAll']],
+        [pattern: '/assets/**', access: ['permitAll']],
+        [pattern: '/**/js/**', access: ['permitAll']],
+        [pattern: '/**/css/**', access: ['permitAll']],
+        [pattern: '/**/images/**', access: ['permitAll']],
+        [pattern: '/**/favicon.ico', access: ['permitAll']],
+        [pattern: '/home/**', access: ['permitAll']],
+        [pattern: '/contact/**', access: ['permitAll']],
+        [pattern: '/ebay/**', access: ['permitAll']],
+        [pattern: '/constant/**', access: ['permitAll']],
+        [pattern: '/gapi/index', access: ['permitAll']],
+
+        // google reviews requires a privacy notice
+        [pattern: '/privacy', access: ['permitAll']],
+
+        // admin pages
+        [pattern: '/admin/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/dbconsole/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/notice/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+
+        // by default ckeditor is only used by admin role
+        [pattern: '/ck/standard/filemanager', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/ck/standard/uploader', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/ck/ofm/filemanager', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/ck/ofm/filetree', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+
+        // example for google webmaster verification and sitemaps
+        [pattern: '/google123456.html', access: ['permitAll']],
+        [pattern: '/robots.txt', access: ['permitAll']],
+        [pattern: '/sitemap.htm', access: ['permitAll']],
+        [pattern: '/sitemap.xml', access: ['permitAll']]
 ]
 ```
 If you do not yet have a logout link and need to do it by URL, add the following also.
