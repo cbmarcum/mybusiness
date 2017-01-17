@@ -88,6 +88,19 @@
             </g:if>
         </div> <!-- container -->
 
+        <div class="container">
+            <h2>RSS Feeds</h2>
+            <g:if test="${feedList}">
+                <g:each in="${feedList}" status="i" var="feed">
+                    <p><a href="${feed.link}">${feed.title}</a></p>
+                </g:each>
+            </g:if>
+            <g:else>
+                <p>No Feeds Available</p>
+            </g:else>
+
+        </div> <!-- container -->
+
         <p>
             We can begin to add our own menus now...
         </p>
@@ -102,6 +115,7 @@
                 </g:each>
             </ul>
         </div>
+
     </section>
 </div>
 
