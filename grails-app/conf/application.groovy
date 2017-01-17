@@ -21,7 +21,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/ebay/**', access: ['permitAll']],
         [pattern: '/gapi/**', access: ['permitAll']],
         // everything below this line should be ['ROLE_ADMIN', 'isFullyAuthenticated()']]
+        [pattern: '/admin/**', access: ['permitAll']],
         [pattern: '/notice/**', access: ['permitAll']],
+        [pattern: '/rssFeed/**', access: ['permitAll']],
         // for ckeditor in notice
         [pattern: '/ck/standard/filemanager', access: ['permitAll']],
         [pattern: '/ck/standard/uploader', access: ['permitAll']],

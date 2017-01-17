@@ -46,6 +46,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/admin/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
         [pattern: '/dbconsole/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
         [pattern: '/notice/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/rssFeed/**', access: ['isFullyAuthenticated()']],
 
         // by default ckeditor is only used by admin role
         [pattern: '/ck/standard/filemanager', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
