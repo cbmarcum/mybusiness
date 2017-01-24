@@ -2,6 +2,38 @@
 Carl Marcum
 :toc: left
 
+== Introduction
+The goal of the MyBusiness(TM) plugin is to add e-business (including e-commerce) functionality to a Grails 3.x web application.
+
+We are currently porting features from our proprietary MyBusiness(TM) application to this plugin project.
+
+Currently the plugin contains these features:
+
+* Security and Authentication using Spring-Security-Core
+* Contact form with Google Re-Captcha
+* eBay product listings with zooming images 
+* Google business reviews
+* Notices for display by date range
+* RSS feeds for display of industry news artitcles, etc.
+* Secured admin home page with links to admin forms
+
+Features yet to be ported over.
+
+* Products including categories, features, feature categories, and good identifications
+* Product movies
+* Specials
+* Blog
+
+
+Planned new features
+
+* Content Management System or CMS to allow page content from the database.
+
+== Version Numbering
+After version 1.0 we have changed to 4 digit system where the first 2 are Grails major.minor to more easily establish compatibility. The third is major version of this plugin, and fourth is patch versions. Plugin versions will increment on new features added.
+
+*<Grails major . Grails minor . Plugin major . patch>*
+
 == Plugin Usage
 
 === Create a Grails Web Application
@@ -16,7 +48,7 @@ compile "net.codebuilders.mybusiness:mybusiness:X.X.X"
 ```
 
 === Add Spring Security to application.groovy
-Add to grails-app/config.application.groovy
+Add to grails-app/config.application.groovy and review grails.plugin.springsecurity.controllerAnnotations.staticRules section and remove unused examples and verify security rules.
 ```
 // for Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'net.codebuilders.mybusiness.SecUser'
@@ -67,19 +99,21 @@ If you do not yet have a logout link and need to do it by URL, add the following
 grails.plugin.springsecurity.logout.postOnly = false
 ```
 === Internationalization
-Add to i18n
-```
-administration.index.title
-```
+Copy i18n/message.properties into your Grails application and edit.
 
 === Contact Mail
-Add e-mail addresses to grails-app/config.application.groovy
+Add e-mail addresses to grails-app/config.application.groovy. This is a map where keys are names to display in contact form and value is the email address.
 ```
 // for mybusiness contact
 mybusiness.contactMap = [
   "Contact_Name_1" : "contact.name.1@changeme.com",
   "Contact_Name_2" : "contact.name.2@changeme.com"
 ]
+```
+Configure Re-Captcha to be light or dark background.
+```
+// light or dark
+mybusiness.recaptcha.style = "light"
 ```
 === Mail Plugin
 Add mail server settings to grails-app/config.application.groovy
@@ -99,22 +133,43 @@ grails {
 }
 ```
 === Server URL
-Add server URL to grails-app/config.application.groovy
+Add server URL to grails-app/config.application.groovy. If you are deploying as a SpringBoot runnable jar with an Apache HTTP frontend you can leave this "http://localhost:[PORT]". 
 ```
 environments {
     production {
-        grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://localhost:8090"
     }
 }
 ```
 
 === Using Application Variables in Controllers
 ```
-def grailsApplication // may not be needed in grails 3
+// may not be needed in grails 3
+def grailsApplication 
 
 def myAction = {
     def bar = grailsApplication.config.my.property
     // map example
     Map contactMap = grailsApplication.config.getProperty('mybusiness.contactMap', Map)
 }
+```
+=== eBay Feature
+You will need to setup your application with eBay https://go.developer.ebay.com/quick-start-guide .
+
+Setup application variable in application.groovy
+```
+mybusiness.ebay.security.appname = "mybusiness-1234-5678-aaaa-bbbbccccdddd"
+mybusiness.ebay.storeName = "mystorename"
+```
+=== Google Maps
+Paste the location into the variable.
+```
+mybusiness.map.src = "https://www.google.com/maps/embed?pb=..."
+```
+
+=== Google Reviews
+We use the Google Places Web API service.  You will need to get a key  from https://developers.google.com/places/web-service/intro and have a place id to display reviews.
+```
+mybusiness.places.key = "YOUR_API_KEY"
+mybusiness.places.id = "YOUR_PLACES_ID"
 ```

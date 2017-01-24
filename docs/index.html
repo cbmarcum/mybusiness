@@ -428,6 +428,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
+    <li><a href="#trueintroduction">Introduction</a></li>
+    <li><a href="#trueversion-numbering">Version Numbering</a></li>
 <li><a href="#trueplugin-usage">Plugin Usage</a>
 <ul class="sectlevel2">
 <li><a href="#truecreate-a-grails-web-application">Create a Grails Web Application</a></li>
@@ -438,6 +440,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#truemail-plugin">Mail Plugin</a></li>
 <li><a href="#trueserver-url">Server URL</a></li>
 <li><a href="#trueusing-application-variables-in-controllers">Using Application Variables in Controllers</a></li>
+    <li><a href="#trueebay-feature">eBay Feature</a></li>
+    <li><a href="#truegoogle-maps">Google Maps</a></li>
+    <li><a href="#truegoogle-reviews">Google Reviews</a></li>
 </ul>
 </li>
 </ul>
@@ -445,6 +450,89 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
+    <h2 id="trueintroduction"><a class="anchor" href="#trueintroduction"></a>Introduction</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>The goal of the MyBusiness&#8482; plugin is to add e-business (including e-commerce) functionality to a
+                Grails 3.x web application.</p>
+        </div>
+        <div class="paragraph">
+            <p>We are currently porting features from our proprietary MyBusiness&#8482; application to this plugin
+                project.</p>
+        </div>
+        <div class="paragraph">
+            <p>Currently the plugin contains these features:</p>
+        </div>
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p>Security and Authentication using Spring-Security-Core</p>
+                </li>
+                <li>
+                    <p>Contact form with Google Re-Captcha</p>
+                </li>
+                <li>
+                    <p>eBay product listings with zooming images</p>
+                </li>
+                <li>
+                    <p>Google business reviews</p>
+                </li>
+                <li>
+                    <p>Notices for display by date range</p>
+                </li>
+                <li>
+                    <p>RSS feeds for display of industry news artitcles, etc.</p>
+                </li>
+                <li>
+                    <p>Secured admin home page with links to admin forms</p>
+                </li>
+            </ul>
+        </div>
+        <div class="paragraph">
+            <p>Features yet to be ported over.</p>
+        </div>
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p>Products including categories, features, feature categories, and good identifications</p>
+                </li>
+                <li>
+                    <p>Product movies</p>
+                </li>
+                <li>
+                    <p>Specials</p>
+                </li>
+                <li>
+                    <p>Blog</p>
+                </li>
+            </ul>
+        </div>
+        <div class="paragraph">
+            <p>Planned new features</p>
+        </div>
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p>Content Management System or CMS to allow page content from the database.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+    <div class="sect1">
+        <h2 id="trueversion-numbering"><a class="anchor" href="#trueversion-numbering"></a>Version Numbering</h2>
+        <div class="sectionbody">
+            <div class="paragraph">
+                <p>After version 1.0 we have changed to 4 digit system where the first 2 are Grails major.minor to more
+                    easily establish compatibility. The third is major version of this plugin, and fourth is patch
+                    versions. Plugin versions will increment on new features added.</p>
+            </div>
+            <div class="paragraph">
+                <p><strong>&lt;Grails major . Grails minor . Plugin major . patch&gt;</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
 <h2 id="trueplugin-usage"><a class="anchor" href="#trueplugin-usage"></a>Plugin Usage</h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -469,25 +557,53 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="trueadd-spring-security-to-application-groovy"><a class="anchor" href="#trueadd-spring-security-to-application-groovy"></a>Add Spring Security to application.groovy</h3>
 <div class="paragraph">
-<p>Add to grails-app/config.application.groovy</p>
+    <p>Add to grails-app/config.application.groovy and review
+        grails.plugin.springsecurity.controllerAnnotations.staticRules section and remove unused examples and verify
+        security rules.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>grails.plugin.springsecurity.userLookup.userDomainClassName = 'net.codebuilders.mybusiness.SecUser'
+<pre class="highlightjs highlight"><code>// for Spring Security Core plugin:
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'net.codebuilders.mybusiness.SecUser'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'net.codebuilders.mybusiness.SecUserSecRole'
 grails.plugin.springsecurity.authority.className = 'net.codebuilders.mybusiness.SecRole'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-	[pattern: '/',               access: ['permitAll']],
-	[pattern: '/error',          access: ['permitAll']],
-	[pattern: '/index',          access: ['permitAll']],
-	[pattern: '/index.gsp',      access: ['permitAll']],
-	[pattern: '/shutdown',       access: ['permitAll']],
-	[pattern: '/assets/**',      access: ['permitAll']],
-	[pattern: '/**/js/**',       access: ['permitAll']],
-	[pattern: '/**/css/**',      access: ['permitAll']],
-	[pattern: '/**/images/**',   access: ['permitAll']],
-	[pattern: '/**/favicon.ico', access: ['permitAll']],
-    [pattern: '/contact/**',     access: ['permitAll']]
+        [pattern: '/', access: ['permitAll']],
+        [pattern: '/error', access: ['permitAll']],
+        [pattern: '/index', access: ['permitAll']],
+        [pattern: '/index.gsp', access: ['permitAll']],
+        [pattern: '/shutdown', access: ['permitAll']],
+        [pattern: '/assets/**', access: ['permitAll']],
+        [pattern: '/**/js/**', access: ['permitAll']],
+        [pattern: '/**/css/**', access: ['permitAll']],
+        [pattern: '/**/images/**', access: ['permitAll']],
+        [pattern: '/**/favicon.ico', access: ['permitAll']],
+        [pattern: '/home/**', access: ['permitAll']],
+        [pattern: '/contact/**', access: ['permitAll']],
+        [pattern: '/ebay/**', access: ['permitAll']],
+        [pattern: '/constant/**', access: ['permitAll']],
+        [pattern: '/gapi/index', access: ['permitAll']],
+
+        // google reviews requires a privacy notice
+        [pattern: '/privacy', access: ['permitAll']],
+
+        // admin pages
+        [pattern: '/admin/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/dbconsole/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/notice/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/rssFeed/**', access: ['isFullyAuthenticated()']],
+
+        // by default ckeditor is only used by admin role
+        [pattern: '/ck/standard/filemanager', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/ck/standard/uploader', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/ck/ofm/filemanager', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/ck/ofm/filetree', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+
+        // example for google webmaster verification and sitemaps
+        [pattern: '/google123456.html', access: ['permitAll']],
+        [pattern: '/robots.txt', access: ['permitAll']],
+        [pattern: '/sitemap.htm', access: ['permitAll']],
+        [pattern: '/sitemap.xml', access: ['permitAll']]
 ]</code></pre>
 </div>
 </div>
@@ -504,18 +620,14 @@ grails.plugin.springsecurity.logout.postOnly = false</code></pre>
 <div class="sect2">
 <h3 id="trueinternationalization"><a class="anchor" href="#trueinternationalization"></a>Internationalization</h3>
 <div class="paragraph">
-<p>Add to i18n</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code>administration.index.title</code></pre>
-</div>
+    <p>Copy i18n/message.properties into your Grails application and edit.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="truecontact-mail"><a class="anchor" href="#truecontact-mail"></a>Contact Mail</h3>
 <div class="paragraph">
-<p>Add e-mail addresses to grails-app/config.application.groovy</p>
+    <p>Add e-mail addresses to grails-app/config.application.groovy. This is a map where keys are names to display in
+        contact form and value is the email address.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -526,6 +638,15 @@ mybusiness.contactMap = [
 ]</code></pre>
 </div>
 </div>
+    <div class="paragraph">
+        <p>Configure Re-Captcha to be light or dark background.</p>
+    </div>
+    <div class="listingblock">
+        <div class="content">
+<pre class="highlightjs highlight"><code>// light or dark
+mybusiness.recaptcha.style = "light"</code></pre>
+        </div>
+    </div>
 </div>
 <div class="sect2">
 <h3 id="truemail-plugin"><a class="anchor" href="#truemail-plugin"></a>Mail Plugin</h3>
@@ -553,13 +674,14 @@ See <a href="http://plugins.grails.org/plugin/mail" class="bare">http://plugins.
 <div class="sect2">
 <h3 id="trueserver-url"><a class="anchor" href="#trueserver-url"></a>Server URL</h3>
 <div class="paragraph">
-<p>Add server URL to grails-app/config.application.groovy</p>
+    <p>Add server URL to grails-app/config.application.groovy. If you are deploying as a SpringBoot runnable jar with an
+        Apache HTTP frontend you can leave this "http://localhost:[PORT]".</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code>environments {
     production {
-        grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://localhost:8090"
     }
 }</code></pre>
 </div>
@@ -569,7 +691,8 @@ See <a href="http://plugins.grails.org/plugin/mail" class="bare">http://plugins.
 <h3 id="trueusing-application-variables-in-controllers"><a class="anchor" href="#trueusing-application-variables-in-controllers"></a>Using Application Variables in Controllers</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>def grailsApplication // may not be needed in grails 3
+<pre class="highlightjs highlight"><code>// may not be needed in grails 3
+def grailsApplication
 
 def myAction = {
     def bar = grailsApplication.config.my.property
@@ -579,12 +702,54 @@ def myAction = {
 </div>
 </div>
 </div>
+    <div class="sect2">
+        <h3 id="trueebay-feature"><a class="anchor" href="#trueebay-feature"></a>eBay Feature</h3>
+        <div class="paragraph">
+            <p>You will need to setup your application with eBay <a
+                    href="https://go.developer.ebay.com/quick-start-guide" class="bare">https://go.developer.ebay.com/quick-start-guide</a>
+                .</p>
+        </div>
+        <div class="paragraph">
+            <p>Setup application variable in application.groovy</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight"><code>mybusiness.ebay.security.appname = "mybusiness-1234-5678-aaaa-bbbbccccdddd"
+mybusiness.ebay.storeName = "mystorename"</code></pre>
+            </div>
+        </div>
+    </div>
+    <div class="sect2">
+        <h3 id="truegoogle-maps"><a class="anchor" href="#truegoogle-maps"></a>Google Maps</h3>
+        <div class="paragraph">
+            <p>Paste the location into the variable.</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+                <pre class="highlightjs highlight"><code>mybusiness.map.src = "https://www.google.com/maps/embed?pb=..."</code></pre>
+            </div>
+        </div>
+    </div>
+    <div class="sect2">
+        <h3 id="truegoogle-reviews"><a class="anchor" href="#truegoogle-reviews"></a>Google Reviews</h3>
+        <div class="paragraph">
+            <p>We use the Google Places Web API service. You will need to get a key from <a
+                    href="https://developers.google.com/places/web-service/intro" class="bare">https://developers.google.com/places/web-service/intro</a>
+                and have a place id to display reviews.</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight"><code>mybusiness.places.key = "YOUR_API_KEY"
+mybusiness.places.id = "YOUR_PLACES_ID"</code></pre>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-23 10:44:19 EST
+    Last updated 2017-01-23 20:38:15 EST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">
