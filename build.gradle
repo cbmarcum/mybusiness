@@ -65,6 +65,10 @@ dependencies {
     // ckeditor
     compile "org.grails.plugins:ckeditor:4.5.9.0"
 
+    // feeds
+    compile 'rome:rome:0.9'
+    compile 'rome:modules:0.3.2'
+
     console "org.grails:grails-console"
     profile "org.grails.profiles:web-plugin:3.1.8"
     provided "org.grails:grails-plugin-services"

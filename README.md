@@ -26,19 +26,23 @@ If a Grails 2 plugin project has not upgraded and released a Grails 3 version
 we incorporate it until that time if they are Apache v2.0 licensed.
 
 This plugin contains original code and the ideas from the following projects:
- 
-[Taggable Plugin 1.1.0] [2] for Grails `1.1` by Graeme Rocher.
- 
-[Commentable Plugin 0.8.1] [3] for Grails `1.1` by Graeme Rocher.
 
+[MyBusiness 2.3] [2] for Grails `2.0` by Carl Marcum
+ 
+[Taggable Plugin 1.1.0] [3] for Grails `1.1` by Graeme Rocher.
+ 
+[Commentable Plugin 0.8.1] [4] for Grails `1.1` by Graeme Rocher.
 
+[Feeds Plugin 1.6] [5] for Grails `1.3` by Burt Beckwith and Marc Palmer
 
 History
 -------
 v3.1.2.0 - changed version scheme from 1.1.0
 
-v3.1.3.0 - added Taggable
+v3.1.3.0 - added Taggable, Commentable, and Feeds
 
 [1]: http://cbmarcum.github.io/mybusiness/ "MyBusiness Plugin"
-[2]: https://github.com/gpc/taggable "Taggable Plugin"
-[3]: https://github.com/gpc/grails-commentable "Commentable Plugin"
+[2]: http://codebuilders.net/project/mybusiness "MyBusiness Project"
+[3]: https://github.com/gpc/taggable "Taggable Plugin"
+[4]: https://github.com/gpc/grails-commentable "Commentable Plugin"
+[5]: https://github.com/gpc/feeds "Feeds Plugin"
