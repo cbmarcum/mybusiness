@@ -18,7 +18,7 @@ import grails.util.Holders
 
 /**
  * A link class used to link a tag to another entity using the class name and identifier pairing
- *
+ * 
  * @author Graeme Rocher
  */
 class TagLink implements Serializable {
@@ -35,18 +35,8 @@ class TagLink implements Serializable {
     static mapping = {
         cache 'read-write'
         tag cache: true, fetch: 'join'
-
         def config = Holders.config
-        if (config.grails.taggable.tagLink.table) {
-            table config.grails.taggable.tagLink.table.toString()
-        } else {
-            table "tag_links"
-        }
-
-        if (config.grails.taggable.tagLink.autoImport instanceof Boolean) {
-            autoImport(config.grails.taggable.tagLink.autoImport)
-        } else {
-            autoImport false
-        }
+        table config.getProperty('grails.taggable.tagLink.table', String, "tags_links")
+        autoImport config.getProperty('grails.taggable.tagLink.autoImport', Boolean, false)
     }
 }

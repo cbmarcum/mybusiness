@@ -3,7 +3,6 @@
     <g:render template="/commentable/comment"
               collection="${comments}"
               var="comment"
-    <!-- plugin="commentable" -->
     model="[noEscape:noEscape]" />
 </div>
 

@@ -7,20 +7,8 @@ class TagsTagLib {
     static namespace = 'tags'
     static defaultCssClasses = ['smallest', 'small', 'medium', 'large', 'largest']
     
-    // def grailsApplication // remove in Grails 3
     def taggableService
     
-    def cloud = { attrs ->
-        log.warn "The <tags:cloud> tag is now deprecated in favour of <tags:tagCloud>"
-
-        def type = attrs.remove('type')
-        // all remaining attributes will be passed through to the richui tag
-        attrs.values = taggableService.getTagCounts(type)
-        out << plugin.isAvailable(name:'richui') {
-            out << richui.tagCloud(attrs)
-        }
-    }
-
     /**
      * Generates a tag cloud using CSS styles to identify the relative importance
      * of each tag. These CSS styles can be configured via a 'grails.taggable.css.classes'

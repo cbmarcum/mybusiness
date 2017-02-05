@@ -2,7 +2,8 @@ package net.codebuilders.mybusiness
 
 import grails.util.*
 
-import org.grails.taggable.*
+// import grails.plugins.taggable.*
+
 
 class TaggableService {
     

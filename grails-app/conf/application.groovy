@@ -24,6 +24,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/admin/**', access: ['permitAll']],
         [pattern: '/notice/**', access: ['permitAll']],
         [pattern: '/rssFeed/**', access: ['permitAll']],
+        [pattern: '/blog/**', access: ['permitAll']],
         // for ckeditor in notice
         [pattern: '/ck/standard/filemanager', access: ['permitAll']],
         [pattern: '/ck/standard/uploader', access: ['permitAll']],
@@ -44,7 +45,7 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 // for tutorial only - remove after logout gsp is created
 // grails.plugin.springsecurity.logout.postOnly = false
 
-grails.bootstrap.skip = 'false'
+grails.bootstrap.skip = false
 
 // for contact form - override in application
 // key is name displayed in form
@@ -123,3 +124,18 @@ ckeditor {
     }
 }
 
+mybusiness.author.evaluator = {
+
+    def principal = org.springframework.security.core.context.SecurityContextHolder.context.authentication.principal
+
+    if (principal.hasProperty('id')) {
+
+        def currentUserId = principal.id
+        if (currentUserId) {
+            net.codebuilders.mybusiness.SecUser.get(currentUserId)
+        }
+    }
+}
+
+grails.blog.author.evaluator = mybusiness.author.evaluator
+grails.commentable.poster.evaluator = mybusiness.author.evaluator
