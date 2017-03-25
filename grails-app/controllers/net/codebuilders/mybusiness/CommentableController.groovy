@@ -59,7 +59,7 @@ class CommentableController {
             def noEscape = false
             plugin.isAvailable(name: 'grails-ui') { noEscape = true }
             render template: "/commentable/comment",
-                    plugin: "commentable",
+                    // plugin: "commentable", // cbm
                     collection: comments,
                     var: "comment",
                     model: [noEscape: noEscape]

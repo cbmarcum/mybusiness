@@ -15,6 +15,7 @@
 package net.codebuilders.mybusiness
 
 import grails.util.*
+
 /**
  * Marker interface to add tagging capabilities to a particular domain instance
  * @author Graeme Rocher
@@ -56,7 +57,11 @@ trait Taggable {
     }
 
     def getTags() {
-        this.id ? getTagLinks(Holders.applicationContext.taggableService, this).tag.name : []
+        // methods that use this service are broken. service seems to try to get all class families
+        // this.id ? getTagLinks(Holders.applicationContext.taggableService, this).tag.name : []
+        // workaround is to search 'this' class only
+        def links = TagLink.findAllWhere(tagRef: this.id, type: GrailsNameUtils.getPropertyName(this.class))
+        return links.tag.name
     }
 
     Taggable parseTags(String tags, String delimiter = ",") {
@@ -116,15 +121,33 @@ trait Taggable {
 
 
     static List<String> getAllTags() {
+
+        /*
         def criteria = TagLink.createCriteria()
-        criteria.list {
-            criteria.projections { criteria.tag { criteria.distinct "name" } }
-            criteria.'in'('type', (Collection) Holders.applicationContext.taggableService.domainClassFamilies[this.name])
+        def results = criteria.list {
+            criteria.projections {
+                criteria.tag { criteria.distinct "name" }
+            }
+            // criteria.'in'('type', (Collection) Holders.applicationContext.taggableService.domainClassFamilies[this.name])
+            // criteria.'in'('type', [GrailsNameUtils.getPropertyName(this.class)] )
+            criteria.eq('type', GrailsNameUtils.getPropertyName(this.class))
             criteria.cache true
         }
+        return results.tag.name
+        */
+
+        // println "getAllTags"
+        // println("this is ${this}")
+        // println "class is ${GrailsNameUtils.getPropertyName(this)}"
+        def links = TagLink.findAllWhere(type: GrailsNameUtils.getPropertyName(this))
+        // println("links is ${links}")
+        return links.tag.name.unique().sort()
+
+
     }
 
     static Integer getTotalTags() {
+        /*
         def clazz = this
         def criteria = TagLink.createCriteria()
         criteria.get {
@@ -132,9 +155,18 @@ trait Taggable {
             criteria.'in'('type', (Collection) Holders.applicationContext.taggableService.domainClassFamilies[clazz.name])
             criteria.cache true
         }
+        */
+        def links = TagLink.findAllWhere(type: GrailsNameUtils.getPropertyName(this))
+        return links.tag.name.unique().size()
     }
 
     static Integer countByTag(String tag) {
+        //DEBUG
+        println "in Taggable.countByTag"
+        println("tag = ${tag}")
+        println("this = ${this}")
+        println("this.name = ${this.name}")
+
         def identifiers = getTagReferences(Holders.applicationContext.taggableService, tag, this.name)
         if (identifiers) {
             def criteria = createCriteria()
@@ -206,11 +238,17 @@ trait Taggable {
     }
 
     private getTagLinks(tagService, obj) {
-        TagLink.findAllByTagRefAndTypeInList(obj.id, tagService.domainClassFamilies[obj.class.name], [cache: true])
+        // TagLink.findAllByTagRefAndTypeInList(obj.id, tagService.domainClassFamilies[obj.class.name], [cache: true])
+        TagLink.findAllByTagRefAndType(obj.id, GrailsNameUtils.getPropertyName(obj.class.name), [cache: true])
     }
 
     private static getTagReferences(tagService, String tagName, String className) {
         if (tagName) {
+            // DEBUG
+            println("in Taggable.getTagReferences")
+            println("tagName = ${tagName}")
+            println("className = ${className}")
+
             def criteria = TagLink.createCriteria()
             criteria.list {
                 criteria.projections {
@@ -219,7 +257,11 @@ trait Taggable {
                 criteria.tag {
                     criteria.eq 'name', tagName
                 }
-                criteria.'in'('type', tagService.domainClassFamilies[className])
+                // criteria.'in'('type', tagService.domainClassFamilies[className])
+                // criteria.'in'('type', className)
+                criteria.'in'('type', GrailsNameUtils.getPropertyName(className))
+
+
                 criteria.cache true
             }
 

@@ -110,13 +110,18 @@ class BlogController {
             if (entry.save()) {
 
                 // remove any existing tags, and add the new ones
+                println("deleting ${entry.tags.size()} existing tags")
                 entry.tags.each {
+                    println "trying to delete tag link" // DEBUG
+                    println("deleting {it}")
                     entry.removeTag(it)
                 }
 
+                println(params.tags) // DEBUG
                 params.tags.split(",").collect {
                     it = it.trim()
                     if (it) {
+                        println(it) // DEBUG
                         entry.addTag(it)
                     }
                 }

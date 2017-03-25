@@ -25,6 +25,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/notice/**', access: ['permitAll']],
         [pattern: '/rssFeed/**', access: ['permitAll']],
         [pattern: '/blog/**', access: ['permitAll']],
+        [pattern: '/commentable/**', access: ['permitAll']],
+        [pattern: '/dbconsole/**', access: ['permitAll']],
         // for ckeditor in notice
         [pattern: '/ck/standard/filemanager', access: ['permitAll']],
         [pattern: '/ck/standard/uploader', access: ['permitAll']],
@@ -132,10 +134,14 @@ mybusiness.author.evaluator = {
 
         def currentUserId = principal.id
         if (currentUserId) {
-            net.codebuilders.mybusiness.SecUser.get(currentUserId)
+            net.codebuilders.mybusiness.SecUser.get(currentUserId).username
         }
     }
 }
 
 grails.blog.author.evaluator = mybusiness.author.evaluator
 grails.commentable.poster.evaluator = mybusiness.author.evaluator
+
+// seed plugin
+grails.plugin.seed.autoSeed = true
+// grails.plugin.seed.environment='[development]'

@@ -22,4 +22,6 @@ class BlogEntry implements Taggable, Commentable {
         body type: "text"
         cache true
     }
+
+
 }

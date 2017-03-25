@@ -6,8 +6,8 @@ import grails.util.*
 
 
 class TaggableService {
-    
-    def grailsApplication
+
+    // def grailsApplication
     
     def domainClassFamilies = [:]
     
@@ -48,7 +48,9 @@ class TaggableService {
             if( Taggable.class.isAssignableFrom(artefact.clazz)) {
                 domainClassFamilies[artefact.clazz.name] = [GrailsNameUtils.getPropertyName(artefact.clazz)]
                 // Add class and all subclasses 
-                domainClassFamilies[artefact.clazz.name].addAll(artefact.subClasses.collect { GrailsNameUtils.getPropertyName(it.clazz) })
+                domainClassFamilies[artefact.clazz.name].addAll(artefact.subClasses.collect {
+                    GrailsNameUtils.getPropertyName(it.class)
+                })
             }
         }
     }
