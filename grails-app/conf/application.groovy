@@ -24,8 +24,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/admin/**', access: ['permitAll']],
         [pattern: '/notice/**', access: ['permitAll']],
         [pattern: '/rssFeed/**', access: ['permitAll']],
-        [pattern: '/blog/**', access: ['permitAll']],
-        [pattern: '/commentable/**', access: ['permitAll']],
+        [pattern: '/blog/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/commentable/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
         [pattern: '/dbconsole/**', access: ['permitAll']],
         // for ckeditor in notice
         [pattern: '/ck/standard/filemanager', access: ['permitAll']],
@@ -130,11 +130,13 @@ mybusiness.author.evaluator = {
 
     def principal = org.springframework.security.core.context.SecurityContextHolder.context.authentication.principal
 
+    println("principal = ${principal}") // DEBUG
+
     if (principal.hasProperty('id')) {
 
         def currentUserId = principal.id
         if (currentUserId) {
-            net.codebuilders.mybusiness.SecUser.get(currentUserId).username
+            net.codebuilders.mybusiness.SecUser.get(currentUserId) // removed username
         }
     }
 }
