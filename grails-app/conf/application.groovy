@@ -130,13 +130,11 @@ mybusiness.author.evaluator = {
 
     def principal = org.springframework.security.core.context.SecurityContextHolder.context.authentication.principal
 
-    println("principal = ${principal}") // DEBUG
-
     if (principal.hasProperty('id')) {
 
         def currentUserId = principal.id
         if (currentUserId) {
-            net.codebuilders.mybusiness.SecUser.get(currentUserId) // removed username
+            net.codebuilders.mybusiness.SecUser.get(currentUserId)
         }
     }
 }
