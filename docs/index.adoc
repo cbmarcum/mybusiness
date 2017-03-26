@@ -79,6 +79,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/dbconsole/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
         [pattern: '/notice/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
         [pattern: '/rssFeed/**', access: ['isFullyAuthenticated()']],
+        [pattern: '/blog/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/commentable/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
 
         // by default ckeditor is only used by admin role
         [pattern: '/ck/standard/filemanager', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
@@ -173,3 +175,6 @@ We use the Google Places Web API service.  You will need to get a key  from http
 mybusiness.places.key = "YOUR_API_KEY"
 mybusiness.places.id = "YOUR_PLACES_ID"
 ```
+
+=== Seed-Me
+We use the Seed-Me plugin to add users for plugin testing with run-app.  If enabled in the client app the user 'admin' with 'password' will be available in development mode.  See seed-me plug for available options.  http://plugins.grails.org/plugin/bertramlabs/seed-me
