@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <li><a href="#trueebay-feature">eBay Feature</a></li>
     <li><a href="#truegoogle-maps">Google Maps</a></li>
     <li><a href="#truegoogle-reviews">Google Reviews</a></li>
+    <li><a href="#trueseed-me">Seed-Me</a></li>
 </ul>
 </li>
 </ul>
@@ -592,6 +593,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/dbconsole/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
         [pattern: '/notice/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
         [pattern: '/rssFeed/**', access: ['isFullyAuthenticated()']],
+        [pattern: '/blog/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
+        [pattern: '/commentable/**', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
 
         // by default ckeditor is only used by admin role
         [pattern: '/ck/standard/filemanager', access: ['ROLE_ADMIN', 'isFullyAuthenticated()']],
@@ -744,12 +747,21 @@ mybusiness.places.id = "YOUR_PLACES_ID"</code></pre>
             </div>
         </div>
     </div>
+    <div class="sect2">
+        <h3 id="trueseed-me"><a class="anchor" href="#trueseed-me"></a>Seed-Me</h3>
+        <div class="paragraph">
+            <p>We use the Seed-Me plugin to add users for plugin testing with run-app. If enabled in the client app the
+                user 'admin' with 'password' will be available in development mode. See seed-me plug for available
+                options. <a href="http://plugins.grails.org/plugin/bertramlabs/seed-me" class="bare">http://plugins.grails.org/plugin/bertramlabs/seed-me</a>
+            </p>
 </div>
 </div>
+</div>
+    </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-    Last updated 2017-01-23 20:38:15 EST
+    Last updated 2017-03-26 17:24:28 EDT
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

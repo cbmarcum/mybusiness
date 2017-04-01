@@ -24,6 +24,6 @@
 
     <div class="commentDetails">
         <g:formatDate format="MMM dd, yyyy HH:mm a" date="${comment.dateCreated}"/>
-        ${comment?.poster}
+        ${comment?.poster.username} <!-- added username - cbm -->
     </div>
 </div>

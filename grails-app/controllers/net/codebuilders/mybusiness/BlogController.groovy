@@ -104,7 +104,8 @@ class BlogController {
             if (!entry.author && authorEvaluator instanceof Closure) {
                 authorEvaluator.delegate = this
                 authorEvaluator.resolveStrategy = Closure.DELEGATE_FIRST
-                entry.author = authorEvaluator.call()?.toString()
+                // entry.author = authorEvaluator.call()?.toString()
+                entry.author = authorEvaluator.call()?.username // to fix SecUser(username:admin)
             }
             entry.published = true
             if (entry.save()) {

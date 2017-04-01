@@ -96,6 +96,8 @@ class CommentableController {
             poster = evaluator.call()
         }
 
+        println("poster = ${poster.toString()}") //DEBUG
+
         if (!poster) {
             throw new CommentException("No [grails.commentable.poster.evaluator] setting defined or the evaluator doesn't evaluate to an entity. Please define the evaluator correctly in grails-app/conf/Config.groovy or ensure commenting is secured via your security rules")
         }
