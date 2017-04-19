@@ -21,23 +21,34 @@
  * *************************************************************
  */
 
-package net.codebuilders.mybusiness
-
 /**
- * Domain class for categories of product features
- * ex. color, range, size
+ * Enum class to distinguish types of product features.
  *
- * @author Carl Marcum
+ * REQUIRED_FEATURE - a "red" item by product number
+ * STANDARD_FEATURE - the standard color of an item than can have optional colors
+ * OPTIONAL_FEATURE - an optional color for an item that has a standard color
+ * SELECTABLE_FEATURE - and item that requires selection of color
  */
-class ProductFeatureCategory {
+public enum ProductFeatureApplType {
+
+    OPTIONAL_FEATURE('Optional'),
+    REQUIRED_FEATURE('Required'),
+    STANDARD_FEATURE('Standard'),
+    SELECTABLE_FEATURE('Selectable')
 
     static constraints = {
-        description(maxSize: 50)
-        shortDescription(maxSize: 25)
     }
 
-    String description = "" // ex. Pressure Gauge Range
-    // to use in a list within a product type like Pressure Gauge
-    String shortDescription = "" // ex. Range
+    // Required, Optional, Standard
+    // sub-types - Selectable
+    String name
+
+    ProductFeatureApplType(String name) {
+        this.name = name
+    }
+
+    static list() {
+        [OPTIONAL_FEATURE, REQUIRED_FEATURE, STANDARD_FEATURE, SELECTABLE_FEATURE]
+    }
 
 }

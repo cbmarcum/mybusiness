@@ -24,20 +24,26 @@
 package net.codebuilders.mybusiness
 
 /**
- * Domain class for categories of product features
- * ex. color, range, size
- *
- * @author Carl Marcum
+ * Domain class to join a Product with a ProductFeature
  */
-class ProductFeatureCategory {
+class ProductFeatureAppl {
 
     static constraints = {
-        description(maxSize: 50)
-        shortDescription(maxSize: 25)
+        // thruDate(nullable:true)
+        salesDiscontinuationDate(nullable: true)
     }
 
-    String description = "" // ex. Pressure Gauge Range
-    // to use in a list within a product type like Pressure Gauge
-    String shortDescription = "" // ex. Range
+    Product product
+    ProductFeature productFeature
+    ProductFeatureApplType productFeatureApplType
+    BigDecimal listPrice = 0.00 // catalog price of feature for product
+    Integer sequenceNum // seq within a category per product like color
+    String code // code used in part number creation on configurable products
+    Boolean display = true // display in catalog - generally for configurable features
+    // Date fromDate
+    // Date thruDate
+    Date dateCreated // auto timestamp
+    Date lastUpdated // auto timestamp
+    Date salesDiscontinuationDate // generally for configurable features
 
 }

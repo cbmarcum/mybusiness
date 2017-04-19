@@ -23,21 +23,27 @@
 
 package net.codebuilders.mybusiness
 
-/**
- * Domain class for categories of product features
- * ex. color, range, size
- *
- * @author Carl Marcum
- */
-class ProductFeatureCategory {
+import grails.test.mixin.TestFor
+import spock.lang.Specification
 
-    static constraints = {
-        description(maxSize: 50)
-        shortDescription(maxSize: 25)
+/**
+ * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
+ */
+@TestFor(ProductFeatureAppl)
+class ProductFeatureApplSpec extends Specification {
+
+    def setup() {
     }
 
-    String description = "" // ex. Pressure Gauge Range
-    // to use in a list within a product type like Pressure Gauge
-    String shortDescription = "" // ex. Range
+    def cleanup() {
+    }
+
+    void "test salesDiscontinuationDate can be null"() {
+        when:
+        domain.salesDiscontinuationDate = null
+
+        then:
+        domain.validate(['salesDiscontinuationDate'])
+    }
 
 }

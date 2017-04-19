@@ -24,10 +24,9 @@
 package net.codebuilders.mybusiness
 
 /**
- * Product is a class that represents a good or service for sale
+ * Domain class that represents a good or service for sale
  *
  * @author Carl Marcum
- *
  */
 
 class Product {

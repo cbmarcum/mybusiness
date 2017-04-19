@@ -24,20 +24,28 @@
 package net.codebuilders.mybusiness
 
 /**
- * Domain class for categories of product features
- * ex. color, range, size
+ * Enum class to distinguish products such as finished good, digital good,
+ * configurable good, configurable good configuration
  *
  * @author Carl Marcum
  */
-class ProductFeatureCategory {
+public enum ProductType {
+
+    FINISHED_GOOD('Finished Good'),
+    DIGITAL_GOOD(name: 'Digital Good'),
+    CONFIG_GOOD('Configurable Good'),
+    CONFIG_GOOD_CONFIG('Configurable Good Configuration')
 
     static constraints = {
-        description(maxSize: 50)
-        shortDescription(maxSize: 25)
     }
 
-    String description = "" // ex. Pressure Gauge Range
-    // to use in a list within a product type like Pressure Gauge
-    String shortDescription = "" // ex. Range
+    String name
 
+    ProductType(String name) {
+        this.name = name
+    }
+
+    static list() {
+        [FINISHED_GOOD, DIGITAL_GOOD, CONFIG_GOOD, CONFIG_GOOD_CONFIG]
+    }
 }
