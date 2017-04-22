@@ -25,6 +25,8 @@ package net.codebuilders.mybusiness
 
 /**
  * Domain class to join a Product with a ProductFeature
+ *
+ * @author Carl Marcum
  */
 class ProductFeatureAppl {
 

@@ -28,6 +28,8 @@ import grails.transaction.Transactional
 
 /**
  * Controller class for ProductFeature
+ *
+ * @author Carl Marcum
  */
 @Transactional(readOnly = true)
 class ProductFeatureController {

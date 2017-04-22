@@ -28,6 +28,8 @@
  * STANDARD_FEATURE - the standard color of an item than can have optional colors
  * OPTIONAL_FEATURE - an optional color for an item that has a standard color
  * SELECTABLE_FEATURE - and item that requires selection of color
+ *
+ * @author Carl Marcum
  */
 public enum ProductFeatureApplType {
 

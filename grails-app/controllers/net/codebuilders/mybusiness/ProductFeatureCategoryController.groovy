@@ -26,6 +26,11 @@ package net.codebuilders.mybusiness
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+/**
+ * Controller class for ProductFeatureCategory
+ *
+ * @author Carl Marcum
+ */
 @Transactional(readOnly = true)
 class ProductFeatureCategoryController {
 

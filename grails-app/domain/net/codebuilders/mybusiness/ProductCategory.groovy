@@ -28,6 +28,8 @@ package net.codebuilders.mybusiness
  * Domain class used to assign categories to a Product.
  * ex. Pistol, Rifle, Firearm
  * This has many to many relation to Product.
+ *
+ * @author Carl Marcum
  */
 class ProductCategory {
 

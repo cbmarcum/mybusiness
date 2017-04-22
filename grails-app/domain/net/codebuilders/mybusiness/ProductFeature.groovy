@@ -24,6 +24,8 @@
 /**
  * Domain class for product features
  * ex. has a category of "Color" and a description of "Blue"
+ *
+ * @author Carl Marcum
  */
 package net.codebuilders.mybusiness
 
