@@ -24,28 +24,21 @@
 package net.codebuilders.mybusiness
 
 /**
- * Enum class to distinguish products such as finished good, digital good,
- * configurable good, configurable good configuration
+ * Domain class to identify the various code or id values a product may have.
  *
  * @author Carl Marcum
  */
-public enum ProductType {
-
-    FINISHED_GOOD('Finished Good'),
-    DIGITAL_GOOD('Digital Good'),
-    CONFIG_GOOD('Configurable Good'),
-    CONFIG_GOOD_CONFIG('Configurable Good Configuration')
+class GoodIdentification {
 
     static constraints = {
+        value(maxSize: 50)
     }
 
-    String name
+    GoodIdentificationType goodIdentificationType
 
-    ProductType(String name) {
-        this.name = name
-    }
+    Product product
 
-    static list() {
-        [FINISHED_GOOD, DIGITAL_GOOD, CONFIG_GOOD, CONFIG_GOOD_CONFIG]
-    }
+    /** holds the id number, upc, sku, etc. */
+    String value = ""
+
 }

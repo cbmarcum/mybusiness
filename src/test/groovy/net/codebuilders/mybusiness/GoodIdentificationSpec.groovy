@@ -23,29 +23,36 @@
 
 package net.codebuilders.mybusiness
 
+import grails.test.mixin.TestFor
+import spock.lang.Specification
+
 /**
- * Enum class to distinguish products such as finished good, digital good,
- * configurable good, configurable good configuration
- *
- * @author Carl Marcum
+ * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-public enum ProductType {
+@TestFor(GoodIdentification)
+class GoodIdentificationSpec extends Specification {
 
-    FINISHED_GOOD('Finished Good'),
-    DIGITAL_GOOD('Digital Good'),
-    CONFIG_GOOD('Configurable Good'),
-    CONFIG_GOOD_CONFIG('Configurable Good Configuration')
-
-    static constraints = {
+    def setup() {
     }
 
-    String name
-
-    ProductType(String name) {
-        this.name = name
+    def cleanup() {
     }
 
-    static list() {
-        [FINISHED_GOOD, DIGITAL_GOOD, CONFIG_GOOD, CONFIG_GOOD_CONFIG]
+    void "test value can have a maximum of 50 characters"() {
+        when: 'for a string of 51 characters'
+        String str = 'a' * 51
+        domain.value = str
+
+        then: 'value validation fails'
+        !domain.validate(['value'])
+        domain.errors['value'].code == 'maxSize.exceeded'
+
+        when: 'for a string of 50 characters'
+        str = 'a' * 50
+        domain.value = str
+
+        then: 'value validation passes'
+        domain.validate(['value'])
     }
+
 }

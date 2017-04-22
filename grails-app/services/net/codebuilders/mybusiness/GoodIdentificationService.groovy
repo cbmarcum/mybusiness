@@ -23,29 +23,19 @@
 
 package net.codebuilders.mybusiness
 
+import grails.transaction.Transactional
+
 /**
- * Enum class to distinguish products such as finished good, digital good,
- * configurable good, configurable good configuration
+ * Service class for GoodIdentification
  *
  * @author Carl Marcum
  */
-public enum ProductType {
+@Transactional
+class GoodIdentificationService {
 
-    FINISHED_GOOD('Finished Good'),
-    DIGITAL_GOOD('Digital Good'),
-    CONFIG_GOOD('Configurable Good'),
-    CONFIG_GOOD_CONFIG('Configurable Good Configuration')
-
-    static constraints = {
+    String getValueByProductAndType(Product prod, GoodIdentificationType type) {
+        String value = GoodIdentification.findWhere(Product: prod, GoodIdentificationType: type)?.value
+        return value
     }
 
-    String name
-
-    ProductType(String name) {
-        this.name = name
-    }
-
-    static list() {
-        [FINISHED_GOOD, DIGITAL_GOOD, CONFIG_GOOD, CONFIG_GOOD_CONFIG]
-    }
 }

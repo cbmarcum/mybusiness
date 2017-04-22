@@ -24,28 +24,38 @@
 package net.codebuilders.mybusiness
 
 /**
- * Enum class to distinguish products such as finished good, digital good,
- * configurable good, configurable good configuration
+ * Enum class used to define types of GoodIdentification.
+ *
+ * SKU - Stock-Keeping Unit
+ * UPCA - Universal Product Code - American
+ * UPCE - Universal Product Code - European
+ * MANUFACTURER_ID - Manufacturer Id
+ * ISBN - International Standard Book Number
+ * OTHER_ID - Other Id
  *
  * @author Carl Marcum
  */
-public enum ProductType {
+public enum GoodIdentificationType {
 
-    FINISHED_GOOD('Finished Good'),
-    DIGITAL_GOOD('Digital Good'),
-    CONFIG_GOOD('Configurable Good'),
-    CONFIG_GOOD_CONFIG('Configurable Good Configuration')
+    SKU('Stock-Keeping Unit'),
+    UPCA('Universal Product Code - American'),
+    UPCE('Universal Product Code - European'),
+    MANUFACTURER_ID('Manufacturer Id'),
+    ISBN('International Standard Book Number'),
+    OTHER_ID('Other Id')
 
     static constraints = {
+
     }
 
     String name
 
-    ProductType(String name) {
+    GoodIdentificationType(String name) {
         this.name = name
     }
 
     static list() {
-        [FINISHED_GOOD, DIGITAL_GOOD, CONFIG_GOOD, CONFIG_GOOD_CONFIG]
+        [SKU, UPCA, UPCA, MANUFACTURER_ID, ISBN, OTHER_ID]
     }
+
 }
