@@ -21,6 +21,8 @@
  * *************************************************************
  */
 
+package net.codebuilders.mybusiness
+
 /**
  * Enum class to distinguish types of product features.
  *

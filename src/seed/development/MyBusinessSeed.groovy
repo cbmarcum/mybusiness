@@ -1,7 +1,7 @@
 /**
  * Created by carl on 2/19/17.
  */
-
+/*
 seed = {
     secRole(meta:[key:'id'], authority: 'ROLE_ADMIN')
 
@@ -11,3 +11,4 @@ seed = {
     // secUserSecRole(secUser: SecUser.get(1), secRole: SecRole.get(1))
     secUserSecRole(secUser: 1L, secRole: 1L)
 }
+*/
