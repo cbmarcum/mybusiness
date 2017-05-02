@@ -75,6 +75,9 @@ dependencies {
     // for adding seed data since bootstrap.groovy doesn't run
     compile 'com.bertramlabs.plugins:seed-me:3.1.0'
 
+    // for uploading images in bootstrap
+    compile group: 'org.springframework', name: 'spring-test', version: '5.0.0.M5'
+
     console "org.grails:grails-console"
     profile "org.grails.profiles:web-plugin:3.1.8"
     provided "org.grails:grails-plugin-services"
