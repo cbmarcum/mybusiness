@@ -60,7 +60,17 @@ class Product {
                       productCategories       : ProductCategory,
                       productFeatureCategories: ProductFeatureCategory,
                       productFeatureAppls     : ProductFeatureAppl,
-                      otherAttributes         : String]
+                      otherAttributes         : String,
+                      photos                  : Photo
+    ]
+
+    // declare these as List instead of default Set
+    List goodIdentifications
+    List productCategories
+    List productFeatureCategories
+    List productFeatureAppls
+    List otherAttributes
+    List photos
 
     // sku, upc, etc can also by in GoodIdentification
     // this number is easier to show in product list

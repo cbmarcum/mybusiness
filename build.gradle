@@ -78,6 +78,9 @@ dependencies {
     // for uploading images in bootstrap
     compile group: 'org.springframework', name: 'spring-test', version: '5.0.0.M5'
 
+    // for attaching photos to domains
+    compile 'com.bertramlabs.plugins:selfie:1.2.1'
+
     console "org.grails:grails-console"
     profile "org.grails.profiles:web-plugin:3.1.8"
     provided "org.grails:grails-plugin-services"

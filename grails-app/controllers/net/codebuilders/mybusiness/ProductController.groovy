@@ -36,13 +36,31 @@ class ProductController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def productFeatureApplService
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Product.list(params), model: [productCount: Product.count()]
     }
 
+    // used by admins only
     def show(Product product) {
         respond product
+    }
+
+    // like show but formatted for shoppers
+    def detail(Product product) {
+        // def productInstance = Product.get(params.id)
+        if (!product) { // was productInstance
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'product.label', default: 'Product'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        // def pmaResults = productMovieApplService.getPmaByProduct(product) // was productInstance
+        def pfaResults = productFeatureApplService.getPfaByProduct(product) // was productInstance
+
+        [product: product, pfaResults: pfaResults] // was productInstance
     }
 
     def create() {
