@@ -33,6 +33,7 @@ import grails.transaction.Transactional
 @Transactional
 class ProductFeatureApplService {
 
+    // TODO: determine a real way to group products like by a style or base number
     // get ProductFeatureAppls by Product
     def getPfaByProduct(Product p) {
 
