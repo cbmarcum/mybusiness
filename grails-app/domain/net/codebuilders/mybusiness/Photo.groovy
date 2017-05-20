@@ -42,6 +42,7 @@ class Photo {
 
     static constraints = {
         photo contentType: ['image/png','image/jpeg'], fileSize:1024*1024 // 1mb
+        name(maxSize: 50)
         alt(maxSize: 50, nullable: true)
         title(maxSize: 50, nullable: true)
     }
@@ -52,7 +53,7 @@ class Photo {
                     styles: [
                             thumb: [width: 50, height: 50, mode: 'fit'],
                             small: [width: 150, height: 150, mode: 'scale'],
-                            large: [width: 300, height: 300, mode: 'scale']
+                            large: [width: 400, height: 400, mode: 'scale']
                     ]
             ]
     ]

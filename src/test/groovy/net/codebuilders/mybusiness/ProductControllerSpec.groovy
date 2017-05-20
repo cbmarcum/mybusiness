@@ -26,6 +26,11 @@ package net.codebuilders.mybusiness
 import grails.test.mixin.*
 import spock.lang.*
 
+/**
+ * Test class for ProductController.
+ *
+ * @author Carl Marcum
+ */
 @TestFor(ProductController)
 @Mock(Product)
 class ProductControllerSpec extends Specification {
