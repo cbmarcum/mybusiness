@@ -23,6 +23,11 @@
 
 package net.codebuilders.mybusiness
 
+/**
+ * Tag Library class for the ElevateZoom image zoom javascript library.
+ *
+ * @author Carl Marcum
+ */
 class PhotoTagLib {
 
     static namespace = "cb" // <cb:bsPaginate>
@@ -30,44 +35,60 @@ class PhotoTagLib {
     static defaultEncodeAs = [taglib: 'text']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
 
+
+
     /**
      * Returns HTML for the ElevateZoom image zoom javascript library.
-     * Includes the thumbnail gallery for additional images.
+     * Used for the current image from gallery to zoom.
      *
-     * @attr ProductId REQUIRED The id of the product to return images for.
+     * @attr imageId REQUIRED The imageId attribute
+     * @attr large REQUIRED The large image URL
+     * @attr small REQUIRED The small image URL
      */
-    def imageWithGallery = { attrs, body ->
+    def zoomImage = { attrs, body ->
 
+        // <cb:zoomImage gallery="gallery_01" imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg/>
+        // TODO: get these from config
         def basePath = 'storage'
         def bucket = 'uploads'
-        def product = Product.get(attrs.productId)
+
+        // TODO: add alt and title to image
+        def imageId = attrs.imageId
+        def cloudUrlLarge = attrs.large
+        def cloudUrlSmall = attrs.small
+
+        out << "<img id=\"${imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
 
 
-        def cloudUrlLarge = product.photos[0].photo.getCloudFile('large')
-        def cloudUrlSmall = product.photos[0].photo.getCloudFile('small')
-        // def cloudUrlThumb = product.photos[0].photo.getCloudFile('thumb')
+    }
 
-        out << "<img id=\"zoom_01\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
+    /**
+     * Returns HTML for the ElevateZoom image zoom javascript library.
+     * Used for the thumbnail gallery to display additional images.
+     *
+     * @attr imageId REQUIRED The imageId attribute
+     * @attr large REQUIRED The large image URL
+     * @attr small REQUIRED The small image URL
+     * @attr thumb REQUIRED The thumb image URL
+     */
+    def zoomGallery = { attrs, body ->
 
-        // create the gallery
-        out << "<div id=\"${attrs.gallery}\">"
+        // <cb:zoomImage imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg" thumb="Photo/1/photo/IE9413_XX_43_thumb.jpg" />
+        // TODO: get these from config
+        def basePath = 'storage'
+        def bucket = 'uploads'
 
-        product.photos.each {
-            cloudUrlLarge = it.photo.getCloudFile('large')
-            cloudUrlSmall = it.photo.getCloudFile('small')
-            def cloudUrlThumb = it.photo.getCloudFile('thumb')
+        // TODO: add alt and title to image
+        def imageId = attrs.imageId
+        def cloudUrlLarge = attrs.large
+        def cloudUrlSmall = attrs.small
+        def cloudUrlThumb = attrs.thumb
 
-            out << "<a href=\"#\" data-image=\"/${basePath}/${bucket}/${cloudUrlSmall}\""
-            out << " data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
-            // out << "\\n"
-            out << "<img id=\"${attrs.imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlThumb}\" />"
-            // out << "\\n"
-            out << "</a>"
-            // out << "\\n"
-        }
+        out << "<a href=\"#\" data-image=\"/${basePath}/${bucket}/${cloudUrlSmall}\""
+        out << " data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
+        out << "<img id=\"${imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlThumb}\" />"
+        out << "</a>"
 
-
-        out << "</div>"
 
     }
 
