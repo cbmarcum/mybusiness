@@ -145,3 +145,22 @@ grails.commentable.poster.evaluator = mybusiness.author.evaluator
 // seed plugin
 grails.plugin.seed.autoSeed = true
 // grails.plugin.seed.environment='[development]'
+
+// for selfie plugin
+grails {
+    plugin {
+        selfie {
+            storage {
+                path = 'uploads/:class/:id/:propertyName/' //This configures the storage path of the files being uploaded by domain class name and property name and identifier in GORM
+                bucket = 'uploads'
+                providerOptions {
+                    provider = 'local' // Switch to s3 if you wish to use s3 and install the karman-aws plugin
+                    basePath = 'storage'
+                    baseUrl  = 'http://localhost:8080/image-test/storage'
+                    //accessKey = "KEY" //Used for S3 Provider
+                    //secretKey = "KEY" //Used for S3 Provider
+                }
+            }
+        }
+    }
+}

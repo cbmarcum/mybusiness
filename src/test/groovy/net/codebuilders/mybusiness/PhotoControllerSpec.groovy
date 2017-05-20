@@ -27,13 +27,11 @@ import grails.test.mixin.*
 import spock.lang.*
 
 /**
- * Test class for ProductController.
- *
- * @author Carl Marcum
+ * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(ProductController)
-@Mock(Product)
-class ProductControllerSpec extends Specification {
+@TestFor(PhotoController)
+@Mock(Photo)
+class PhotoControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -49,8 +47,8 @@ class ProductControllerSpec extends Specification {
         controller.index()
 
         then: "The model is correct"
-        !model.productList
-        model.productCount == 0
+        !model.photoList
+        model.photoCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -58,7 +56,7 @@ class ProductControllerSpec extends Specification {
         controller.create()
 
         then: "The model is correctly created"
-        model.product != null
+        model.photo != null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -66,25 +64,25 @@ class ProductControllerSpec extends Specification {
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def product = new Product()
-        product.validate()
-        controller.save(product)
+        def photo = new Photo()
+        photo.validate()
+        controller.save(photo)
 
         then: "The create view is rendered again with the correct model"
-        model.product != null
+        model.photo != null
         view == 'create'
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
-        product = new Product(params)
+        photo = new Photo(params)
 
-        controller.save(product)
+        controller.save(photo)
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/product/show/1'
+        response.redirectedUrl == '/photo/show/1'
         controller.flash.message != null
-        Product.count() == 1
+        Photo.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -96,11 +94,11 @@ class ProductControllerSpec extends Specification {
 
         when: "A domain instance is passed to the show action"
         populateValidParams(params)
-        def product = new Product(params)
-        controller.show(product)
+        def photo = new Photo(params)
+        controller.show(photo)
 
         then: "A model is populated containing the domain instance"
-        model.product == product
+        model.photo == photo
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -112,11 +110,11 @@ class ProductControllerSpec extends Specification {
 
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
-        def product = new Product(params)
-        controller.edit(product)
+        def photo = new Photo(params)
+        controller.edit(photo)
 
         then: "A model is populated containing the domain instance"
-        model.product == product
+        model.photo == photo
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -126,28 +124,28 @@ class ProductControllerSpec extends Specification {
         controller.update(null)
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/product/index'
+        response.redirectedUrl == '/photo/index'
         flash.message != null
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
-        def product = new Product()
-        product.validate()
-        controller.update(product)
+        def photo = new Photo()
+        photo.validate()
+        controller.update(photo)
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.product == product
+        model.photo == photo
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        product = new Product(params).save(flush: true)
-        controller.update(product)
+        photo = new Photo(params).save(flush: true)
+        controller.update(photo)
 
         then: "A redirect is issued to the show action"
-        product != null
-        response.redirectedUrl == "/product/show/$product.id"
+        photo != null
+        response.redirectedUrl == "/photo/show/$photo.id"
         flash.message != null
     }
 
@@ -158,23 +156,24 @@ class ProductControllerSpec extends Specification {
         controller.delete(null)
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/product/index'
+        response.redirectedUrl == '/photo/index'
         flash.message != null
 
         when: "A domain instance is created"
         response.reset()
         populateValidParams(params)
-        def product = new Product(params).save(flush: true)
+        def photo = new Photo(params).save(flush: true)
 
         then: "It exists"
-        Product.count() == 1
+        Photo.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        controller.delete(product)
+        controller.delete(photo)
 
         then: "The instance is deleted"
-        Product.count() == 0
-        response.redirectedUrl == '/product/index'
+        Photo.count() == 0
+        response.redirectedUrl == '/photo/index'
         flash.message != null
     }
+
 }

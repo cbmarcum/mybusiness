@@ -60,8 +60,19 @@ class Product {
                       productCategories       : ProductCategory,
                       productFeatureCategories: ProductFeatureCategory,
                       productFeatureAppls     : ProductFeatureAppl,
-                      otherAttributes         : String]
+                      otherAttributes         : String,
+                      photos                  : Photo
+    ]
 
+    // declare these as List instead of default Set
+    List goodIdentifications
+    List productCategories
+    List productFeatureCategories
+    List productFeatureAppls
+    List otherAttributes
+    List photos
+
+    // TODO: determine a real way to group products like by a style or base number
     // sku, upc, etc can also by in GoodIdentification
     // this number is easier to show in product list
     String number = "" // primary part number for product listing
