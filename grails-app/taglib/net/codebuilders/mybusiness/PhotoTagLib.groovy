@@ -45,9 +45,9 @@ class PhotoTagLib {
      * @attr large REQUIRED The large image URL
      * @attr small REQUIRED The small image URL
      */
-    def zoomImage = { attrs, body ->
+    def zoomImageById = { attrs, body ->
 
-        // <cb:zoomImage gallery="gallery_01" imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg/>
+        // <cb:zoomImage imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg/>
         // TODO: get these from config
         def basePath = 'storage'
         def bucket = 'uploads'
@@ -88,6 +88,50 @@ class PhotoTagLib {
         out << " data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
         out << "<img id=\"${imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlThumb}\" />"
         out << "</a>"
+
+
+    }
+
+    /**
+     * Returns HTML for the ElevateZoom image zoom javascript library.
+     * Used for the current image from gallery to zoom.
+     *
+     * @attr clazz REQUIRED The imageId attribute
+     * @attr large REQUIRED The large image URL
+     * @attr small REQUIRED The small image URL
+     */
+    def zoomImageByClass = { attrs, body ->
+
+        // <cb:zoomImage class="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg/>
+        // TODO: get these from config
+        def basePath = 'storage'
+        def bucket = 'uploads'
+
+        // TODO: add alt and title to image
+        def clazz = attrs.clazz
+        def cloudUrlLarge = attrs.large
+        def cloudUrlSmall = attrs.small
+
+        out << "<img class=\"${clazz}\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
+
+    }
+
+    /**
+     * Returns HTML for an image.
+     *
+     * @attr image REQUIRED The imageId attribute
+     */
+    def image = { attrs, body ->
+
+        // <cb:image image="Photo/1/photo/IE9413_XX_43_large.jpg" />
+        // TODO: get these from config
+        def basePath = 'storage'
+        def bucket = 'uploads'
+
+        // TODO: add alt and title to image
+        def cloudUrl = attrs.image
+
+        out << "<img src=\"/${basePath}/${bucket}/${cloudUrl}\" />"
 
 
     }
