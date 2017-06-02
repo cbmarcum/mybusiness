@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-version "3.2.6.0"
+version "3.2.7.0" // updated for shopping cart
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"

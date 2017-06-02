@@ -36,9 +36,9 @@
         <!-- left-detail -->
 
             <g:if test="${product?.photos}">
-                <g:set var="large" value="${product.photos[1].photo.getCloudFile("large")}" />
-                <g:set var="small" value="${product.photos[1].photo.getCloudFile("small")}" />
-                <cb:zoomImage gallery="gallery_01" imageId="zoom_01" large="${large}" small="${small}"/>
+                <g:set var="large" value="${product.photos[0].photo.getCloudFile("large")}" />
+                <g:set var="small" value="${product.photos[0].photo.getCloudFile("small")}" />
+                <cb:zoomImageById gallery="gallery_01" imageId="zoom_01" large="${large}" small="${small}"/>
 
                 <div id="gallery_01">
                 <g:each in="${product?.photos}">
