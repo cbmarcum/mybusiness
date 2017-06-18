@@ -114,7 +114,7 @@ class ShoppingCartService {
         def shoppingCart = getShoppingCart()
         shoppingCart.items = []
 
-        def quantities = Quantity.findAllByShoppingCart(shoppingCart)
+        def quantities = CartQuantity.findAllByShoppingCart(shoppingCart)
         quantities.each { quantity -> quantity.delete() }
 
         shoppingCart.save()

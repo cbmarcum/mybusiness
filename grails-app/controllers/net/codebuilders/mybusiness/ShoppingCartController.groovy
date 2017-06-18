@@ -23,7 +23,7 @@
 
 package net.codebuilders.mybusiness
 
-// import org.grails.paypal.*
+import org.grails.plugin.paypal.*
 
 /**
  * Controller class for ShoppingCart
@@ -176,7 +176,7 @@ class ShoppingCartController {
         // redirect(action:show, params:params)
     }
 
-    /*
+
     def checkOut() {
         log.debug "entered checkout"
 
@@ -194,7 +194,8 @@ class ShoppingCartController {
             log.debug "item ="
             item.properties.each { log.debug "$it.key -> $it.value" }
             // get the Product from the cart item
-            def product = Product.findByShoppingItem(item)
+            // def product = Product.findByShoppingItem(item) // FIX ME !!
+            def product = Product.find(item)
             assert product != null
             log.debug ""
             log.debug "product = ${product}"
@@ -261,5 +262,5 @@ class ShoppingCartController {
         println payment
     }
 
-    */
+
 }

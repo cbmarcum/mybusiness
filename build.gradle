@@ -41,6 +41,14 @@ dependencyManagement {
     applyMavenExclusions false
 }
 
+// only used for multi-project build
+// normally added in dependencies block
+grails {
+    plugins {
+        compile project(':grails-paypal')
+    }
+}
+
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
