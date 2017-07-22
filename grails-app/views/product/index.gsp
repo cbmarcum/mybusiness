@@ -96,7 +96,7 @@
 </div> <!-- /.container -->
 
 <script type="text/javascript">
-    //initiate the plugin and pass the id of the div containing gallery images
+    //initiate the plugin and pass the class of the div containing gallery images
     $(".zoom_01").elevateZoom({
         zoomWindowWidth:200,
         zoomWindowHeight:200

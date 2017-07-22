@@ -36,11 +36,18 @@ class ProductController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    ProductService productService
     def productFeatureApplService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Product.list(params), model: [productCount: Product.count()]
+         if (params.category) {
+             def products = productService.getProductsByProdCatAndDisplay(params)
+             respond products, model: [productCount: products.size()]
+         } else {
+             respond Product.list(params), model: [productCount: Product.count()]
+         }
+
     }
 
     // used by admins only

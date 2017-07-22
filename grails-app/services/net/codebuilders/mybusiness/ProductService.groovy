@@ -50,7 +50,7 @@ class ProductService {
                 sort: params.sort,
                 order: params.order) {
             productCategories {
-                eq("name", params.category)
+                eq("description", params.category)
             }
 
         }
@@ -104,7 +104,7 @@ class ProductService {
                 order: params.order) {
             and {
                 productCategories {
-                    eq("name", params.category)
+                    eq("description", params.category)
                 }
                 eq("display", params.display)
             } //and
