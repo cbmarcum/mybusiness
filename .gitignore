@@ -40,4 +40,4 @@
 
 # "temporary" build files
 /target
-
+/out/
