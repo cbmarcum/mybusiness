@@ -20,7 +20,7 @@
 
     <div class="page-header">
         <h1><g:message code="default.list.label" args="[entityName]"/>&nbsp;<small>&nbsp;${entityCategory}</small></h1>
-    </div> <!-- /.page-header -->
+    </div> <%-- /.page-header --%>
 
     <g:if test="${flash.message}">
         <div class="alert alert-warning" role="alert">${flash.message}</div>
@@ -34,7 +34,7 @@
                                                                        args="[entityName]"/></g:link>
         </p>
     </sec:access>
-<p>test ${productList}</p>
+
     <table class="table">
 
         <tbody>

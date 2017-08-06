@@ -16,18 +16,18 @@ class EbayService {
         qs << "SECURITY-APPNAME=${grailsApplication.config.mybusiness.ebay.security.appname}"
         
         qs << "RESPONSE-DATA-FORMAT=XML&REST-PAYLOAD"
-        qs << "storeName=" + URLEncoder.encode(storeName)
-        qs << "paginationInput.entriesPerPage=" + URLEncoder.encode(entriesPerPage)
-        qs << "paginationInput.pageNumber=" + URLEncoder.encode(pageNumber)
+        qs << "storeName=" + URLEncoder.encode(storeName, "UTF-8")
+        qs << "paginationInput.entriesPerPage=" + URLEncoder.encode(entriesPerPage, "UTF-8")
+        qs << "paginationInput.pageNumber=" + URLEncoder.encode(pageNumber, "UTF-8")
         qs << "sortOrder=CurrentPriceHighest"
         // test for large pictures
         qs << "outputSelector=PictureURLLarge"
-        categories.eachWithIndex() { obj, i -> qs << "categoryId[${i}]=" + URLEncoder.encode(obj) };
+        categories.eachWithIndex() { obj, i -> qs << "categoryId[${i}]=" + URLEncoder.encode(obj, "UTF-8") };
         
         
 
         def url = new URL(base + qs.join("&"))
-        log.info(url)
+        log.info(url.toString())
         def connection = url.openConnection()
 
         def result = [:]
@@ -35,7 +35,7 @@ class EbayService {
             def xml = connection.content.text
             log.info(xml)
             def response = new XmlSlurper().parseText(xml)
-            log.info(print(response))
+            log.info(print(response.toString()))
             // result.pageNumber = response.paginationOutput.pageNumber as String 
             // result.entriesPerPage = response.paginationOutput.entriesPerPage as String
             result.totalPages = response.paginationOutput.totalPages as String
@@ -44,17 +44,17 @@ class EbayService {
             log.info("totalEntries = ${result.totalEntries}")
             // test returning items also
             result.items = response.searchResult.item
-            log.info(result.items[0])
+            log.info(result.items[0].toString())
             
             for ( item in result.items ) {
-              log.info(item.title)
+              log.info(item.title.toString(), "UTF-8")
             }
             
         }
         
         else{
             log.error("EbayService.findItemsInEbayStores FAILED")
-            log.error(url)
+            log.error(url.toString())
             log.error(connection.responseCode)
             log.error(connection.responseMessage)
         }      

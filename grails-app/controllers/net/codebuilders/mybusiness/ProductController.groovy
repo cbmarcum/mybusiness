@@ -38,6 +38,7 @@ class ProductController {
 
     ProductService productService
     def productFeatureApplService
+    ShoppingCartService shoppingCartService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -157,4 +158,12 @@ class ProductController {
             '*' { render status: NOT_FOUND }
         }
     }
+
+    def ajaxUpdateCartQty() {
+        log.debug "entered ajaxUpdateCartQty"
+        def cartQty = shoppingCartService.getItems().size()
+        log.debug "qty=${cartQty}"
+        render "${cartQty}"
+    }
+
 }

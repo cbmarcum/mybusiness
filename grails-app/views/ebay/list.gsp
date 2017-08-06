@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <meta name="layout" content="main-ebay">
+        <meta name="layout" content="main">
 
     <g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}" />
     <g:if test="${params.returnAction}">
@@ -31,13 +31,13 @@
             <div class="alert alert-warning" role="alert">${flash.message}</div>
         </g:if>
 
-        <g:if test="${products.size() == 0}">
+        <g:if test="${items.size() == 0}">
             <h2>No Results</h2>
         </g:if>
 
         <table class="table">
             <tbody>
-                <g:each in="${products}" status="i" var="item">
+                <g:each in="${items}" status="i" var="item">
                     <tr>
                         <td><img src="${item.galleryURL}" border="0"></td>
                         <td><a href="${item.viewItemURL}" target="_blank">${item.title}</a></td>
