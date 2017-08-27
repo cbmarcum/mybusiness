@@ -160,8 +160,11 @@ class ProductController {
     }
 
     def ajaxUpdateCartQty() {
-        log.debug "entered ajaxUpdateCartQty"
+        // TODO: remove println
+        println "entered ajaxUpdateCartQty"
+        log.info "entered ajaxUpdateCartQty"
         def cartQty = shoppingCartService.getItems().size()
+        println "qty=${cartQty}"
         log.debug "qty=${cartQty}"
         render "${cartQty}"
     }

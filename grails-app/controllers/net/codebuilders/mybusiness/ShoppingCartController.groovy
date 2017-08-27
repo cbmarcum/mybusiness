@@ -110,6 +110,7 @@ class ShoppingCartController {
                 println("calling addToCart")
                 println("service = ${shoppingCartService}")
                 println("product = ${product}")
+                println("LOG TEST")
                 log.info("LOG TEST")
                 shoppingCartService.addToShoppingCart(product)
             }
@@ -120,11 +121,12 @@ class ShoppingCartController {
             println("calling addToCart")
             println("service = ${shoppingCartService}")
             println("product = ${product}")
+            println("LOG TEST else")
+            log.info("LOG TEST else")
             shoppingCartService.addToShoppingCart(product)
         }
 
         render(product.number + ' added to cart')
-
     }
 
 

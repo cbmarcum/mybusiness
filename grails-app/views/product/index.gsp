@@ -71,7 +71,8 @@
                     <g:else>
                         <g:remoteLink controller="shoppingCart" action="add3" params="${[id: product.id]}"
                                       onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
-                                      onComplete="alert('added to cart');">
+                                      onFailure="alert('failure');"
+                                      onComplete="alert('$product.name added to cart');">
                             <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif" align="left"
                                  style="margin-right:7px;">
                         </g:remoteLink>
