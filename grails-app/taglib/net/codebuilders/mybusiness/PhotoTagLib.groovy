@@ -117,6 +117,30 @@ class PhotoTagLib {
     }
 
     /**
+     * Returns HTML for the ElevateZoom image zoom javascript library.
+     * Similar to zoomImageByClass except doesn't add basePath and bucket to URL
+     * Added for eBay images which are not stored locally.
+     *
+     * @attr clazz REQUIRED The imageId attribute
+     * @attr large REQUIRED The large image URL
+     * @attr small REQUIRED The small image URL
+     */
+    def zoomWebImageByClass = { attrs, body ->
+
+        // <cb:zoomWebImageByClass class="zoom_01" large="http://some.domain/IE9413_XX_43_large.jpg" small="http://some.domain/IE9413_XX_43_small.jpg/>
+
+        // TODO: add alt and title to image
+        def clazz = attrs.clazz
+        def cloudUrlLarge = attrs.large
+        def cloudUrlSmall = attrs.small
+
+        out << "<img class=\"${clazz}\" src=\"${cloudUrlSmall}\" data-zoom-image=\"${cloudUrlLarge}\"/>"
+
+    }
+
+
+
+    /**
      * Returns HTML for an image.
      *
      * @attr image REQUIRED The imageId attribute
