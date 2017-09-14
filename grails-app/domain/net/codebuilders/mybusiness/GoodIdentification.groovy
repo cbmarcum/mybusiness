@@ -34,6 +34,10 @@ class GoodIdentification {
         value(maxSize: 50)
     }
 
+    static search = {
+        name index: 'yes'
+    }
+
     GoodIdentificationType goodIdentificationType
 
     Product product

@@ -53,6 +53,17 @@ class Product {
     }
     */
 
+    static search = {
+        // fields
+        number index: 'yes'
+        name index: 'yes'
+        shortDescription index: 'yes'
+        longDescription index: 'yes'
+        largeDescription index: 'yes'
+        goodIdentifications indexEmbedded: true
+        productCategories indexEmbedded: true
+    }
+
     // ProductCategory is used to group products that could be in
     // multiple groups.
     // ex. Pressure, Pressure Gauge, Tire Pressure Assembly
