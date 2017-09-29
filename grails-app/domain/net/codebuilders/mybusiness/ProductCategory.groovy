@@ -37,9 +37,11 @@ class ProductCategory {
         description(maxSize: 50)
     }
 
+
     static search = {
-        name description: 'yes'
+        description index: 'yes'
     }
+
 
     String description = ""
 

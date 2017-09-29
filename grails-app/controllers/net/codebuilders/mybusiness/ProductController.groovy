@@ -26,6 +26,15 @@ package net.codebuilders.mybusiness
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+// for hibernate search
+import org.grails.orm.hibernate.HibernateMappingContextSessionFactoryBean
+import org.hibernate.search.cfg.EntityDescriptor
+import org.hibernate.search.cfg.PropertyDescriptor
+
+import grails.core.GrailsApplication
+import grails.plugins.hibernate.search.HibernateSearchGrailsPlugin
+
+
 /**
  * Controller class for Product
  *
@@ -41,6 +50,8 @@ class ProductController {
     ShoppingCartService shoppingCartService
 
     def index(Integer max) {
+
+        /* before search
         params.max = Math.min(max ?: 10, 100)
          if (params.category) {
              def products = productService.getProductsByProdCatAndDisplay(params)
@@ -48,6 +59,99 @@ class ProductController {
          } else {
              respond Product.list(params), model: [productCount: Product.count()]
          }
+         */
+
+        // for search
+
+        def page = [max: Math.min(params.max ? params.int('max') : 10, 50),
+                    offset: params.offset ? params.int('offset') : 0]
+
+        List<Product> products
+
+        if (params.search) {
+
+            def command = [
+                    dateTo: new Date(),
+                    keyword: params.search
+            ]
+
+            products = Product.search().list {
+
+                // allows for filtering on multiple properties when
+                // delimited by a colon
+                /*
+                for (String filterDef : params.search.split("[:]")) {
+
+                    // if using field_filterValue
+                    String field = filterDef.split('[_]')[0]
+                    String filterValue = filterDef.split('[_]')[1]
+                    println "filter $field = $filterValue"
+                    wildcard field, "*" + filterValue + "*"
+
+                }
+                */
+
+
+
+                // we're using filter only and allowing multiple words
+                // split command.keyword by spaces and
+                if ( command.keyword ) {
+                    should {
+                        command.keyword.tokenize().each { keyword ->
+
+                            def wild = keyword.toLowerCase() + '*'
+
+                            wildcard "number", wild
+                            wildcard "name", wild
+                            wildcard "shortDescription", wild
+                            wildcard "longDescription", wild
+                            wildcard "largeDescription", wild
+                            wildcard "goodIdentifications.value", wild
+                            wildcard "productCategories.description", wild
+                        }
+                    }
+                }
+
+                if ( command.dateTo ) {
+                    below "salesDiscontinuationDate", command.dateTo
+                }
+
+                mustNot { keyword "display", false }
+
+                // sort "number", "asc"
+
+                maxResults page.max
+                offset page.offset
+            }
+
+        } else {
+
+            def command = [
+                    dateTo: new Date()
+            ]
+
+            products = Product.search().list {
+
+                wildcard "number", "*"
+
+                if ( command.dateTo ) {
+                    below "salesDiscontinuationDate", command.dateTo
+                }
+
+                mustNot { keyword "display", false }
+
+                // sort "number", "asc"
+
+                maxResults page.max
+                offset page.offset
+            }
+        }
+
+        log.info "${products.size()} results"
+
+        // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
+
+        respond products, model: [productCount: products.size()]
 
     }
 

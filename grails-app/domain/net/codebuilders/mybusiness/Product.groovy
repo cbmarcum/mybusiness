@@ -53,6 +53,7 @@ class Product {
     }
     */
 
+
     static search = {
         // fields
         number index: 'yes'
@@ -60,9 +61,12 @@ class Product {
         shortDescription index: 'yes'
         longDescription index: 'yes'
         largeDescription index: 'yes'
-        goodIdentifications indexEmbedded: true
-        productCategories indexEmbedded: true
+        goodIdentifications indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
+        productCategories indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
+        display index: 'yes'
+        salesDiscontinuationDate index: 'yes'
     }
+
 
     // ProductCategory is used to group products that could be in
     // multiple groups.
@@ -76,8 +80,8 @@ class Product {
     ]
 
     // declare these as List instead of default Set
-    List goodIdentifications
-    List productCategories
+    List<GoodIdentification> goodIdentifications
+    List<ProductCategory> productCategories
     List productFeatureCategories
     List productFeatureAppls
     List otherAttributes
