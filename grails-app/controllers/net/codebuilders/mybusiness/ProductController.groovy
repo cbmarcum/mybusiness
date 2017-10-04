@@ -62,20 +62,19 @@ class ProductController {
          */
 
         // for search
-
-        def page = [max: Math.min(params.max ? params.int('max') : 10, 50),
+        def page = [max   : Math.min(params.max ? params.int('max') : 10, 50),
                     offset: params.offset ? params.int('offset') : 0]
 
-        List<Product> products
+        List<Product> productList
 
         if (params.search) {
 
             def command = [
-                    dateTo: new Date(),
+                    dateTo : new Date(),
                     keyword: params.search
             ]
 
-            products = Product.search().list {
+            productList = Product.search().list {
 
                 // allows for filtering on multiple properties when
                 // delimited by a colon
@@ -91,11 +90,9 @@ class ProductController {
                 }
                 */
 
-
-
                 // we're using filter only and allowing multiple words
-                // split command.keyword by spaces and
-                if ( command.keyword ) {
+                // split command.keyword by spaces and add wildcards for each field
+                if (command.keyword) {
                     should {
                         command.keyword.tokenize().each { keyword ->
 
@@ -112,8 +109,8 @@ class ProductController {
                     }
                 }
 
-                if ( command.dateTo ) {
-                    below "salesDiscontinuationDate", command.dateTo
+                if (command.dateTo) {
+                    above "salesDiscontinuationDate", command.dateTo
                 }
 
                 mustNot { keyword "display", false }
@@ -130,12 +127,12 @@ class ProductController {
                     dateTo: new Date()
             ]
 
-            products = Product.search().list {
+            productList = Product.search().list {
 
                 wildcard "number", "*"
 
                 if ( command.dateTo ) {
-                    below "salesDiscontinuationDate", command.dateTo
+                    above "salesDiscontinuationDate", command.dateTo
                 }
 
                 mustNot { keyword "display", false }
@@ -147,29 +144,42 @@ class ProductController {
             }
         }
 
-        log.info "${products.size()} results"
+        log.info "${productList.size()} results"
+
+        // for debugging missing photos
+        /*
+        productList.each {
+            log.info "${it.number} ${it.name}"
+            // log.info "photos[0].photo.name = ${it.photos[0].photo.name}"
+            if (it.photos) {
+                log.info "has ${it.photos.size()} photos."
+            } else {
+                log.info "has no photos."
+            }
+        }
+        */
 
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 
-        respond products, model: [productCount: products.size()]
+        respond productList, model: [productCount: productList.size()]
 
     }
 
-    // used by admins only
+// used by admins only
     def show(Product product) {
         respond product
     }
 
-    // like show but formatted for shoppers
+// like show but formatted for shoppers
     def detail(Product product) {
-        // def productInstance = Product.get(params.id)
+// def productInstance = Product.get(params.id)
         if (!product) { // was productInstance
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'product.label', default: 'Product'), params.id])
             redirect(action: "list")
             return
         }
 
-        // def pmaResults = productMovieApplService.getPmaByProduct(product) // was productInstance
+// def pmaResults = productMovieApplService.getPmaByProduct(product) // was productInstance
         def pfaResults = productFeatureApplService.getPfaByProduct(product) // was productInstance
 
         [product: product, pfaResults: pfaResults] // was productInstance
@@ -264,7 +274,7 @@ class ProductController {
     }
 
     def ajaxUpdateCartQty() {
-        // TODO: remove println
+// TODO: remove println
         println "entered ajaxUpdateCartQty"
         log.info "entered ajaxUpdateCartQty"
         def cartQty = shoppingCartService.getItems().size()

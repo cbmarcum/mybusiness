@@ -64,7 +64,8 @@ class Product {
         goodIdentifications indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
         productCategories indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
         display index: 'yes'
-        salesDiscontinuationDate index: 'yes'
+        salesDiscontinuationDate date: 'day'
+        listPrice numeric: 2, analyze: false
     }
 
 
@@ -85,7 +86,7 @@ class Product {
     List productFeatureCategories
     List productFeatureAppls
     List otherAttributes
-    List photos
+    List <Photo> photos
 
     // TODO: determine a real way to group products like by a style or base number
     // sku, upc, etc can also by in GoodIdentification
