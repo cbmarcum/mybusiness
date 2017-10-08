@@ -18,9 +18,15 @@
 
 <div class="container">
 
-    <div class="page-header">
+    <div class="row page-header">
+        <div class="col-sm-6">
         <h1><g:message code="default.list.label" args="[entityName]"/>&nbsp;<small>&nbsp;${entityCategory}</small></h1>
-    </div> <%-- /.page-header --%>
+        </div>
+        <div class="col-sm-6">
+            <g:render template="/product/menubar-search"/>
+        </div>
+
+    </div> <%-- /.row .page-header --%>
 
     <g:if test="${flash.message}">
         <div class="alert alert-warning" role="alert">${flash.message}</div>

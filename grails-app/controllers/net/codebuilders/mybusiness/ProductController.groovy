@@ -69,10 +69,22 @@ class ProductController {
 
         if (params.search) {
 
+            log.debug("params.search is not null")
+            // returns as a String first time and as a list of strings the second time
+            // may be fixed after always removing q from params now
+            // we will leave the list join method is just in case
+            log.info("params.search is a ${params.search.getClass()}")
+            log.info("params.search = ${params.search}")
+
             def command = [
                     dateTo : new Date(),
-                    keyword: params.search
+                    // keyword: params.search
+                    keyword: params.list('search').join()
             ]
+
+            // to send keywords for search bar
+            params.keyword = command.keyword
+            params.remove('search')
 
             productList = Product.search().list {
 
