@@ -83,9 +83,9 @@ class Product {
     // declare these as List instead of default Set
     List<GoodIdentification> goodIdentifications
     List<ProductCategory> productCategories
-    List productFeatureCategories
-    List productFeatureAppls
-    List otherAttributes
+    List<ProductFeatureCategory> productFeatureCategories
+    List<ProductFeatureAppl> productFeatureAppls
+    List<String> otherAttributes
     List <Photo> photos
 
     // TODO: determine a real way to group products like by a style or base number
