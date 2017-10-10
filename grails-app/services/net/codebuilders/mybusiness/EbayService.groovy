@@ -80,7 +80,7 @@ class EbayService {
         categories.eachWithIndex() { obj, i -> qs << "categoryId[${i}]=" + URLEncoder.encode(obj) };
         
         def url = new URL(base + qs.join("&"))
-        log.info(url)
+        log.info(url.toString())
         def connection = url.openConnection()
 
         def result = [:]
@@ -97,17 +97,17 @@ class EbayService {
             log.info("totalEntries = ${result.totalEntries}")
             // test returning items also
             result.items = response.searchResult.item
-            log.info(result.items[0])
+            log.info(result.items[0].toString())
             
             for ( item in result.items ) {
-              log.info(item.title)
+              log.info(item.title.toString())
             }
             
         }
         
         else{
             log.error("EbayService.findItemsInEbayStores FAILED")
-            log.error(url)
+            log.error(url.toString())
             log.error(connection.responseCode)
             log.error(connection.responseMessage)
         }      
