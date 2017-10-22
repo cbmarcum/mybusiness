@@ -61,46 +61,81 @@ class ProductController {
          }
          */
 
-        // for search
-        def page = [max   : Math.min(params.max ? params.int('max') : 10, 50),
-                    offset: params.offset ? params.int('offset') : 0]
+        // using search
 
         List<Product> productList
+        Integer productCount = 0
 
-        if (params.search) {
+        if (params.q != null)  {
 
-            log.debug("params.search is not null")
+            log.info "there was a search ..."
+
+            // since a search returns all params, remove the ones we don't need
+            params.remove('keyword')
+            params.remove('max')
+            params.remove('offset')
+
+            // check for empty search and ignore
+            if (params.q.trim() != "") {
+                log.info "there was a search and it was not blank"
+                log.info "setting keyword"
+                params.keyword = params.q.trim()
+
+            } else {
+                log.info "there was a search and it was blank"
+                log.info "not setting keyword"
+            }
+
+            params.remove('q')
+
+
+            log.info "params at the end of search"
+            params.each { k, v ->
+                log.info "${k} = ${v}"
+
+            }
+        }
+
+        params.max = Math.min(params.max ? params.int('max') : 3, 100) //  3 was 10, changed for demo
+        params.offset = params.offset ? params.int('offset') : 0
+
+        if (params.keyword) {
+
+            log.info "entered keyword ..."
+
+            log.info "params at the beginning of keyword"
+            params.each { k, v ->
+                log.info "${k} = ${v}"
+            }
+
+            // log.debug("params.search is not null")
             // returns as a String first time and as a list of strings the second time
             // may be fixed after always removing q from params now
             // we will leave the list join method is just in case
-            log.info("params.search is a ${params.search.getClass()}")
-            log.info("params.search = ${params.search}")
+            // log.info("params.q is a ${params.q.getClass()}")
+            // log.info("params.q = ${params.q}")
+
 
             def command = [
                     dateTo : new Date(),
-                    // keyword: params.search
-                    keyword: params.list('search').join()
+                    keyword: params.keyword // was keyword: params.list('q').join()
             ]
 
-            // to send keywords for search bar
-            params.keyword = command.keyword
-            params.remove('search')
 
             productList = Product.search().list {
 
                 // allows for filtering on multiple properties when
                 // delimited by a colon
-                /*
-                for (String filterDef : params.search.split("[:]")) {
 
-                    // if using field_filterValue
-                    String field = filterDef.split('[_]')[0]
-                    String filterValue = filterDef.split('[_]')[1]
-                    println "filter $field = $filterValue"
-                    wildcard field, "*" + filterValue + "*"
+                // for (String filterDef : params.search.split("[:]")) {
 
-                }
-                */
+                // if using field_filterValue
+                //    String field = filterDef.split('[_]')[0]
+                //     String filterValue = filterDef.split('[_]')[1]
+                //     println "filter $field = $filterValue"
+                //    wildcard field, "*" + filterValue + "*"
+
+                // }
 
                 // we're using filter only and allowing multiple words
                 // split command.keyword by spaces and add wildcards for each field
@@ -121,6 +156,10 @@ class ProductController {
                     }
                 }
 
+                if (params.category) {
+                    must { keyword "productCategories.description", params.category }
+                }
+
                 if (command.dateTo) {
                     above "salesDiscontinuationDate", command.dateTo
                 }
@@ -129,9 +168,46 @@ class ProductController {
 
                 // sort "number", "asc"
 
-                maxResults page.max
-                offset page.offset
+                // maxResults page.max
+                // offset page.offset
+                maxResults params.max
+                offset params.offset
             }
+
+            // get the count
+            productCount = Product.search().count {
+
+                // we're using filter only and allowing multiple words
+                // split command.keyword by spaces and add wildcards for each field
+                if (command.keyword) {
+                    should {
+                        command.keyword.tokenize().each { keyword ->
+
+                            def wild = keyword.toLowerCase() + '*'
+
+                            wildcard "number", wild
+                            wildcard "name", wild
+                            wildcard "shortDescription", wild
+                            wildcard "longDescription", wild
+                            wildcard "largeDescription", wild
+                            wildcard "goodIdentifications.value", wild
+                            wildcard "productCategories.description", wild
+                        }
+                    }
+                }
+
+                if (params.category) {
+                    must { keyword "productCategories.description", params.category }
+                }
+
+                if (command.dateTo) {
+                    above "salesDiscontinuationDate", command.dateTo
+                }
+
+                mustNot { keyword "display", false }
+
+            }
+
 
         } else {
 
@@ -143,7 +219,11 @@ class ProductController {
 
                 wildcard "number", "*"
 
-                if ( command.dateTo ) {
+                if (params.category) {
+                    must { keyword "productCategories.description", params.category }
+                }
+
+                if (command.dateTo) {
                     above "salesDiscontinuationDate", command.dateTo
                 }
 
@@ -151,12 +231,36 @@ class ProductController {
 
                 // sort "number", "asc"
 
-                maxResults page.max
-                offset page.offset
+                // maxResults page.max
+                // offset page.offset
+                maxResults params.max
+                offset params.offset
+            }
+
+            // get the count
+            productCount = Product.search().count {
+
+                wildcard "number", "*"
+
+                if (params.category) {
+                    must { keyword "productCategories.description", params.category }
+                }
+
+                if (command.dateTo) {
+                    above "salesDiscontinuationDate", command.dateTo
+                }
+
+                mustNot { keyword "display", false }
+
             }
         }
 
         log.info "${productList.size()} results"
+
+        log.info "params before respond ..."
+        params.each { k, v ->
+            log.info "${k} = ${v}"
+        }
 
         // for debugging missing photos
         /*
@@ -173,7 +277,7 @@ class ProductController {
 
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 
-        respond productList, model: [productCount: productList.size()]
+        respond productList, model: [productCount: productCount]
 
     }
 

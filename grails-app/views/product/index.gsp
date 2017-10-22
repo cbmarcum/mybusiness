@@ -94,9 +94,9 @@
     </table>
 
 
-    <g:if test="${productTotal > params.max}">
+    <g:if test="${productCount > params.max}">
         <div class="text-center">
-            <cb:bsPaginate total="${productTotal}"/>
+            <cb:bsPaginate total="${productCount}" params="${params}"/>
         </div>
     </g:if>
 
