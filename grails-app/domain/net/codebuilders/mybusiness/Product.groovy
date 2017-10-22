@@ -53,6 +53,22 @@ class Product {
     }
     */
 
+
+    static search = {
+        // fields
+        number index: 'yes'
+        name index: 'yes'
+        shortDescription index: 'yes'
+        longDescription index: 'yes'
+        largeDescription index: 'yes'
+        goodIdentifications indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
+        productCategories indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
+        display index: 'yes'
+        salesDiscontinuationDate date: 'day'
+        listPrice numeric: 2, analyze: false
+    }
+
+
     // ProductCategory is used to group products that could be in
     // multiple groups.
     // ex. Pressure, Pressure Gauge, Tire Pressure Assembly
@@ -65,12 +81,12 @@ class Product {
     ]
 
     // declare these as List instead of default Set
-    List goodIdentifications
-    List productCategories
-    List productFeatureCategories
-    List productFeatureAppls
-    List otherAttributes
-    List photos
+    List<GoodIdentification> goodIdentifications
+    List<ProductCategory> productCategories
+    List<ProductFeatureCategory> productFeatureCategories
+    List<ProductFeatureAppl> productFeatureAppls
+    List<String> otherAttributes
+    List <Photo> photos
 
     // TODO: determine a real way to group products like by a style or base number
     // sku, upc, etc can also by in GoodIdentification
