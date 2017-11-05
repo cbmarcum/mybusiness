@@ -4,10 +4,9 @@ import grails.transaction.Transactional
 
 
 /* Service to retrieve rss feeds from internet */
+
 @Transactional
 class RssFeedService {
-
-
 
     /* Get feeds from RssFeed domain with display true
     * return max number per feed*/
@@ -37,16 +36,23 @@ class RssFeedService {
         def results = []
         // read the feed
 
-        // for max number get title, link, and description
-        def items = new XmlParser().parse(url).channel[0].item
+        try {
 
-        for (item in items[0..max - 1]) {
+            // for max number get title, link, and description
+            def items = new XmlParser().parse(url).channel[0].item
 
-            results.add([title: item.title.text(), link: item.link.text(), description: item.description.text()])
+            for (item in items[0..max - 1]) {
 
+                results.add([title: item.title.text(), link: item.link.text(), description: item.description.text()])
+
+            }
+
+            log.info("feed items = ${results}")
+
+        } catch (all) {
+            log.error("we caught an exception in XMLParser on ${url.toString()}")
         }
 
-        log.info("feed items = ${results}")
         return results
 
     }
