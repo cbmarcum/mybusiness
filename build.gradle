@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.8.0" // updated for search
+version "3.2.8.1" // updated for rss fix issue 33
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
