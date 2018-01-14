@@ -41,6 +41,7 @@ public enum ProductFeatureApplType {
     SELECTABLE_FEATURE('Selectable')
 
     static constraints = {
+        name(maxSize: 60)
     }
 
     // Required, Optional, Standard

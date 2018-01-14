@@ -32,11 +32,14 @@ package net.codebuilders.mybusiness
 class Product {
 
     static constraints = {
-        number(maxSize: 50)
-        name(maxSize: 50)
-        shortDescription(maxSize: 250)
+        number(maxSize: 40)
+        name(maxSize: 80)
+        brand(maxSize: 60)
+        shortDescription(maxSize: 200)
         longDescription(maxSize: 2000)
-        largeDescription(maxSize: 4095) // was size: 0..4095
+        largeDescription(maxSize: 4000) // was 4095
+        conditionDescription(maxSize: 1000)
+        variantGroupId(maxSize: 50)
         salesDiscontinuationDate(nullable: true)
         supportDiscontinuationDate(nullable: true)
     }
@@ -58,6 +61,7 @@ class Product {
         // fields
         number index: 'yes'
         name index: 'yes'
+        brand index: 'yes'
         shortDescription index: 'yes'
         longDescription index: 'yes'
         largeDescription index: 'yes'
@@ -66,6 +70,7 @@ class Product {
         display index: 'yes'
         salesDiscontinuationDate date: 'day'
         listPrice numeric: 2, analyze: false
+        primaryVariant index: 'yes'
     }
 
 
@@ -88,18 +93,26 @@ class Product {
     List<String> otherAttributes
     List <Photo> photos
 
-    // TODO: determine a real way to group products like by a style or base number
     // sku, upc, etc can also by in GoodIdentification
     // this number is easier to show in product list
-    String number = "" // primary part number for product listing
-    String name = ""  // part name
+    String number = "" // primary part number for product listing - for sku amazon 40, walmart 50
+    String name = ""  // part name - ebay 80 char
+    String brand = ""  // brand name - walmart 60 char
 
     String shortDescription = ""  // sales description
     String longDescription = "" // detail page description
     String largeDescription = "" // large detail page description
+    String conditionDescription = "" // to further describe condition especially for used - ebay 1000
+    String variantGroupId = ""  // to group variants together for color, size, countPerPack, etc.
+
     BigDecimal listPrice = 0.00 // catalog price
 
     ProductType productType // ex. CONFIGURABLE_GOOD or FINISHED_GOOD
+    ProductConditionType productConditionType // NEW, USED, etc
+
+    // the one variant of a group to display in a list result
+    // or a product with no other variation
+    Boolean primaryVariant = true
 
     Boolean display = true // display in catalog
     Boolean showcase = false // use for special display

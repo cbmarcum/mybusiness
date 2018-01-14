@@ -37,6 +37,7 @@ public enum ProductType {
     CONFIG_GOOD_CONFIG('Configurable Good Configuration')
 
     static constraints = {
+        name(maxSize: 60)
     }
 
     String name

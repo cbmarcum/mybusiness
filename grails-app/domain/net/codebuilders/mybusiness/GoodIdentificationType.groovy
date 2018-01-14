@@ -45,7 +45,7 @@ public enum GoodIdentificationType {
     OTHER_ID('Other Id')
 
     static constraints = {
-
+        name(maxSize: 60)
     }
 
     String name

@@ -66,7 +66,7 @@ class ProductController {
         List<Product> productList
         Integer productCount = 0
 
-        if (params.q != null)  {
+        if (params.q != null) {
 
             log.info "there was a search ..."
 
@@ -147,6 +147,7 @@ class ProductController {
 
                             wildcard "number", wild
                             wildcard "name", wild
+                            wildcard "brand", wild
                             wildcard "shortDescription", wild
                             wildcard "longDescription", wild
                             wildcard "largeDescription", wild
@@ -187,6 +188,7 @@ class ProductController {
 
                             wildcard "number", wild
                             wildcard "name", wild
+                            wildcard "brand", wild
                             wildcard "shortDescription", wild
                             wildcard "longDescription", wild
                             wildcard "largeDescription", wild
@@ -229,6 +231,8 @@ class ProductController {
 
                 mustNot { keyword "display", false }
 
+                must {keyword "primaryVariant", true}
+
                 // sort "number", "asc"
 
                 // maxResults page.max
@@ -251,6 +255,8 @@ class ProductController {
                 }
 
                 mustNot { keyword "display", false }
+
+                must {keyword "primaryVariant", true}
 
             }
         }

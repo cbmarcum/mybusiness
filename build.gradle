@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.8.1" // updated for rss fix issue 33
+version "3.2.9.1" // updated for variant feature issue 41
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -84,7 +84,7 @@ dependencies {
     compile 'org.grails.plugins:ajax-tags:1.0.0'
     
     // for adding seed data since bootstrap.groovy doesn't run
-    compile 'com.bertramlabs.plugins:seed-me:3.1.0'
+    compile 'com.bertramlabs.plugins:seed-me:3.1.1'
 
     // for uploading images in bootstrap
     compile group: 'org.springframework', name: 'spring-test', version: '5.0.0.M5'
