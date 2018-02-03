@@ -45,7 +45,7 @@ class GoodIdentification {
 
     Product product
 
-    /** holds the id number, upc, sku, etc. */
+    /** holds the id number for the upc, sku, etc. */
     String value = ""
 
 }

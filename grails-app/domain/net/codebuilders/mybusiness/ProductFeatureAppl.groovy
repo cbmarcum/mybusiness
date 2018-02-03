@@ -39,8 +39,8 @@ class ProductFeatureAppl {
     ProductFeature productFeature
     ProductFeatureApplType productFeatureApplType
     BigDecimal listPrice = 0.00 // catalog price of feature for product
-    Integer sequenceNum // seq within a category per product like color
-    String code // code used in part number creation on configurable products
+    Integer sequenceNum = 0  // seq within a category per product like color
+    String code = ""  // code used in part number creation on configurable products
     Boolean display = true // display in catalog - generally for configurable features
     // Date fromDate
     // Date thruDate

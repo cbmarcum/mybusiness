@@ -33,9 +33,11 @@ class ProductFeature {
 
     static constraints = {
         description(maxSize: 50)
+        shortDescription(maxSize: 25)
     }
 
     ProductFeatureCategory productFeatureCategory
-    String description = ""
+    String description = "" // ex. Small/Medium
+    String shortDescription = "" // ex. S/M
 
 }

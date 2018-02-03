@@ -33,13 +33,14 @@ class Product {
 
     static constraints = {
         number(maxSize: 40)
-        name(maxSize: 80)
-        brand(maxSize: 60)
-        shortDescription(maxSize: 200)
-        longDescription(maxSize: 2000)
-        largeDescription(maxSize: 4000) // was 4095
-        conditionDescription(maxSize: 1000)
-        variantGroupId(maxSize: 50)
+        name(maxSize: 80, nullable: true)
+        brand(maxSize: 60, nullable: true)
+        shortDescription(maxSize: 200, nullable: true)
+        longDescription(maxSize: 2000, nullable: true)
+        largeDescription(maxSize: 4000, nullable: true) // was 4095
+        conditionDescription(maxSize: 1000, nullable: true)
+        variantGroupId(maxSize: 50, nullable: true)
+        taxCode(maxSize: 50, nullable: true)
         salesDiscontinuationDate(nullable: true)
         supportDiscontinuationDate(nullable: true)
     }
@@ -86,12 +87,12 @@ class Product {
     ]
 
     // declare these as List instead of default Set
-    List<GoodIdentification> goodIdentifications
-    List<ProductCategory> productCategories
-    List<ProductFeatureCategory> productFeatureCategories
-    List<ProductFeatureAppl> productFeatureAppls
-    List<String> otherAttributes
-    List <Photo> photos
+    List<GoodIdentification> goodIdentifications = []
+    List<ProductCategory> productCategories = []
+    List<ProductFeatureCategory> productFeatureCategories = []
+    List<ProductFeatureAppl> productFeatureAppls = []
+    List<String> otherAttributes = []
+    List <Photo> photos = []
 
     // sku, upc, etc can also by in GoodIdentification
     // this number is easier to show in product list
@@ -104,11 +105,12 @@ class Product {
     String largeDescription = "" // large detail page description
     String conditionDescription = "" // to further describe condition especially for used - ebay 1000
     String variantGroupId = ""  // to group variants together for color, size, countPerPack, etc.
+    String taxCode = ''  // for a yet undetermined tax system
 
     BigDecimal listPrice = 0.00 // catalog price
 
-    ProductType productType // ex. CONFIGURABLE_GOOD or FINISHED_GOOD
-    ProductConditionType productConditionType // NEW, USED, etc
+    ProductType productType = ProductType.FINISHED_GOOD // ex. CONFIGURABLE_GOOD or FINISHED_GOOD
+    ProductConditionType productConditionType = ProductConditionType.NEW // NEW, USED, etc
 
     // the one variant of a group to display in a list result
     // or a product with no other variation
@@ -126,4 +128,5 @@ class Product {
 
     // for paypal
     BigDecimal shipWeight = 0.00 // ship weight in pounds
+
 }

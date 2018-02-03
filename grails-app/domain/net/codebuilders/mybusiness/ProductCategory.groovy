@@ -26,8 +26,9 @@ package net.codebuilders.mybusiness
 /**
  *
  * Domain class used to assign categories to a Product.
- * ex. Pistol, Rifle, Firearm
+ * ex. Pistols, Rifles, Firearms
  * This has many to many relation to Product.
+ * Categories may have a parent which is used to create a hierarchy.
  *
  * @author Carl Marcum
  */
@@ -35,14 +36,14 @@ class ProductCategory {
 
     static constraints = {
         description(maxSize: 50)
+        parent(nullable: true)
     }
-
 
     static search = {
         description index: 'yes'
     }
 
-
     String description = ""
+    ProductCategory parent
 
 }

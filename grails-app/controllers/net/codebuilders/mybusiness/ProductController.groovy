@@ -34,6 +34,8 @@ import org.hibernate.search.cfg.PropertyDescriptor
 import grails.core.GrailsApplication
 import grails.plugins.hibernate.search.HibernateSearchGrailsPlugin
 
+import grails.plugin.springsecurity.SpringSecurityUtils
+
 
 /**
  * Controller class for Product
@@ -48,6 +50,7 @@ class ProductController {
     ProductService productService
     def productFeatureApplService
     ShoppingCartService shoppingCartService
+    def springSecurityService
 
     def index(Integer max) {
 
@@ -161,11 +164,13 @@ class ProductController {
                     must { keyword "productCategories.description", params.category }
                 }
 
-                if (command.dateTo) {
-                    above "salesDiscontinuationDate", command.dateTo
-                }
+                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
+                    if (command.dateTo) {
+                        above "salesDiscontinuationDate", command.dateTo
+                    }
 
-                mustNot { keyword "display", false }
+                    mustNot { keyword "display", false }
+                }
 
                 // sort "number", "asc"
 
@@ -202,12 +207,14 @@ class ProductController {
                     must { keyword "productCategories.description", params.category }
                 }
 
-                if (command.dateTo) {
-                    above "salesDiscontinuationDate", command.dateTo
+
+                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
+                    if (command.dateTo) {
+                        above "salesDiscontinuationDate", command.dateTo
+                    }
+
+                    mustNot { keyword "display", false }
                 }
-
-                mustNot { keyword "display", false }
-
             }
 
 
@@ -225,13 +232,15 @@ class ProductController {
                     must { keyword "productCategories.description", params.category }
                 }
 
-                if (command.dateTo) {
-                    above "salesDiscontinuationDate", command.dateTo
+                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
+                    if (command.dateTo) {
+                        above "salesDiscontinuationDate", command.dateTo
+                    }
+
+                    mustNot { keyword "display", false }
+
+                    must { keyword "primaryVariant", true }
                 }
-
-                mustNot { keyword "display", false }
-
-                must {keyword "primaryVariant", true}
 
                 // sort "number", "asc"
 
@@ -250,13 +259,15 @@ class ProductController {
                     must { keyword "productCategories.description", params.category }
                 }
 
-                if (command.dateTo) {
-                    above "salesDiscontinuationDate", command.dateTo
+                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
+                    if (command.dateTo) {
+                        above "salesDiscontinuationDate", command.dateTo
+                    }
+
+                    mustNot { keyword "display", false }
+
+                    must { keyword "primaryVariant", true }
                 }
-
-                mustNot { keyword "display", false }
-
-                must {keyword "primaryVariant", true}
 
             }
         }
