@@ -80,7 +80,6 @@ class Product {
     // ex. Pressure, Pressure Gauge, Tire Pressure Assembly
     static hasMany = [goodIdentifications     : GoodIdentification,
                       productCategories       : ProductCategory,
-                      productFeatureCategories: ProductFeatureCategory,
                       productFeatureAppls     : ProductFeatureAppl,
                       otherAttributes         : String,
                       photos                  : Photo
@@ -89,7 +88,6 @@ class Product {
     // declare these as List instead of default Set
     List<GoodIdentification> goodIdentifications = []
     List<ProductCategory> productCategories = []
-    List<ProductFeatureCategory> productFeatureCategories = []
     List<ProductFeatureAppl> productFeatureAppls = []
     List<String> otherAttributes = []
     List <Photo> photos = []
