@@ -20,8 +20,10 @@
 
     <div class="row page-header">
         <div class="col-sm-6">
-        <h1><g:message code="default.list.label" args="[entityName]"/>&nbsp;<small>&nbsp;${entityCategory}</small></h1>
+            <h1><g:message code="default.list.label" args="[entityName]"/>&nbsp;<small>&nbsp;${entityCategory}</small>
+            </h1>
         </div>
+
         <div class="col-sm-6">
             <g:render template="/product/menubar-search"/>
         </div>
@@ -40,59 +42,59 @@
                                                                        args="[entityName]"/></g:link>
         </p>
     </sec:access>
+    <div class="table-responsive">
+        <table class="table">
 
-    <table class="table">
+            <tbody>
+            <g:each in="${productList}" status="i" var="product">
+                <g:set var="large" value="${product.photos[0].photo.getCloudFile("large")}"/>
+                <g:set var="small" value="${product.photos[0].photo.getCloudFile("small")}"/>
 
-        <tbody>
-        <g:each in="${productList}" status="i" var="product">
-            <g:set var="large" value="${product.photos[0].photo.getCloudFile("large")}" />
-            <g:set var="small" value="${product.photos[0].photo.getCloudFile("small")}" />
+                <tr>
+                    <td width="160px">
+                        <cb:zoomImageByClass clazz="zoom_01" large="${large}" small="${small}"/>
+                    </td>
+                    <td>SKU:
+                        <sec:access expression="hasRole('ROLE_ADMIN')">
+                            <g:link action="show" id="${product.id}">${product.number}</g:link><br/>
+                        </sec:access>
+                        <sec:noAccess expression="hasRole('ROLE_ADMIN')">
+                            <g:link action="detail" id="${product.id}">${product.number}</g:link><br/>
+                        </sec:noAccess>
+                        <b>${product?.name}</b><br/>
+                        ${product?.shortDescription}<br/>
+                        List Price: <g:formatNumber number="${product.listPrice}" type="currency"
+                                                    currencyCode="USD"/><br/>
+                    <!-- test for out of stock, then test for web sell, then allow paypal  -->
+                        <g:if test="${product.outOfStock}">
+                            <span style="color:red">
+                                <g:message code="product.outOfStock.label" default="Out of Stock"/>
+                            </span>
+                        </g:if>
+                        <g:elseif test="${!product.webSell}">
+                            <span style="color:red">
+                                <g:message code="product.webSell.message" default="Call for Availability"/>
+                            </span>
+                        </g:elseif>
+                        <g:else>
+                            <g:remoteLink controller="shoppingCart" action="add3" params="${[id: product.id]}"
+                                          onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
+                                          onFailure="alert('failure');"
+                                          onComplete="alert('$product.name added to cart');">
+                                <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif" align="left"
+                                     style="margin-right:7px;">
+                            </g:remoteLink>
+                        </g:else>
+                        <div id="message"></div>
 
-            <tr>
-                <td width="160px">
-                    <cb:zoomImageByClass clazz="zoom_01" large="${large}" small="${small}"/>
-                </td>
-                <td>SKU:
-                    <sec:access expression="hasRole('ROLE_ADMIN')">
-                        <g:link action="show" id="${product.id}">${product.number}</g:link><br/>
-                    </sec:access>
-                    <sec:noAccess expression="hasRole('ROLE_ADMIN')">
-                        <g:link action="detail" id="${product.id}">${product.number}</g:link><br/>
-                    </sec:noAccess>
-                    <b>${product?.name}</b><br/>
-                    ${product?.shortDescription}<br/>
-                    List Price: <g:formatNumber number="${product.listPrice}" type="currency"
-                                                currencyCode="USD"/><br/>
-                <!-- test for out of stock, then test for web sell, then allow paypal  -->
-                    <g:if test="${product.outOfStock}">
-                        <span style="color:red">
-                            <g:message code="product.outOfStock.label" default="Out of Stock"/>
-                        </span>
-                    </g:if>
-                    <g:elseif test="${!product.webSell}">
-                        <span style="color:red">
-                            <g:message code="product.webSell.message" default="Call for Availability"/>
-                        </span>
-                    </g:elseif>
-                    <g:else>
-                        <g:remoteLink controller="shoppingCart" action="add3" params="${[id: product.id]}"
-                                      onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
-                                      onFailure="alert('failure');"
-                                      onComplete="alert('$product.name added to cart');">
-                            <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif" align="left"
-                                 style="margin-right:7px;">
-                        </g:remoteLink>
-                    </g:else>
-                    <div id="message"></div>
+                        <div id="error"></div>
+                    </td>
 
-                    <div id="error"></div>
-                </td>
-
-            </tr>
-        </g:each>
-        </tbody>
-    </table>
-
+                </tr>
+            </g:each>
+            </tbody>
+        </table>
+    </div><!-- table-responsive -->
 
     <g:if test="${productCount > params.max}">
         <div class="text-center">
@@ -105,8 +107,8 @@
 <script type="text/javascript">
     //initiate the plugin and pass the class of the div containing gallery images
     $(".zoom_01").elevateZoom({
-        zoomWindowWidth:200,
-        zoomWindowHeight:200
+        zoomWindowWidth: 200,
+        zoomWindowHeight: 200
     });
 </script>
 

@@ -28,9 +28,124 @@ limitations under the License.
         <h1><g:message code="administration.index.title"/></h1>
     </div> <!-- /.page-header -->
     <p>
-        <b>The Administrative Home Page</b> is the place with instructions and links
+        Welcome to the <b>Administrative Home Page</b>. Here you will find instructions and links
     to view and edit main Product database table and helper tables such as
-    Product Feature, Product Feature Category, and Product Feature Application.
+    Product Feature, Product Feature Category, and Product Feature Application as will as other tasks.
+    </p>
+
+    <h2>Product Workflow</h2>
+
+    <p>
+        <b>Workflow when adding a new product and features should be:</b> <br/>
+        Product Feature Category > Product Feature > Product >
+        The remain steps have no particular order:
+        Standard Feature Application, Product Feature Application,
+        Product Category, and Good Identification.
+    </p>
+
+    <h2>Product</h2>
+
+    <p><b>Product</b> is a table for items displayed in the application product pages.</p>
+
+    <p>
+        Product images must be in GIF, PNG, and JPG format.  JPG (JPEG) files can be
+        used if the server the MyBusiness application is running on has Oracle Java 7
+        and not OpenJDK version of Java. Images can be edited and converted
+        to using many image editing programs such as Adobe Photoshop or the free
+        open-source alternative GIMP available at <g:link base="www.gimp.org">www.gimp.org</g:link><br/>
+        Images are copied and scaled to small (150px W x 150px H) and large (300px W x 300px H).<br/>
+        It is best if images are proportional to this (1X Width x 1X Height) before uploading
+        to eliminate cropping of image.<br/>
+        Current image file size is limited to 15,000,000 bytes. This can be adjusted in the code.
+    </p>
+
+    <p>
+        <g:link controller="product" action="list">Product List</g:link>
+    </p>
+
+    <h2>Product Feature Category</h2>
+
+    <p>
+        <b>Product Feature Category</b> is a table for grouping product features like
+    colors, and sizes to be used as selectable option
+    categories on product detail pages.
+    </p>
+
+    <p>
+        <g:link controller="productFeatureCategory" action="list">Product Feature Category List</g:link>
+    </p>
+
+    <h2>Product Feature</h2>
+
+    <p>
+        <b>Product Feature</b> is a table for features and options available with Products.
+    This could be colors like blue, red and sizes like small, large, etc.
+    </p>
+
+    <p>
+        <g:link controller="productFeature" action="list">Product Feature List</g:link>
+    </p>
+
+    <h2>Standard Feature Application</h2>
+
+    <p>
+        <b>Standard Feature Application</b> is a join table that ties a Product Feature to
+    a Product.  This builds the list of standard features on a product's detail page.
+    </p>
+
+    <p>
+        <g:link controller="standardFeatureAppl" action="list">Standard Feature Application List</g:link>
+    </p>
+
+    <h2>Product Feature Application</h2>
+
+    <p>
+        <b>Product Feature Application</b> is a join table that ties a Product Feature to
+    a Product.  The purpose of this is to enable applying a cost and a p/n code to a feature by
+    what product it is applied to.  This builds the list of selectable options by feature
+    category on a product's detail page.
+    </p>
+
+    <p>
+        <g:link controller="productFeatureAppl" action="list">Product Feature Application List</g:link>
+    </p>
+
+    <h2>Product Category</h2>
+
+    <p>
+        <b>Product Category</b> is a table for product categories. Product may
+    belong to many categories. Examples would be "Pistols", "Holsters",
+    and "Ammunition".
+    </p>
+
+    <p>
+        <g:link controller="productCategory" action="list">Product Category List</g:link>
+    </p>
+
+    <h2>Good Identification</h2>
+
+    <p>
+        <b>Good Identification</b> is a table to hold various codes and id numbers
+    a product may have. Product has a "number" field that is for the primary
+    number used to identify it and is used in product listing. Good Identification
+    is for additional codes such a SKU, UPC, etc.
+    </p>
+
+    <p>
+        <g:link controller="goodIdentification" action="list">Good Identification List</g:link>
+    </p>
+
+    <h2>Specials</h2>
+
+    <p>
+        <b>Special</b> is a table for date based product specials or sales to display on
+    the Specials page. <br/>
+        Specials can be added and removed from the page through the administration page.
+        Specials have a begin and end date as well as an enable/disable toggle.
+    </p>
+
+    <p>
+        <g:link controller="special" action="list">Special List</g:link>
     </p>
 
     <h2>Notices</h2>
@@ -44,6 +159,16 @@ limitations under the License.
 
     <p>
         <g:link controller="notice" action="index">Notice List</g:link>
+    </p>
+
+    <h2>Payments</h2>
+
+    <p>
+        Payments should be confirmed through PayPal's website.
+    </p>
+
+    <p>
+        <g:link controller="payment" action="list">Payment List</g:link>
     </p>
 
     <h2>RSS Feeds</h2>

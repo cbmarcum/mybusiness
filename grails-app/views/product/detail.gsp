@@ -21,7 +21,7 @@
 
     <div class="row">
 
-        <div class="col-md-5">
+        <div class="col-md-6">
         <!-- left-detail -->
 
             <g:if test="${product?.photos}">
@@ -51,8 +51,9 @@
     <!-- end left-detail -->
 
     <!-- right-detail -->
-        <div class="col-md-7">
+        <div class="col-md-6">
 
+            <div class="row">
             <table class="table borderless">
                 <tbody>
 
@@ -81,107 +82,108 @@
                     ${product?.largeDescription.encodeAsRaw()}
                 </div>
             </g:if>
-        </div> <!-- .col -->
 
+            </div> <!-- ./row -->
 
-        <g:if test="${variantMap}">
-            <h2>Product Variations</h2>
+            <g:if test="${variantMap}">
+<div class="row">
+                <h2>Product Variations</h2>
 
-            <g:each var="variant" in="${variantMap}">
-                <div class="col-md-3">
-                    <div id="${variant.key}">
-                        <h3>${variant.key}</h3>
-                        <g:each var="button" in="${variant.value}">
-                            <!-- test for size same as this product and highlight -->
-                            <g:if test="${button.id == product.id}">
-                                <!-- test msg value -->
-                                <g:if test="${button.msg == 'Out of Stock'}">
-                                    <g:link controller="product" action="detail" id="${button.id}"
-                                            class="btn btn-info btn-lg btn-block">
-                                        ${button.description}
-                                    </g:link>
+                <g:each var="variant" in="${variantMap}">
+                    <div class="col-md-3">
+                        <div id="${variant.key}">
+                            <h3>${variant.key}</h3>
+                            <g:each var="button" in="${variant.value}">
+                                <!-- test for size same as this product and highlight -->
+                                <g:if test="${button.id == product.id}">
+                                    <!-- test msg value -->
+                                    <g:if test="${button.msg == 'Out of Stock'}">
+                                        <g:link controller="product" action="detail" id="${button.id}"
+                                                class="btn btn-info btn-lg btn-block">
+                                            ${button.description}
+                                        </g:link>
+                                    </g:if>
+                                    <g:elseif test="${button.msg == 'Call for Availability'}">
+                                        <g:link controller="product" action="detail" id="${button.id}"
+                                                class="btn btn-info btn-lg btn-block">
+                                            ${button.description}
+                                        </g:link>
+                                    </g:elseif>
+                                    <g:else>
+                                        <g:link controller="product" action="detail" id="${button.id}"
+                                                class="btn btn-info btn-lg btn-block">
+                                            ${button.description}
+                                        </g:link>
+                                    </g:else>
+
                                 </g:if>
-                                <g:elseif test="${button.msg == 'Call for Availability'}">
-                                    <g:link controller="product" action="detail" id="${button.id}"
-                                            class="btn btn-info btn-lg btn-block">
-                                        ${button.description}
-                                    </g:link>
+                                <g:elseif test="${button.msg == 'No Match'}">
+                                    <button type="button" class="btn btn-default btn-lg btn-block">
+                                        <span style="color:red">${button.description}</span></button>
                                 </g:elseif>
                                 <g:else>
-                                    <g:link controller="product" action="detail" id="${button.id}"
-                                            class="btn btn-info btn-lg btn-block">
-                                        ${button.description}
-                                    </g:link>
+                                    <!-- test msg value -->
+                                    <g:if test="${button.msg == 'Out of Stock'}">
+                                        <g:link controller="product" action="detail" id="${button.id}"
+                                                class="btn btn-default btn-lg btn-block">
+                                            ${button.description}
+                                        </g:link>
+                                    </g:if>
+                                    <g:elseif test="${button.msg == 'Call for Availability'}">
+                                        <g:link controller="product" action="detail" id="${button.id}"
+                                                class="btn btn-default btn-lg btn-block">
+                                            ${button.description}
+                                        </g:link>
+                                    </g:elseif>
+                                    <g:else>
+                                        <g:link controller="product" action="detail" id="${button.id}"
+                                                class="btn btn-default btn-lg btn-block">
+                                            ${button.description}
+                                        </g:link>
+                                    </g:else>
                                 </g:else>
 
-                            </g:if>
-                            <g:elseif test="${button.msg == 'No Match'}">
-                                <button type="button" class="btn btn-default btn-lg btn-block">
-                                    <span style="color:red">${button.description}</span></button>
-                            </g:elseif>
-                            <g:else>
-                                <!-- test msg value -->
-                                <g:if test="${button.msg == 'Out of Stock'}">
-                                    <g:link controller="product" action="detail" id="${button.id}"
-                                            class="btn btn-default btn-lg btn-block">
-                                        ${button.description}
-                                    </g:link>
-                                </g:if>
-                                <g:elseif test="${button.msg == 'Call for Availability'}">
-                                    <g:link controller="product" action="detail" id="${button.id}"
-                                            class="btn btn-default btn-lg btn-block">
-                                        ${button.description}
-                                    </g:link>
-                                </g:elseif>
-                                <g:else>
-                                    <g:link controller="product" action="detail" id="${button.id}"
-                                            class="btn btn-default btn-lg btn-block">
-                                        ${button.description}
-                                    </g:link>
-                                </g:else>
-                            </g:else>
-
-                        </g:each>
-                    </div><!-- variant.key -->
-                </div> <!-- .col -->
-            </g:each>
-
-        </g:if>
-
-    </div> <!-- /.col -->
-<!-- end right-detail -->
-
+                            </g:each>
+                        </div><!-- variant.key -->
+                    </div> <!-- .col -->
+                </g:each>
 </div> <!-- ./row -->
+            </g:if>
+
+        </div> <!-- /.col -->
+    <!-- end right-detail -->
+
+    </div> <!-- ./row -->
 
 
 <!-- test for out of stock, then test for web sell, then allow paypal
   later - test for option categories, if none remoteLink
   if some, formRemote - see ttlcal detail-->
-<div>
+    <div>
+        <p>
+            <g:if test="${product.outOfStock}">
+                <span style="color:red">
+                    <g:message code="product.outOfStock.label" default="Out of Stock"/>
+                </span>
+            </g:if>
+            <g:elseif test="${!product.webSell}">
+                <span style="color:red">
+                    <g:message code="product.webSell.message" default="Call for Availability"/>
+                </span>
+            </g:elseif>
+            <g:else>
+                <g:remoteLink controller="shoppingCart" action="add2" params="${[id: product.id]}"
+                              onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
+                              onComplete="alert('added to cart');">
+                    <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif">
+                </g:remoteLink>
+            </g:else>
+        </p>
+    </div>
+
     <p>
-        <g:if test="${product.outOfStock}">
-            <span style="color:red">
-                <g:message code="product.outOfStock.label" default="Out of Stock"/>
-            </span>
-        </g:if>
-        <g:elseif test="${!product.webSell}">
-            <span style="color:red">
-                <g:message code="product.webSell.message" default="Call for Availability"/>
-            </span>
-        </g:elseif>
-        <g:else>
-            <g:remoteLink controller="shoppingCart" action="add2" params="${[id: product.id]}"
-                          onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
-                          onComplete="alert('added to cart');">
-                <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif">
-            </g:remoteLink>
-        </g:else>
-    </p>
-</div>
 
-<p>
-
-<div id="social"></div>
+    <div id="social"></div>
 </p>
 
 </div> <!-- /.container -->
