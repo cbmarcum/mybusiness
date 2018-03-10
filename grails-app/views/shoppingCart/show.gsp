@@ -28,21 +28,22 @@
         Ohio State sales tax will apply for Ohio residents only and will vary by county.
     </p>
 
-    <table class="table">
+    <div class="table-responsive">
+        <table class="table">
 
-        <thead>
-        <tr>
-            <td>&nbsp;</td>
-            <td>Item to Purchase</td>
-            <td>Qty</td>
-        </tr>
-        </thead>
+            <thead>
+            <tr>
+                <td>&nbsp;</td>
+                <td>Item to Purchase</td>
+                <td>Qty</td>
+            </tr>
+            </thead>
 
-        <tbody id="shoppingCartContent">
-        <g:render template="shoppingCartContent"/>
-        </tbody>
-    </table>
-
+            <tbody id="shoppingCartContent">
+            <g:render template="shoppingCartContent"/>
+            </tbody>
+        </table>
+    </div>
     <br/>
 
     <p>

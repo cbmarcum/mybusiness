@@ -36,8 +36,8 @@
         </p>
     </div> <!-- /.col -->
 
-</div> <!-- /.row -->
-    <div>
+
+    <div class="col-md-12">
         <p>
             For further information please feel free to call.
         </p>
@@ -45,6 +45,7 @@
         <br/>
     </div>
 
+</div> <!-- /.row -->
     <g:render template="/contact/contactForm" />
 
 </div> <!-- /.container -->

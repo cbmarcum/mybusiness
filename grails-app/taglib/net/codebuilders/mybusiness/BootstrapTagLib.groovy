@@ -50,11 +50,11 @@ class BootstrapTagLib {
 
         // display previous link when not on firststep
         def disabledPrev = (currentstep > firststep) ? "" : "disabled"
-        //		linkTagAttrs.class = 'prevLink'
+        linkTagAttrs.class = 'prevLink'
         //		linkParams.offset = offset - max
         writer << "<nav>"
         writer << "<ul class='pagination'>"
-        writer << "<li class='prev ${disabledPrev}'>"
+        writer << "<li class='${linkTagAttrs.class} ${disabledPrev}'>"
         writer << link(linkTagAttrs.clone()) {
             (attrs.prev ?: messageSource.getMessage('paginate.prev', null, messageSource.getMessage('default.paginate.prev', null, 'Previous', locale), locale))
         }
@@ -112,9 +112,10 @@ class BootstrapTagLib {
         }
 
         // display next link when not on laststep
+        linkTagAttrs.class = 'nextLink'
         def disabledNext = (currentstep < laststep) ? "" : "disabled"
         linkParams.offset = (currentstep)*max
-        writer << "<li class='next ${disabledNext}'>"
+        writer << "<li class='${linkTagAttrs.class} ${disabledNext}'>"
         writer << link(linkTagAttrs.clone()) {
             (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, messageSource.getMessage('default.paginate.next', null, 'Next', locale), locale))
         }

@@ -99,7 +99,7 @@
                 <label for="comment"><g:message code="default.form.comments.label" default="Comments"/></label>
                 <g:textArea class="form-control" name="comment" value="${orderContact?.comment}" rows="30"
                             columns="400"
-                            style="height:150px; width:400px"/>
+                            style="height:150px"/>
             </div>
 
             <!-- using recaptcha plugin -->

@@ -18,7 +18,21 @@
 
 <div class="container">
 
-    <div class="row page-header">
+    <a href="#list-product" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
+                                                                  default="Skip to content&hellip;"/></a>
+    <sec:access expression="hasRole('ROLE_ADMIN')">
+        <div class="nav" role="navigation">
+            <ul>
+                <li><g:link class="home" controller="admin" action="index"><g:message
+                        code="default.admin.home.label"/></g:link></li>
+                <li><g:link class="create" action="create"><g:message code="default.new.label"
+                                                                      args="[entityName]"/></g:link></li>
+            </ul>
+        </div>
+    </sec:access>
+
+
+    <div id="list-product" class="row">
         <div class="col-sm-6">
             <h1><g:message code="default.list.label" args="[entityName]"/>&nbsp;<small>&nbsp;${entityCategory}</small>
             </h1>
@@ -28,20 +42,12 @@
             <g:render template="/product/menubar-search"/>
         </div>
 
-    </div> <%-- /.row .page-header --%>
+    </div> <%-- /.row --%>
 
     <g:if test="${flash.message}">
         <div class="alert alert-warning" role="alert">${flash.message}</div>
     </g:if>
 
-    <sec:access expression="hasRole('ROLE_ADMIN')">
-        <p>
-            <g:link class="btn btn-default" controller="admin" action="index"><g:message
-                    code="default.admin.home.label"/></g:link>
-            <g:link class="btn btn-default" action="create"><g:message code="default.new.label"
-                                                                       args="[entityName]"/></g:link>
-        </p>
-    </sec:access>
     <div class="table-responsive">
         <table class="table">
 
@@ -80,7 +86,7 @@
                             <g:remoteLink controller="shoppingCart" action="add3" params="${[id: product.id]}"
                                           onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
                                           onFailure="alert('failure');"
-                                          onComplete="alert('$product.name added to cart');">
+                                          onComplete="alert('${product.name} added to cart');">
                                 <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif" align="left"
                                      style="margin-right:7px;">
                             </g:remoteLink>
@@ -95,6 +101,7 @@
             </tbody>
         </table>
     </div><!-- table-responsive -->
+
 
     <g:if test="${productCount > params.max}">
         <div class="text-center">
