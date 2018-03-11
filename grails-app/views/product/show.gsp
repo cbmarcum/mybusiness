@@ -107,19 +107,25 @@
                 <g:each in="${product.goodIdentifications}" var="pg">
                     <b>${pg.goodIdentificationType}</b> - ${pg.value}<br/>
                 </g:each>
-            </dd>
-
-            <dt><g:message code="product.productCategories.label" default="Product Categories"/></dt>
-            <dd>
-                <g:each in="${product.productCategories}" var="pc">
-                    ${pc.description}<br/>
-                </g:each>
+                <g:link controller="goodIdentification" action="create"
+                        params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'goodIdentification.label', default: 'GoodIdentification')])}
+                </g:link>
             </dd>
 
             <dt><g:message code="product.productFeatureAppls.label" default="Features"/></dt>
             <dd>
                 <g:each in="${product.productFeatureAppls}" var="pfa">
                     <b>${pfa.productFeature.productFeatureCategory.description}</b> - ${pfa.productFeature.description}<br/>
+                </g:each>
+                <g:link controller="productFeatureAppl" action="create"
+                        params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'productFeatureAppl.label', default: 'ProductFeatureAppl')])}
+                </g:link>
+            </dd>
+
+            <dt><g:message code="product.productCategories.label" default="Product Categories"/></dt>
+            <dd>
+                <g:each in="${product.productCategories}" var="pc">
+                    ${pc.description}<br/>
                 </g:each>
             </dd>
 

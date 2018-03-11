@@ -2,7 +2,7 @@
 
 <p>
     <span class="required-indicator">*</span>&nbsp;=&nbsp;
-<g:message code="default.form.required.label" default="Denotes required field"/>
+<g:message code="default.form.required.label" default="Denotes a required field"/>
 </p>
 
 <div class="row">
@@ -125,14 +125,14 @@
 </div>
 
 
-<div class="checkbox ${hasErrors(bean: product, field: 'display', 'error')} ">
+<div class="checkbox-inline ${hasErrors(bean: product, field: 'display', 'error')} ">
     <label>
         <g:checkBox name="display" value="${product?.display}"/>
         <g:message code="product.display.label" default="Display"/>
     </label>
 </div>
 
-<div class="checkbox ${hasErrors(bean: product, field: 'showcase', 'error')} ">
+<div class="checkbox-inline ${hasErrors(bean: product, field: 'showcase', 'error')} ">
     <label for="showcase">
         <g:checkBox name="showcase" value="${product?.showcase}"/>
         <g:message code="product.showcase.label" default="Showcase"/>
@@ -140,14 +140,14 @@
 
 </div>
 
-<div class="checkbox ${hasErrors(bean: product, field: 'outOfStock', 'error')} ">
+<div class="checkbox-inline ${hasErrors(bean: product, field: 'outOfStock', 'error')} ">
     <label for="outOfStock">
         <g:checkBox name="outOfStock" value="${product?.outOfStock}"/>
         <g:message code="product.outOfStock.label" default="Out of Stock"/>
     </label>
 </div>
 
-<div class="checkbox ${hasErrors(bean: product, field: 'webSell', 'error')} ">
+<div class="checkbox-inline ${hasErrors(bean: product, field: 'webSell', 'error')} ">
     <label for="webSell">
         <g:checkBox name="webSell" value="${product?.webSell}"/>
         <g:message code="product.webSell.label" default="Web Sell"/>
@@ -155,6 +155,7 @@
 </div>
 
 <div class="row">
+
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'goodIdentifications', 'error')} ">
         <label for="goodIdentifications">
             <g:message code="product.goodIdentifications.label" default="Good Identifications"/>
@@ -162,23 +163,47 @@
         <ul class="one-to-many">
             <g:each in="${product?.goodIdentifications ?}" var="p">
                 <li><g:link controller="goodIdentification" action="show"
-                            id="${p.id}">${p?.goodIdentificationType.name} - ${p?.value}</g:link></li>
+                            id="${p.id}"><b>${p?.goodIdentificationType.name}</b> - ${p?.value}</g:link></li>
             </g:each>
-            <li class="add">
-                <g:link controller="goodIdentification" action="create"
-                        params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'goodIdentification.label', default: 'GoodIdentification')])}</g:link>
-            </li>
+            <g:if test="${params.action == 'edit'}">
+                <li class="add">
+                    <g:link controller="goodIdentification" action="create"
+                            params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'goodIdentification.label', default: 'GoodIdentification')])}</g:link>
+                </li>
+            </g:if>
         </ul>
     </div>
 
-    <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'otherAttributes', 'error')} ">
-        <label for="otherAttributes">
-            <g:message code="product.otherAttributes.label" default="Other Attributes"/>
-
+    <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'productFeatureAppls', 'error')} ">
+        <label for="productFeatureAppls">
+            <g:message code="product.productFeatureAppls.label" default="Product Feature Appls"/>
         </label>
 
-    </div>
+        <ul class="one-to-many">
+            <g:each in="${product?.productFeatureAppls ?}" var="p">
+                <li><g:link controller="productFeatureAppl" action="show"
+                            id="${p.id}"><b>${p.productFeature.productFeatureCategory.description}</b> - ${p?.productFeature?.description}</g:link></li>
+            </g:each>
+            <g:if test="${params.action == 'edit'}">
+                <li class="add">
+                    <g:link controller="productFeatureAppl" action="create"
+                            params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'productFeatureAppl.label', default: 'ProductFeatureAppl')])}
+                    </g:link>
+                </li>
+            </g:if>
+        </ul>
 
+    </div>
+</div> <%-- /.row --%>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <p class="text-warning">
+            Select the most specific category and parent categories will be added automatically.
+            Example: Selecting Shirts will also add Apparel. Hold CTRL to select additional categories.
+        </p>
+    </div>
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'productCategories', 'error')} ">
         <label for="productCategories">
             <g:message code="product.productCategories.label" default="Product Categories"/>
@@ -190,25 +215,6 @@
                   class="many-to-many"/>
     </div>
 
-    <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'productFeatureAppls', 'error')} ">
-        <label for="productFeatureAppls">
-            <g:message code="product.productFeatureAppls.label" default="Product Feature Appls"/>
-
-        </label>
-
-        <ul class="one-to-many">
-            <g:each in="${product?.productFeatureAppls ?}" var="p">
-                <li><g:link controller="productFeatureAppl" action="show"
-                            id="${p.id}">${p?.productFeature?.description}</g:link></li>
-            </g:each>
-            <li class="add">
-                <g:link controller="productFeatureAppl" action="create"
-                        params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'productFeatureAppl.label', default: 'ProductFeatureAppl')])}</g:link>
-            </li>
-        </ul>
-
-    </div>
-
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'productType', 'error')} required">
         <label for="productType">
             <g:message code="product.productType.label" default="Product Type"/>
@@ -217,6 +223,12 @@
         <g:select name="productType" from="${net.codebuilders.mybusiness.ProductType?.values()}"
                   keys="${net.codebuilders.mybusiness.ProductType.values()*.name()}" required=""
                   value="${product?.productType?.name()}"/>
+    </div>
+
+    <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'otherAttributes', 'error')} ">
+        <label for="otherAttributes">
+            <g:message code="product.otherAttributes.label" default="Other Attributes"/>
+        </label>
     </div>
 
 </div> <%-- /.row --%>
