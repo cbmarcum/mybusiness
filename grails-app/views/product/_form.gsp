@@ -1,5 +1,10 @@
 <%@ page import="net.codebuilders.mybusiness.Product" %>
 
+<p>
+    <span class="required-indicator">*</span>&nbsp;=&nbsp;
+<g:message code="default.form.required.label" default="Denotes required field"/>
+</p>
+
 <div class="row">
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'number', 'error')} ">

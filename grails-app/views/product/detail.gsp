@@ -90,7 +90,7 @@
                 <h2>Product Variations</h2>
                 <g:if test="${variantMap?.size() > 1}">
                     <p class="bg-info" style="color: #333; padding: 5px;">
-                        If a variation combination is unavailable try changing the other type.
+                        If a variation combination is unavailable, try changing the other type.
                         For instance, a certain size may not be available in certain colors or <em>vice versa</em>.
                     </p>
                 </g:if>
