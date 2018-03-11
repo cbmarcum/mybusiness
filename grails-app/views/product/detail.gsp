@@ -88,7 +88,12 @@
             <g:if test="${variantMap}">
 
                 <h2>Product Variations</h2>
-
+                <g:if test="${variantMap?.size() > 1}">
+                    <p class="bg-info" style="color: #333; padding: 5px;">
+                        If a variation combination is unavailable try changing the other type.
+                        For instance, a certain size may not be available in certain colors or <em>vice versa</em>.
+                    </p>
+                </g:if>
                 <div class="row">
                     <g:each var="variant" in="${variantMap}">
                         <div class="col-sm-6">
@@ -119,7 +124,7 @@
 
                                     </g:if>
                                     <g:elseif test="${button.msg == 'No Match'}">
-                                        <button type="button" class="btn btn-default btn-lg btn-block">
+                                        <button type="button" class="btn btn-default btn-lg btn-block disabled">
                                             <span style="color:red">${button.description}</span></button>
                                     </g:elseif>
                                     <g:else>
