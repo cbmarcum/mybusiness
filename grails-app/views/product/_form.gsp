@@ -118,7 +118,7 @@
             <g:message code="product.supportDiscontinuationDate.label"
                        default="Support Discontinuation Date"/>
         </label>
-        <g:datePicker class="form-control" name="upportDiscontinuationDate" precision="day"
+        <g:datePicker class="form-control" name="supportDiscontinuationDate" precision="day"
                       value="${product?.supportDiscontinuationDate}" default="none" noSelection="['': '']"/>
     </div>
 

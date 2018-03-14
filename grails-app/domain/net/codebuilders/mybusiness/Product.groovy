@@ -127,4 +127,9 @@ class Product {
     // for paypal
     BigDecimal shipWeight = 0.00 // ship weight in pounds
 
+    // formatted for use in form select fields
+    String toString() {
+        return "${number} - id:${id}"
+    }
+
 }
