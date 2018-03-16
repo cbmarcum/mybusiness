@@ -62,7 +62,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="product" action="list">Product List</g:link>
+                <g:link controller="product" action="index">Product List</g:link>
             </p>
 
             <h2>Product Feature Category</h2>
@@ -74,7 +74,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="productFeatureCategory" action="list">Product Feature Category List</g:link>
+                <g:link controller="productFeatureCategory" action="index">Product Feature Category List</g:link>
             </p>
 
             <h2>Product Feature</h2>
@@ -85,7 +85,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="productFeature" action="list">Product Feature List</g:link>
+                <g:link controller="productFeature" action="index">Product Feature List</g:link>
             </p>
 
             <h2>Standard Feature Application</h2>
@@ -96,7 +96,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="standardFeatureAppl" action="list">Standard Feature Application List</g:link>
+                <g:link controller="standardFeatureAppl" action="index">Standard Feature Application List</g:link>
             </p>
 
             <h2>Product Feature Application</h2>
@@ -109,7 +109,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="productFeatureAppl" action="list">Product Feature Application List</g:link>
+                <g:link controller="productFeatureAppl" action="index">Product Feature Application List</g:link>
             </p>
 
             <h2>Product Category</h2>
@@ -121,7 +121,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="productCategory" action="list">Product Category List</g:link>
+                <g:link controller="productCategory" action="index">Product Category List</g:link>
             </p>
 
             <h2>Good Identification</h2>
@@ -134,7 +134,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="goodIdentification" action="list">Good Identification List</g:link>
+                <g:link controller="goodIdentification" action="index">Good Identification List</g:link>
             </p>
 
             <h2>Specials</h2>
@@ -147,7 +147,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="special" action="list">Special List</g:link>
+                <g:link controller="special" action="index">Special List</g:link>
             </p>
 
             <h2>Notices</h2>
@@ -170,7 +170,7 @@ limitations under the License.
             </p>
 
             <p>
-                <g:link controller="payment" action="list">Payment List</g:link>
+                <g:link controller="payment" action="index">Payment List</g:link>
             </p>
 
             <h2>RSS Feeds</h2>
