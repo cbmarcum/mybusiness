@@ -41,4 +41,9 @@ class ProductFeature {
     String shortDescription = "" // ex. S/M
     Integer sequenceNum = 0  // sequence of feature within a product feature category
 
+    // formatted for use in form select fields
+    String toString() {
+        return "${description} - id:${id}"
+    }
+
 }

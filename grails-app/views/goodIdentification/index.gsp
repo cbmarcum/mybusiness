@@ -51,9 +51,7 @@
                         <g:link action="show" id="${goodId.id}">${goodId.value}</g:link>
                     </td>
                     <td>${goodId.goodIdentificationType.name}</td>
-                    <td>
-                        <g:link controller="product" action="show" id="${goodId.product.id}">${goodId.product}</g:link>
-                    </td>
+                    <td>${goodId.product}</td>
                 </tr>
             </g:each>
             </tbody>
