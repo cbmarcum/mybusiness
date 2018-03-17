@@ -42,6 +42,10 @@
 
                 <g:sortableColumn property="product"
                                   title="${message(code: 'product.label', default: 'Product')}"/>
+
+                <g:sortableColumn property="lastUpdated"
+                                  title="${message(code: 'default.lastUpdated.label', default: 'default.lastUpdated.label')}"/>
+
             </tr>
             </thead>
             <tbody>
@@ -52,6 +56,7 @@
                     </td>
                     <td>${goodId.goodIdentificationType.name}</td>
                     <td>${goodId.product}</td>
+                    <td><g:formatDate format="yyyy-MMM-dd" date="${goodId.lastUpdated}"/></td>
                 </tr>
             </g:each>
             </tbody>

@@ -34,14 +34,24 @@
 
     <div>
         <dl class="dl-horizontal">
-            <dt><g:message code="product.label" default="Product"/></dt>
+            <dt><g:message code="product.label" default="product.label"/></dt>
             <dd><f:display bean="goodIdentification" property="product"/></dd>
 
-            <dt><g:message code="product.goodIdentificationType.label" default="Good Identification Type"/></dt>
+            <dt><g:message code="goodIdentificationType.label" default="goodIdentificationType.label"/></dt>
             <dd><f:display bean="goodIdentification" property="goodIdentificationType"/></dd>
 
-            <dt><g:message code="default.value.label" default="Value"/></dt>
+            <dt><g:message code="default.value.label" default="default.value.label"/></dt>
             <dd><f:display bean="goodIdentification" property="value"/></dd>
+
+            <dt><g:message code="default.dateCreated.label" default="default.dateCreated.label"/></dt>
+            <dd><f:display bean="goodIdentification" property="dateCreated">
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/>
+            </f:display></dd>
+
+            <dt><g:message code="default.lastUpdated.label" default="default.lastUpdated.label"/></dt>
+            <dd><f:display bean="goodIdentification" property="lastUpdated">
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/>
+            </f:display></dd>
 
         </dl>
     </div>

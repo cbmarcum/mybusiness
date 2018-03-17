@@ -50,6 +50,9 @@
                 <g:sortableColumn property="display"
                                   title="${message(code: 'default.display.label', default: 'default.display.label')}"/>
 
+                <g:sortableColumn property="lastUpdated"
+                                  title="${message(code: 'default.lastUpdated.label', default: 'default.lastUpdated.label')}"/>
+
             </tr>
             </thead>
             <tbody>
@@ -62,6 +65,7 @@
                     <td>${pfa.productFeature}</td>
                     <td>${pfa.productFeatureApplType.name}</td>
                     <td>${pfa.display}</td>
+                    <td><g:formatDate format="yyyy-MMM-dd" date="${pfa.lastUpdated}"/></td>
                 </tr>
             </g:each>
             </tbody>
