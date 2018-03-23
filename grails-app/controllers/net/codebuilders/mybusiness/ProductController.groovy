@@ -23,6 +23,8 @@
 
 package net.codebuilders.mybusiness
 
+import javax.sql.rowset.spi.TransactionalWriter
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -305,7 +307,7 @@ class ProductController {
 
     // like show but formatted for shoppers
     def detail(Product product) {
-    // def productInstance = Product.get(params.id)
+        // def productInstance = Product.get(params.id)
         if (!product) { // was productInstance
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'product.label', default: 'Product'), params.id])
             redirect(action: "list")
@@ -414,6 +416,70 @@ class ProductController {
         println "qty=${cartQty}"
         log.debug "qty=${cartQty}"
         render "${cartQty}"
+    }
+
+    @Transactional
+    def removePhoto() {
+        log.info "entered removePhoto action"
+        params.each { it ->
+            log.info("${it.key} = ${it.value}")
+        }
+        Product product = Product.get(params.id)
+        log.info(product.toString())
+        Photo photo = Photo.get(params.photo)
+        log.info(photo.toString())
+
+        if (product.photos.contains(photo)) {
+            log.info "found photo"
+            // product.photos.remove(photo)
+            product.removeFromPhotos(photo)
+        } else {
+            log.info "no photo found"
+        }
+
+        redirect(action: 'show', id: params.id)
+    }
+
+    @Transactional
+    def uploadPhoto() {
+        log.info "entered uploadPhoto action"
+        params.each { it ->
+            log.info("${it.key} = ${it.value}")
+        }
+        def photo = new Photo(params)
+        if(!photo.save()) {
+            println "Error Saving! ${photo.errors.allErrors}"
+        } else {
+            Product product = Product.get(params.id)
+            log.info(product.toString())
+            product.addToPhotos(photo)
+        }
+
+
+        // redirect(view: "show"
+        redirect(action: 'show', id: params.id)
+    }
+
+    @Transactional
+    def attachPhoto() {
+        log.info "entered attachPhoto action"
+        params.each { it ->
+            log.info("${it.key} = ${it.value}")
+        }
+        Product product = Product.get(params.id)
+        log.info(product.toString())
+        Photo photo = Photo.get(params.photo)
+        log.info(photo.toString())
+
+        product.addToPhotos(photo)
+
+        if (!product.save()) {
+            println "Error Saving! ${product.errors.allErrors}"
+        } else {
+            log.info "photo attached"
+        }
+
+        redirect(action: 'show', id: params.id)
     }
 
 }

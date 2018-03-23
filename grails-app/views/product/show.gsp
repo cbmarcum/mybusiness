@@ -148,38 +148,99 @@
             </fieldset>
         </g:form>
 
-
-
-        <h2><g:message code="product.photos.label" default="Photos"/></h2>
-
-        <div class="table-responsive">
-            <table class="table">
-
-                <tbody>
-                <g:each in="${product.photos}" var="photo">
-                    <tr>
-                        <td width="160px">
-                            <cb:image image="${photo.photo.getCloudFile('small')}"/><br/>
-                        </td>
-                        <td>
-                            <dl class="dl-horizontal">
-                                <dt><g:message code="photo.name.label" default="Name"/></dt>
-                                <dd>${photo.name}</dd>
-                                <dt><g:message code="photo.alt.label" default="Alt"/></dt>
-                                <dd>${photo.alt}</dd>
-                                <dt><g:message code="photo.title.label" default="Title"/></dt>
-                                <dd>${photo.title}</dd>
-                            </dl>
-                        </td>
-                    </tr>
-
-                </g:each>
-
-                </tbody>
-            </table>
-        </div><!-- .table-responsive -->
-
     </div>
+
+    <h2><g:message code="product.photos.label" default="Photos"/></h2>
+
+    <div class="table-responsive">
+        <table class="table">
+
+            <tbody>
+            <g:each in="${product.photos}" var="photo">
+                <tr>
+                    <td>
+                        <cb:image image="${photo.photo.getCloudFile('thumb')}"/><br/>
+                    </td>
+                    <td>
+                        <dl class="dl-horizontal">
+                            <dt><g:message code="photo.name.label" default="Name"/></dt>
+                            <dd>${photo.name}</dd>
+                            <dt><g:message code="photo.alt.label" default="Alt"/></dt>
+                            <dd>${photo.alt}</dd>
+                            <dt><g:message code="photo.title.label" default="Title"/></dt>
+                            <dd>${photo.title}</dd>
+                        </dl>
+                        <g:link action="removePhoto"
+                                params="[id: product.id, photo: photo.id]">Remove Attachment</g:link>&nbsp;(Doesn't delete photo)
+                    </td>
+                </tr>
+
+            </g:each>
+
+            </tbody>
+        </table>
+    </div><!-- .table-responsive -->
+
+    <h2>Upload Photo and Attach to Product</h2>
+    <g:uploadForm name="upload" url="[action: 'uploadPhoto', controller: 'product']">
+        <g:hiddenField name="id" value="${product.id}"/>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="name">Name</label>
+                <g:textField class="form-control" name="name" placeholder="name"/>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="alt">Alt</label>
+                <g:textField class="form-control" name="alt" placeholder="alt"/>
+
+                <p class="help-block">Used if no image is loaded and screen readers</p>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="title">Title</label>
+                <g:textField class="form-control" name="title" placeholder="title"/>
+
+                <p class="help-block">Displays as tooltip on hover</p>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="photo">File input</label>
+                <input class="form-control" type="file" name="photo" id="photo">
+
+                <p class="help-block">Select file to upload...</p>
+            </div>
+        </div> <%-- /.row --%>
+
+        <fieldset class="buttons">
+            <g:submitButton name="upload" class="save"
+                            value="${message(code: 'default.addPhoto.label', default: 'default.addPhoto.label')}"/>
+        </fieldset>
+    </g:uploadForm>
+
+    <h2>Attach Existing Photo</h2>
+
+    <g:form action="attachPhoto">
+        <div class="row">
+
+            <g:hiddenField name="id" value="${product.id}"/>
+
+            <div class="form-group col-md-6">
+                <label for="photo2">
+                    <g:message code="photo.label" default="photo.label"/>
+                </label>
+                <g:select id="photo2" name="photo" from="${net.codebuilders.mybusiness.Photo.list()}"
+                          optionKey="id" optionValue="name" size="10" class="selectpicker form-control"
+                          data-live-search="true" title="Select a photo by name" />
+            </div>
+
+        </div>
+        <fieldset class="buttons">
+            <g:submitButton name="attachPhoto" class="save"
+                            value="${message(code: 'default.button.update.label', default: 'default.button.update.label')}"/>
+        </fieldset>
+    </g:form>
+
 </div> <!-- container -->
 </body>
 </html>
