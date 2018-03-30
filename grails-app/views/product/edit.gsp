@@ -29,15 +29,25 @@
     </div>
 
     <g:if test="${flash.message}">
-        <div class="message" role="status">${flash.message}</div>
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <i class="fas fa-info-circle fa-2x"></i>&nbsp;${flash.message}</div>
     </g:if>
+
     <g:hasErrors bean="${this.product}">
-        <ul class="errors" role="alert">
-            <g:eachError bean="${this.product}" var="error">
-                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message
-                        error="${error}"/></li>
-            </g:eachError>
-        </ul>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <i class="fas fa-exclamation-triangle fa-2x"></i>&nbsp;
+            <ul>
+                <g:eachError bean="${this.product}" var="error">
+                    <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>>
+                        <g:message error="${error}"/>
+                    </li>
+                </g:eachError>
+            </ul>
+        </div>
     </g:hasErrors>
 
     <g:form resource="${this.product}" method="PUT">
@@ -51,6 +61,6 @@
         </fieldset>
     </g:form>
 
-</div> <!-- /.container -->
+</div> <%-- /.container --%>
 </body>
 </html>

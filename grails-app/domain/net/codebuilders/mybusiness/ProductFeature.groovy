@@ -43,7 +43,7 @@ class ProductFeature {
 
     // formatted for use in form select fields
     String toString() {
-        return "${description} - id:${id}"
+        return "${productFeatureCategory.description}: ${description} - id:${id}"
     }
 
 }

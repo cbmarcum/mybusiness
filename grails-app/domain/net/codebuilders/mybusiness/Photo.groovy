@@ -28,7 +28,7 @@ import com.bertramlabs.plugins.selfie.Attachment
 
 /**
  * Domain class that represents a photo or image to relate to a product.
- * photo will be stored on local filesystem or in cloud based on configuration.
+ * Photo image file will be stored on local filesystem or in cloud based on configuration.
  * Multiple styles (sizes) can be stored for each image and retrieved by style.
  *
  * @author Carl Marcum
@@ -39,6 +39,8 @@ class Photo {
     String alt // for img alt tag
     String title // for img title tag
     Attachment photo
+    Date dateCreated // auto timestamp
+    Date lastUpdated // auto timestamp
 
     static constraints = {
         photo contentType: ['image/png','image/jpeg'], fileSize:1024*1024 // 1mb

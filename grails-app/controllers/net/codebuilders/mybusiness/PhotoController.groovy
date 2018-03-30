@@ -45,11 +45,12 @@ class PhotoController {
         respond photo
     }
 
+    // not yet known why create and edit render empty pages
+    // workaround is a redirect for now
     def create() {
-        respond new Photo(params)
+        redirect(action: 'createPhoto', params: params)
     }
 
-    // temp until create is ready
     def createPhoto() {
         respond new Photo(params)
     }
@@ -79,8 +80,10 @@ class PhotoController {
         }
     }
 
+    // not yet known why create and edit render empty pages
+    // workaround is a redirect for now
     def edit(Photo photo) {
-        respond photo
+        redirect(action: 'editPhoto', id: params.id)
     }
 
     def editPhoto(Photo photo) {

@@ -28,8 +28,12 @@
     <div id="show-product" class="page-header">
         <h1><g:message code="default.show.label" args="[entityName]"/></h1>
     </div>
+
     <g:if test="${flash.message}">
-        <div class="message" role="status">${flash.message}</div>
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <i class="fas fa-info-circle fa-2x"></i>&nbsp;${flash.message}</div>
     </g:if>
 
     <div>
@@ -171,8 +175,8 @@
                             <dd>${photo.title}</dd>
                         </dl>
                         <g:link action="removePhoto"
-                                params="[id: product.id, photo: photo.id]">Remove Attachment</g:link>&nbsp;(Doesn't delete photo)
-                    </td>
+                                params="[id: product.id, photo: photo.id]">Remove Attachment</g:link>&nbsp;(Doesn't delete photo)<br/>
+                        </td>
                 </tr>
 
             </g:each>
@@ -181,7 +185,7 @@
         </table>
     </div><!-- .table-responsive -->
 
-    <h2>Upload Photo and Attach to Product</h2>
+    <h2>Upload Photo and Attach</h2>
     <g:uploadForm name="upload" url="[action: 'uploadPhoto', controller: 'product']">
         <g:hiddenField name="id" value="${product.id}"/>
         <div class="row">
