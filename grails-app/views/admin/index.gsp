@@ -57,12 +57,27 @@ limitations under the License.
                 open-source alternative GIMP available at <g:link base="www.gimp.org">www.gimp.org</g:link><br/>
                 Images are copied and scaled to small (150px W x 150px H) and large (300px W x 300px H).<br/>
                 It is best if images are proportional to this (1X Width x 1X Height) before uploading
-                to eliminate cropping of image.<br/>
+                to eliminate cropping of image.
                 Current image file size is limited to 15,000,000 bytes. This can be adjusted in the code.
             </p>
 
             <p>
                 <g:link controller="product" action="index">Product List</g:link>
+            </p>
+
+            <p><b>Photo</b> is a table for photos with links to the photo files on the filesystem or CDN.<br/>
+                images must be in PNG, and JPG format.
+                Uploaded images should be larger than 400px W x 400px H.
+                Images can be edited and converted using many image editing programs such as Adobe Photoshop or the free
+                open-source alternative GIMP available at <g:link base="www.gimp.org">www.gimp.org</g:link><br/>
+                Uploaded images are copied and scaled to thumb (50px W x 50px H), small (150px W x 150px H),
+                and large (400px W x 400px H).<br/>
+                It is best if images are proportional to this (1X Width x 1X Height) before uploading
+                to eliminate cropping of image.
+                Current image file size is limited to 1MB. This can be adjusted in the code.
+            </p>
+            <p>
+                <g:link controller="photo" action="index">Photo List</g:link>
             </p>
 
             <h2>Product Feature Category</h2>

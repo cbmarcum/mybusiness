@@ -176,7 +176,7 @@
                         </dl>
                         <g:link action="removePhoto"
                                 params="[id: product.id, photo: photo.id]">Remove Attachment</g:link>&nbsp;(Doesn't delete photo)<br/>
-                        </td>
+                    </td>
                 </tr>
 
             </g:each>
@@ -235,7 +235,7 @@
                 </label>
                 <g:select id="photo2" name="photo" from="${net.codebuilders.mybusiness.Photo.list()}"
                           optionKey="id" optionValue="name" size="10" class="selectpicker form-control"
-                          data-live-search="true" title="Select a photo by name" />
+                          multiple data-max-options="1" data-live-search="true" title="Select a photo by name"/>
             </div>
 
         </div>

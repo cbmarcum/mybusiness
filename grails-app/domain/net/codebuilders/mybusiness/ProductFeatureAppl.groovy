@@ -36,7 +36,7 @@ class ProductFeatureAppl {
 
     Product product
     ProductFeature productFeature
-    ProductFeatureApplType productFeatureApplType
+    ProductFeatureApplType productFeatureApplType = ProductFeatureApplType.REQUIRED_FEATURE
     Boolean display = true // display in catalog - generally for configurable features
     Date dateCreated // auto timestamp
     Date lastUpdated // auto timestamp

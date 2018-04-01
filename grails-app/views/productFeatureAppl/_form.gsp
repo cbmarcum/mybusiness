@@ -10,9 +10,9 @@
             <g:message code="product.label" default="product.label"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select class="form-control" name="product" from="${net.codebuilders.mybusiness.Product?.list()}"
+        <g:select class="selectpicker form-control" name="product" from="${net.codebuilders.mybusiness.Product?.list()}"
                   optionKey="id" size="5" value="${productFeatureAppl?.product?.id}"
-                  required="true"/>
+                  required="true" multiple data-max-options="1" data-live-search="true" title="Select a product by sku or id"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: productFeatureAppl, field: 'productFeature', 'error')} ">
@@ -20,10 +20,10 @@
             <g:message code="productFeature.label" default="productFeature.label"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select class="form-control" name="productFeature"
+        <g:select class="selectpicker form-control" name="productFeature"
                   from="${net.codebuilders.mybusiness.ProductFeature?.list()}"
                   optionKey="id" size="5" value="${productFeatureAppl?.productFeature?.id}"
-                  required="true"/>
+                  required="true" multiple data-max-options="1" data-live-search="true" title="Select product feature"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: productFeatureAppl, field: 'productFeatureApplType', 'error')} required">

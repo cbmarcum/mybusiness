@@ -41,7 +41,7 @@
                 <th><g:message code="photo.label" default="photo.label"/></th>
 
                 <g:sortableColumn property="name"
-                                  title="${message(code: 'default.name.label', default: 'default.name.label')}"/>
+                                  title="${message(code: 'photo.name.label', default: 'photo.name.label')}"/>
 
                 <g:sortableColumn property="alt"
                                   title="${message(code: 'photo.alt.label', default: 'photo.alt.label')}"/>
