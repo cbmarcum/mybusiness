@@ -16,7 +16,6 @@
 
 <body>
 <div class="container">
-
     <div class="row page-header">
         <div class="col-sm-6">
             <h1><g:message code="navigation.ext-tabs.ebay"/>&nbsp;<small>&nbsp;${entityCategory}</small></h1>
@@ -26,17 +25,22 @@
             <g:render template="/ebay/menubar-search"/>
         </div>
     </div> <%-- /.row .page-header --%>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-warning" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Info:</span>
+                <strong>For demonstration purposes only.</strong> Items shown are displayed from all eBay stores. Links will open eBay site in a new browser window.<br/>
+                We have no control of these sites. Products may have been listed with incorrect categories.
+            </div>
+        </div>
 
-    <div class="alert alert-warning" role="alert">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">Info:</span>
-        <strong>For demonstration purposes only.</strong> Items shown are displayed from all eBay stores. Links will open eBay site in a new browser window.<br/>
-        We have no control of these sites. Products may have been listed with incorrect categories.
-    </div>
-
-    <g:if test="${flash.message}">
-        <div class="alert alert-warning" role="alert">${flash.message}</div>
-    </g:if>
+        <div class="col-md-12">
+            <g:if test="${flash.message}">
+                <div class="alert alert-warning" role="alert">${flash.message}</div>
+            </g:if>
+        </div>
+    </div> <%-- /.row --%>
 
     <g:if test="${items.size() == 0}">
         <h2>No Results</h2>
@@ -63,7 +67,6 @@
             <cb:ebayPaginate controller="ebay" total="${params.totalEntries}"/>
         </nav>
     </div>
-
-</div> <!-- /.container -->
+</div> <%-- /.container --%>
 </body>
 </html>

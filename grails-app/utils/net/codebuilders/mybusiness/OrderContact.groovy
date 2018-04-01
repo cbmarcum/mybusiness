@@ -41,6 +41,7 @@ class OrderContact implements Validateable {
 		fullName blank: false
 		email (email: true, blank: false)
         phone blank: false
+        comment blank: false
 	}
     
 	

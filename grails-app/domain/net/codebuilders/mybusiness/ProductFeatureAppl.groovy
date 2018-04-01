@@ -31,21 +31,14 @@ package net.codebuilders.mybusiness
 class ProductFeatureAppl {
 
     static constraints = {
-        // thruDate(nullable:true)
-        salesDiscontinuationDate(nullable: true)
+
     }
 
     Product product
     ProductFeature productFeature
-    ProductFeatureApplType productFeatureApplType
-    BigDecimal listPrice = 0.00 // catalog price of feature for product
-    Integer sequenceNum // seq within a category per product like color
-    String code // code used in part number creation on configurable products
+    ProductFeatureApplType productFeatureApplType = ProductFeatureApplType.REQUIRED_FEATURE
     Boolean display = true // display in catalog - generally for configurable features
-    // Date fromDate
-    // Date thruDate
     Date dateCreated // auto timestamp
     Date lastUpdated // auto timestamp
-    Date salesDiscontinuationDate // generally for configurable features
 
 }

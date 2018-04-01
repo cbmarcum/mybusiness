@@ -39,5 +39,6 @@ class ProductFeatureCategory {
     String description = "" // ex. Pressure Gauge Range
     // to use in a list within a product type like Pressure Gauge
     String shortDescription = "" // ex. Range
+    Integer sequenceNum = 0  // sequence of category
 
 }

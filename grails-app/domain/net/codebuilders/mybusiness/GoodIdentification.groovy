@@ -34,18 +34,18 @@ class GoodIdentification {
         value(maxSize: 50)
     }
 
-    
     static search = {
         value index: 'yes'
     }
-
-
 
     GoodIdentificationType goodIdentificationType
 
     Product product
 
-    /** holds the id number, upc, sku, etc. */
+    /** holds the id number for the upc, sku, etc. */
     String value = ""
+
+    Date dateCreated // auto timestamp
+    Date lastUpdated // auto timestamp
 
 }

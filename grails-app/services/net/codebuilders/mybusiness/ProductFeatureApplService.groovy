@@ -61,7 +61,7 @@ class ProductFeatureApplService {
                     eq("description", color) // did include [ignoreCase: true]
                 }
             }
-            order("sequenceNum") // is this correct ?
+            // order("sequenceNum") // is this correct ?
         }
 
         log.debug "results size = ${results.size()}"
