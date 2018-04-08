@@ -40,6 +40,8 @@ class ProductFeature {
     String description = "" // ex. Small/Medium
     String shortDescription = "" // ex. S/M
     Integer sequenceNum = 0  // sequence of feature within a product feature category
+    Date dateCreated // auto timestamp
+    Date lastUpdated // auto timestamp
 
     // formatted for use in form select fields
     String toString() {

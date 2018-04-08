@@ -40,5 +40,6 @@ class ProductFeatureCategory {
     // to use in a list within a product type like Pressure Gauge
     String shortDescription = "" // ex. Range
     Integer sequenceNum = 0  // sequence of category
-
+    Date dateCreated // auto timestamp
+    Date lastUpdated // auto timestamp
 }

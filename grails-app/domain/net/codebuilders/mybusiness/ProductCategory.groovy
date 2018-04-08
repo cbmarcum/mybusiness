@@ -45,5 +45,12 @@ class ProductCategory {
 
     String description = ""
     ProductCategory parent
+    Date dateCreated // auto timestamp
+    Date lastUpdated // auto timestamp
+
+    // formatted for use in form select fields
+    String toString() {
+        return "${description} < ${parent?.description ?: 'No Parent'} - id:${id}"
+    }
 
 }
