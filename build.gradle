@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.9.1" // updated for variant feature issue 41
+version "3.2.9.2" // updated for product improvements issue #42
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
