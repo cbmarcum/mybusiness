@@ -107,7 +107,14 @@ class BlogController {
                 // entry.author = authorEvaluator.call()?.toString()
                 entry.author = authorEvaluator.call()?.username // to fix SecUser(username:admin)
             }
+
+            // added check for spaces in title
+            if (entry.title.contains(' ')) {
+                entry.title = entry.title.replaceAll(' ', '-')
+            }
+
             entry.published = true
+
             if (entry.save()) {
 
                 // remove any existing tags, and add the new ones
