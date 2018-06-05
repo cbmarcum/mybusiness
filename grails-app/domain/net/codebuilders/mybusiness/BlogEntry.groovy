@@ -11,11 +11,17 @@ class BlogEntry implements Taggable, Commentable {
     Date dateCreated
     Date lastUpdated
 
-    static searchable = [only: ["title", "body", "author"]]
+    static search = {
+        // fields
+        title index: 'yes'
+        body index: 'yes'
+        author index: 'yes'
+    }
 
     static constraints = {
-        title blank: false
-        body blank: false
+        author(maxSize: 50)
+        title(maxSize: 80, blank: false)
+        body(maxSize: 4000, blank: false)
     }
 
     static mapping = {

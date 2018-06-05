@@ -13,7 +13,7 @@
 <div class="container">
 
     <a href="#page-content" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
-                                                             default="Skip to content&hellip;"/></a>
+                                                                  default="Skip to content&hellip;"/></a>
 
     <div class="nav" role="navigation">
         <ul>
@@ -30,14 +30,6 @@
                 <li><g:link class="create" controller="blog" action="createEntry"><g:message
                         code="blog.createEntry"
                         default="blog.createEntry"></g:message></g:link></li>
-                <li><g:link class="edit" controller="blog" action="editEntry" id="${entry.id}">
-                    <g:message code="blog.edit" default="blog.edit"></g:message>
-                </g:link></li>
-
-                <li>
-                    <g:link class="delete" controller="blog" action="deleteEntry" id="${entry.id}">
-                        <g:message code="blog.delete" default="log.delete"></g:message>
-                    </g:link></li>
 
             </sec:access>
         </ul>
@@ -52,6 +44,19 @@
 
     <div class="blogEntryDisplay" id="page-content">
         <g:render template="/blogEntry/entry" model="[entry: entry]"></g:render>
+
+        <sec:access expression="hasRole('ROLE_ADMIN')">
+
+                <fieldset class="buttons">
+                    <g:link class="edit" controller="blog" action="editEntry" id="${entry.id}">
+                        <g:message code="blog.edit" default="blog.edit"></g:message>
+                    </g:link>
+                    <g:link class="delete" controller="blog" action="deleteEntry" id="${entry.id}">
+                        <g:message code="blog.delete" default="blog.delete"></g:message>
+                    </g:link>
+                </fieldset>
+
+        </sec:access>
 
         <div id="comment" class="entryComments">
             <h2><g:message code="blog.comments.title" default="blog.comments.title"></g:message></h2>
