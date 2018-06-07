@@ -16,6 +16,7 @@ class BlogEntry implements Taggable, Commentable {
         title index: 'yes'
         body index: 'yes'
         author index: 'yes'
+        published index: 'yes'
     }
 
     static constraints = {

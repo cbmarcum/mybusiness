@@ -15,7 +15,7 @@
 <div class="container">
 
     <a href="#page-content" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
-                                                               default="Skip to content&hellip;"/></a>
+                                                                  default="Skip to content&hellip;"/></a>
     <sec:access expression="hasRole('ROLE_ADMIN')">
         <div class="nav" role="navigation">
             <ul>
@@ -36,9 +36,9 @@
     </g:if>
 
     <div style="padding-top: 20px;">
-        <p>
-            A blog about Java, Groovy, Grails, MyBusiness, and other software development topics.
-        </p>
+        <h3>
+            A blog about Code Builders, MyBusiness, and other software development topics.
+        </h3>
     </div>
 
     <div id="page-content" class="row">
@@ -77,14 +77,11 @@
             </plugin:isAvailable>
         </div>
 
-        <plugin:isAvailable name="searchable">
-            <div class="searchBox">
-                <g:form url="[controller: 'blog', action: 'search']">
-                    <g:textField name="q"></g:textField>
-                    <g:submitButton name="${message(code: 'blog.search.button', 'default': 'blog.search.button')}"/>
-                </g:form>
-            </div>
-        </plugin:isAvailable>
+
+
+        <g:render template="/blogEntry/menubar-search"/>
+
+
 
         <div class="blogQuickLinks">
             <div id="blogAuthors" class="blogAuthors">

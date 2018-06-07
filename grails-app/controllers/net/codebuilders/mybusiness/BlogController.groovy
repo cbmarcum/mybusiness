@@ -1,8 +1,20 @@
 package net.codebuilders.mybusiness
 
+// for hibernate search
+import org.grails.orm.hibernate.HibernateMappingContextSessionFactoryBean
+import org.hibernate.search.cfg.EntityDescriptor
+import org.hibernate.search.cfg.PropertyDescriptor
+
+import grails.core.GrailsApplication
+import grails.plugins.hibernate.search.HibernateSearchGrailsPlugin
+
+import grails.plugin.springsecurity.SpringSecurityUtils
+
 class BlogController {
 
     def allowedMethods = [publish: 'POST']
+
+    def springSecurityService
 
     def afterInterceptor = { model ->
         def layout = grailsApplication.config.blog.page.layout
@@ -17,7 +29,10 @@ class BlogController {
         Date.parse("yyyy/MM/dd", "$params.year/$month/$day")
     }
 
+
+
     def list = {
+        log.info("Entered blog controller list ...")
         def date = parseDateParams(params)
         def today = new Date()
         def author = params.author
@@ -190,22 +205,186 @@ class BlogController {
     }
 
     def search = {
-        try {
-            def query = params.q?.trim()
+        log.info("entered blog controller search ...")
 
-            if (query) {
-                def searchResult = BlogEntry.search(params.q, escape: true)
-                renderListView searchResult.results, searchResult.total
+        List<BlogEntry> blogEntryList
+        Integer blogEntryCount = 0
+
+        if (params.q != null) {
+
+            log.info "there was a search ..."
+            log.debug("there was a search ...")
+            println "there was a search"
+
+            // since a search returns all params, remove the ones we don't need
+            params.remove('keyword')
+            params.remove('max')
+            params.remove('offset')
+
+            // check for empty search and ignore
+            if (params.q.trim() != "") {
+                log.info "there was a search and it was not blank"
+                log.info "setting keyword"
+                params.keyword = params.q.trim()
 
             } else {
-                renderListView findRecentEntries(), 0
+                log.info "there was a search and it was blank"
+                log.info "not setting keyword"
+            }
+
+            params.remove('q')
+
+
+            log.info "params at the end of search"
+            params.each { k, v ->
+                log.info "${k} = ${v}"
+
             }
         }
-        catch (e) {
-            // ignore, searchable not installed
-            log.error "Search error ${e.message}", e
-            renderListView findRecentEntries(), 0
+
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.offset = params.offset ? params.int('offset') : 0
+
+        if (params.keyword) {
+
+            log.info "entered keyword ..."
+
+            log.info "params at the beginning of keyword"
+            params.each { k, v ->
+                log.info "${k} = ${v}"
+            }
+
+            // log.debug("params.search is not null")
+            // returns as a String first time and as a list of strings the second time
+            // may be fixed after always removing q from params now
+            // we will leave the list join method is just in case
+            // log.info("params.q is a ${params.q.getClass()}")
+            // log.info("params.q = ${params.q}")
+
+
+            def command = [
+                    dateTo : new Date(),
+                    keyword: params.keyword // was keyword: params.list('q').join()
+            ]
+
+
+            blogEntryList = BlogEntry.search().list {
+
+                // allows for filtering on multiple properties when
+                // delimited by a colon
+
+                // for (String filterDef : params.search.split("[:]")) {
+
+                // if using field_filterValue
+                //    String field = filterDef.split('[_]')[0]
+                //     String filterValue = filterDef.split('[_]')[1]
+                //     println "filter $field = $filterValue"
+                //    wildcard field, "*" + filterValue + "*"
+
+                // }
+
+                // we're using filter only and allowing multiple words
+                // split command.keyword by spaces and add wildcards for each field
+                if (command.keyword) {
+                    should {
+                        command.keyword.tokenize().each { keyword ->
+
+                            def wild = keyword.toLowerCase() + '*'
+
+                            wildcard "title", wild
+                            wildcard "body", wild
+                            wildcard "author", wild
+                        }
+                    }
+                }
+
+
+                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
+
+                    mustNot { keyword "published", false }
+                }
+
+                // sort "number", "asc"
+
+                // maxResults page.max
+                // offset page.offset
+                maxResults params.max
+                offset params.offset
+            }
+
+            // get the count
+            blogEntryCount = BlogEntry.search().count {
+
+                // we're using filter only and allowing multiple words
+                // split command.keyword by spaces and add wildcards for each field
+                if (command.keyword) {
+                    should {
+                        command.keyword.tokenize().each { keyword ->
+
+                            def wild = keyword.toLowerCase() + '*'
+
+                            wildcard "title", wild
+                            wildcard "body", wild
+                            wildcard "author", wild
+                        }
+                    }
+                }
+
+                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
+
+                    mustNot { keyword "published", false }
+                }
+            }
+
+
+        } else {
+
+            // copied and modified from list action
+            def date = parseDateParams(params)
+            def today = new Date()
+            def author = params.author
+            // def entries
+            // def totalEntries
+            if (author) {
+                blogEntryList = BlogEntry.withCriteria {
+                    eq 'author', author
+                    eq 'published', true
+
+                    if (date) {
+                        if (params.year)
+                            between 'dateCreated', date, today
+                    }
+                    order "dateCreated", "desc"
+                    maxResults 10
+                    cache true
+                }
+                blogEntryCount = BlogEntry.createCriteria().get {
+                    projections { rowCount() }
+                    eq 'author', author
+                    eq 'published', true
+
+                    if (date) {
+                        if (params.year)
+                            between 'dateCreated', date, today
+                    }
+                    cache true
+                }
+
+            } else {
+                blogEntryList = findRecentEntries()
+                blogEntryCount = BlogEntry.countByPublished(true, [cache: true])
+            }
+
         }
+
+        log.info "${blogEntryList.size()} results"
+
+        log.info "params before respond ..."
+        params.each { k, v ->
+            log.info "${k} = ${v}"
+        }
+
+        renderListView blogEntryList, blogEntryCount
     }
 
     def byAuthor = {
