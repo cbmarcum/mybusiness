@@ -33,7 +33,9 @@ This plugin contains original code and the ideas from the following projects:
  
 [Commentable Plugin 0.8.1] [4] for Grails `1.1` by Graeme Rocher.
 
-[Feeds Plugin 1.6] [5] for Grails `1.3` by Burt Beckwith and Marc Palmer
+[Feeds Plugin 1.6] [5] for Grails `1.3` by Burt Beckwith and Marc Palmer.
+
+[CKeditor Plugin 4.5.9.0] [6] for Grails `3.0` by Stefano Gualdi.
 
 History
 -------
@@ -41,8 +43,11 @@ v3.1.2.0 - changed version scheme from 1.1.0
 
 v3.1.3.0 - added Taggable, Commentable, and Feeds
 
+v3.2.10.0 - updated blog feature 
+
 [1]: http://cbmarcum.github.io/mybusiness/ "MyBusiness Plugin"
 [2]: http://codebuilders.net/project/mybusiness "MyBusiness Project"
 [3]: https://github.com/gpc/taggable "Taggable Plugin"
 [4]: https://github.com/gpc/grails-commentable "Commentable Plugin"
 [5]: https://github.com/gpc/feeds "Feeds Plugin"
+[6]: https://github.com/stefanogualdi/grails-ckeditor "CKEditor Plugin"
