@@ -51,6 +51,36 @@
             <i class="fas fa-info-circle fa-2x"></i>&nbsp;${flash.message}</div>
     </g:if>
 
+    <g:if test="${noticeList}">
+        <g:each in="${noticeList}" status="i" var="noticeInstance">
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">Close</span></button>
+
+                <h2>${fieldValue(bean: noticeInstance, field: "name")}</h2>
+
+                <p>
+                    ${noticeInstance.longDescription.encodeAsRaw()}
+                </p>
+
+            <!-- only create show link to administrator -->
+                <sec:access expression="hasRole('ROLE_ADMIN')">
+                    <p>
+                        Display = <g:formatBoolean boolean="${noticeInstance.display}"/>
+                        <br/>
+                        From Date = <g:formatDate format="yyyy-MM-dd" date="${noticeInstance.fromDate}"/>
+                        <br/>
+                        Thru Date = <g:formatDate format="yyyy-MM-dd" date="${noticeInstance.thruDate}"/>
+                        <br/>
+                        <g:link controller="notice" action="show" id="${noticeInstance.id}">Edit Notice</g:link>
+                    </p>
+                </sec:access>
+            </div> <!-- /.alert -->
+        </g:each>
+    </g:if>
+
+    <div>Hover over image to zoom</div>
+
     <div class="table-responsive">
         <table class="table">
 
@@ -74,29 +104,15 @@
                         ${product?.shortDescription}<br/>
                         List Price: <g:formatNumber number="${product.listPrice}" type="currency"
                                                     currencyCode="USD"/><br/>
-                    <!-- test for out of stock, then test for web sell, then allow paypal  -->
-                        <g:if test="${product.outOfStock}">
-                            <span style="color:red">
-                                <g:message code="product.outOfStock.label" default="Out of Stock"/>
-                            </span>
-                        </g:if>
-                        <g:elseif test="${!product.webSell}">
-                            <span style="color:red">
-                                <g:message code="product.webSell.message" default="Call for Availability"/>
-                            </span>
-                        </g:elseif>
-                        <g:else>
-                            <g:remoteLink controller="shoppingCart" action="add3" params="${[id: product.id]}"
-                                          onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
-                                          onFailure="alert('failure');"
-                                          onComplete="alert('${product.name} added to cart');">
-                                <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif" align="left"
-                                     style="margin-right:7px;">
-                            </g:remoteLink>
-                        </g:else>
-                        <div id="message"></div>
 
-                        <div id="error"></div>
+                        <g:if test="${product.variantGroupId}">
+                            <g:link action="detail" id="${product.id}">Product details and variations</g:link><br/>
+                        </g:if>
+
+                        <g:else>
+                            <g:link action="detail" id="${product.id}">Product details</g:link><br/>
+                        </g:else>
+
                     </td>
 
                 </tr>

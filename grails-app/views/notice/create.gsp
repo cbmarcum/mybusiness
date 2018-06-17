@@ -46,6 +46,7 @@
             <f:field bean="notice" property="display"/>
             <f:field bean="notice" property="fromDate"/>
             <f:field bean="notice" property="thruDate"/>
+            <f:field bean="notice" property="page"/>
         </fieldset>
         <fieldset class="buttons">
             <g:submitButton name="create" class="save"

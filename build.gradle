@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.10.0" // updated for blog improvements issue #46
+version "3.2.11.0" // updated for notice improvements issue #48
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
