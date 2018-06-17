@@ -53,6 +53,7 @@ class ProductController {
     def productFeatureApplService
     ShoppingCartService shoppingCartService
     def springSecurityService
+    NoticeService noticeService
 
     def index(Integer max) {
 
@@ -294,9 +295,11 @@ class ProductController {
         }
         */
 
+        def notices = noticeService.getCurrentNoticesByPage("product")
+
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 
-        respond productList, model: [productCount: productCount]
+        respond productList, model: [productCount: productCount, noticeList: notices]
 
     }
 

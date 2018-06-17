@@ -9,10 +9,12 @@ class Notice {
     static constraints = {
         name(maxSize: 50)
         longDescription(maxSize: 2000)
+        page(maxSize: 50, nullable: true) // domain
     }
 
     String name = ""  // notice name
     String longDescription = "" // field for html page
+    String page = "" // domain for notice
     Date fromDate = new Date()
     Date thruDate = new Date()
 
