@@ -18,7 +18,6 @@
         <h1><g:message code="default.detail.label" args="[product.name]"/></h1>
     </div> <!-- /.page-header -->
 
-
     <div class="row">
 
         <div class="col-md-6">

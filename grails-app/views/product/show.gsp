@@ -13,28 +13,13 @@
     <a href="#show-product" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                   default="Skip to content&hellip;"/></a>
 
-    <div class="nav" role="navigation">
-        <ul>
-            <li><g:link class="home" controller="admin" action="index"><g:message
-                    code="default.admin.home.label"/></g:link></li>
-            <li><g:link class="list" action="index"><g:message code="default.list.label"
-                                                               args="[entityName]"/></g:link></li>
-            <li><g:link class="create" action="create"><g:message code="default.new.label"
-                                                                  args="[entityName]"/></g:link></li>
-        </ul>
-    </div>
-
+    <g:render template="/common/subnav-list-create"/>
 
     <div id="show-product" class="page-header">
         <h1><g:message code="default.show.label" args="[entityName]"/></h1>
     </div>
 
-    <g:if test="${flash.message}">
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                    aria-hidden="true">&times;</span></button>
-            <i class="fas fa-info-circle fa-2x"></i>&nbsp;${flash.message}</div>
-    </g:if>
+    <g:render template="/common/flash-message"/>
 
     <div>
         <dl class="dl-horizontal">
