@@ -9,7 +9,7 @@
 <body>
 <div class="container">
 
-    <g:render template="subnav-list-show"/>
+    <g:render template="/blogEntry/subnav-list-show"/>
 
     <div id="createEntry" class="createEntry">
         <h1>

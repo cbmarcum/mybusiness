@@ -13,6 +13,7 @@ class BlogUrlMappings {
             }
         }
         "/blog/view/$author/$title?"(controller: "blog", action: "showEntry")
+        "/blog/view/$author"(controller: "blog", action: "byAuthor")
         "/blog/tagged/$tag"(controller: "blog", action: "byTag")
         "/blog/entry/create"(controller: "blog", action: "createEntry")
         "/blog/entry/publish/$id?"(controller: "blog", action: "publish")

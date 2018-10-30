@@ -15,7 +15,7 @@
     <a href="#page-content" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                   default="Skip to content&hellip;"/></a>
 
-    <g:render template="subnav-list-home-create"/>
+    <g:render template="/blogEntry/subnav-list-home-create"/>
 
     <g:render template="/common/flash-message"/>
 
@@ -37,7 +37,7 @@
 
         <div id="comment" class="entryComments">
             <h2><g:message code="blog.comments.title" default="blog.comments.title"></g:message></h2>
-            <comments:render bean="${entry}"/>
+            <%-- comments:render bean="${entry}"/ --%>
         </div>
     </div>
 

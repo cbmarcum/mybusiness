@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta name="layout" content="${layout ?: 'main'}"/>
+    <meta name="layout" content="main"/>
     <meta name="description" content="${g.message(code: 'meta.description.blog')}"/>
     <plugin:isAvailable name="feeds">
         <feed:meta kind="rss" version="2.0" controller="blog" action="feed" params="[format: 'rss']"/>
@@ -16,24 +16,9 @@
 
     <a href="#page-content" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                   default="Skip to content&hellip;"/></a>
-    <sec:access expression="hasRole('ROLE_ADMIN')">
-        <div class="nav" role="navigation">
-            <ul>
-                <li><g:link class="home" controller="admin" action="index"><g:message
-                        code="default.admin.home.label"/></g:link></li>
-                <li><g:link class="create" controller="blog" action="createEntry"><g:message
-                        code="blog.createEntry"
-                        default="blog.createEntry"></g:message></g:link></li>
-            </ul>
-        </div>
-    </sec:access>
+    <g:render template="/blogEntry/subnav-home-create"/>
 
-    <g:if test="${flash.message}">
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                    aria-hidden="true">&times;</span></button>
-            <i class="fas fa-info-circle fa-2x"></i>&nbsp;${flash.message}</div>
-    </g:if>
+    <g:render template="/common/flash-message"/>
 
     <div style="padding-top: 20px;">
         <h3>
@@ -66,8 +51,6 @@
     <%-- right-detail --%>
         <div class="col-md-3">
 
-            <div style="padding-top: 20px;"/>
-
             <plugin:isAvailable name="feeds">
                 <div class="menuButton">
                     <g:link class="feed" controller="blog" action="feed" params="[format: 'rss']">
@@ -75,43 +58,42 @@
                     </g:link>
                 </div>
             </plugin:isAvailable>
-        </div>
 
+            <g:render template="/blogEntry/menubar-search"/>
 
+            <div class="blogQuickLinks">
 
-        <g:render template="/blogEntry/menubar-search"/>
+                <div id="blogAuthors" class="blogAuthors">
+                    <h2 class="authorsTitle">
+                        <g:message code="blog.authors.title" default="blog.authors.title"></g:message>
+                    </h2>
 
-
-
-        <div class="blogQuickLinks">
-            <div id="blogAuthors" class="blogAuthors">
-                <h2 class="authorsTitle">
-                    <g:message code="blog.authors.title" default="blog.authors.title"></g:message>
-                </h2>
-
-                <div class="authorsList">
-                    <g:each var="author" in="${authors}">
-                        <div class="author">
-                            <g:link controller="blog" action="showEntry" params="[author: author]">${author}</g:link>
-                        </div>
-                    </g:each>
+                    <div class="authorsList">
+                        <g:each var="author" in="${authors}">
+                            <div class="author">
+                                <g:link controller="blog" action="showEntry"
+                                        params="[author: author]">${author}</g:link>
+                            </div>
+                        </g:each>
+                    </div>
                 </div>
-            </div>
 
-            <div id="blogTags" class="blogTags">
-                <h2 class="tagsTitle">
-                    <g:message code="blog.tags.title" default="blog.tags.title"></g:message>
-                </h2>
+                <div id="blogTags" class="blogTags">
+                    <h2 class="tagsTitle">
+                        <g:message code="blog.tags.title" default="blog.tags.title"></g:message>
+                    </h2>
 
-                <div class="tagList">
-                    <g:each var="tag" in="${tagNames}">
-                        <div class="tag">
-                            <g:link controller="blog" action="byTag" params="[tag: tag]">${tag}</g:link>
-                        </div>
-                    </g:each>
+                    <div class="tagList">
+                        <g:each var="tag" in="${tagNames}">
+                            <div class="tag">
+                                <g:link controller="blog" action="byTag" params="[tag: tag]">${tag}</g:link>
+                            </div>
+                        </g:each>
 
+                    </div>
                 </div>
-            </div>
+
+            </div> <%-- blogQuickLinks --%>
 
         </div> <%-- /.col --%>
     <%-- end right-detail --%>
@@ -119,5 +101,6 @@
     </div> <%-- ./row --%>
 
 </div> <%-- /.container --%>
+
 </body>
 </html>
