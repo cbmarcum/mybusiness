@@ -7,9 +7,45 @@
     <meta name="description" content="${g.message(code: 'meta.description.blog')}"/>
     <title>${entry.title}</title>
 
+    <!-- facebook open graph meta tags -->
+    <meta property="og:url" content="${grailsApplication.config.grails.serverURL}${request.forwardURI}"/>
+    <meta property="og:title" content="${entry.title}"/>
+    <meta property="og:site_name" content="Code Builders, LLC Site"/>
+    <meta property="og:description"
+          content=" Code Builders, LLC provides custom software development and consulting at very reasonable rates. We specialize in Java, Groovy, and Grails programming for Desktop, Web, and Office Automation. We have developed a wide range of software projects. Many of these projects are Web Applications for online sales and product content management, or focused on Office Automation of various tasks in applications such as Microsoft Office and Apache OpenOffice."/>
+    <meta property="og:image"
+          content="${grailsApplication.config.grails.serverURL}/static/images/fb-image-1200x630.png"/>
+    <meta property="fb:app_id" content="${grailsApplication.config.fb.appid}"/>
+    <meta property="fb:admins" content="${grailsApplication.config.fb.admins}"/>
+    <meta property="og:type" content="article"/>
+
 </head>
 
 <body id="entry">
+
+<%-- facebook page plugin placeholder--%>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: "${grailsApplication.config.fb.appid}",
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: 'v3.2'
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
 <div class="container">
 
     <a href="#page-content" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
@@ -41,6 +77,18 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div id="fb-social"></div>
+        </div>
+    </div>
+
 </div> <%-- /.container --%>
+
+<!-- add facebook buttons to footer -->
+<script>
+    document.getElementById("fb-social").innerHTML = '<div class="fb-like" data-href="${grailsApplication.config.grails.serverURL}${request.forwardURI}" data-layout="standard" data-action="like" data-show-faces="false" data-share="true" data-size="large" data-colorscheme="dark"></div>';
+</script>
+
 </body>
 </html>

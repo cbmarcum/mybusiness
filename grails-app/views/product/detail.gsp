@@ -7,9 +7,50 @@
     <g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}"/>
     <title><g:message code="default.detail.label" args="[product.name]"/></title>
 
+    <!-- facebook open graph meta tags -->
+    <meta property="og:url" content="${grailsApplication.config.grails.serverURL}${request.forwardURI}"/>
+    <meta property="og:title" content="${product.name}"/>
+    <meta property="og:site_name" content="Code Builders, LLC Site"/>
+
+    <g:if test="${product?.photos}">
+        <meta property="og:image"
+              content="${grailsApplication.config.grails.serverURL}/storage/uploads/${product.photos[0].photo.getCloudFile("large")}"/>
+    </g:if>
+    <g:else>
+        <meta property="og:image"
+              content="${grailsApplication.config.grails.serverURL}/assets/fb-mb-image-1200x630.png"/>
+    </g:else>
+
+    <meta property="fb:app_id" content="${grailsApplication.config.fb.appid}"/>
+    <meta property="fb:admins" content="${grailsApplication.config.fb.admins}"/>
+    <meta property="og:type" content="product"/>
+
 </head>
 
 <body>
+
+<%-- facebook page plugin placeholder--%>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: "${grailsApplication.config.fb.appid}",
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: 'v3.2'
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 <!-- COPIED IN -->
 <div class="container">
@@ -164,7 +205,7 @@
 <!-- test for out of stock, then test for web sell, then allow paypal
   later - test for option categories, if none remoteLink
   if some, formRemote - see ttlcal detail-->
-    <div class="row">
+    <div class="row" style="padding-top: 20px">
         <div class="col-sm-6">
 
             <g:if test="${product.outOfStock}">
@@ -188,7 +229,7 @@
         </div> <!-- /.col -->
 
         <div class="col-sm-6">
-            <div id="social"></div>
+            <div id="fb-product"></div>
         </div>
     </div> <!-- ./row -->
 
@@ -213,5 +254,11 @@
         return false;
     });
 </script>
+
+<!-- add facebook buttons to product -->
+<script>
+    document.getElementById("fb-product").innerHTML = '<div class="fb-like" data-href="${grailsApplication.config.grails.serverURL}${request.forwardURI}" data-layout="standard" data-action="like" data-show-faces="false" data-size="large" data-share="true" data-colorscheme="dark"></div>';
+</script>
+
 </body>
 </html>
