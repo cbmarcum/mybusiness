@@ -88,7 +88,7 @@
 
 <!-- add facebook buttons to footer -->
 <script>
-    document.getElementById("fb-social").innerHTML = '<div class="fb-like" data-href="${grailsApplication.config.grails.serverURL}${request.forwardURI}" data-layout="standard" data-action="like" data-show-faces="false" data-share="true" data-size="large" data-colorscheme="dark"></div>';
+    document.getElementById("fb-social").innerHTML = '<div class="fb-like" data-href="${grailsApplication.config.grails.serverURL}${request.forwardURI}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" data-size="large" data-colorscheme="dark"></div>';
 </script>
 
 </body>

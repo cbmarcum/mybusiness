@@ -262,7 +262,7 @@
 
 <!-- add facebook buttons to product -->
 <script>
-    document.getElementById("fb-product").innerHTML = '<div class="fb-like" data-href="${grailsApplication.config.grails.serverURL}${request.forwardURI}" data-layout="standard" data-action="like" data-show-faces="false" data-size="large" data-share="true" data-colorscheme="dark"></div>';
+    document.getElementById("fb-product").innerHTML = '<div class="fb-like" data-href="${grailsApplication.config.grails.serverURL}${request.forwardURI}" data-layout="button_count" data-action="like" data-show-faces="false" data-size="large" data-share="true" data-colorscheme="dark"></div>';
 </script>
 
 </body>

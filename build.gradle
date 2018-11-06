@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.12.3" // updated for facebook issue #53
+version "3.2.12.4" // updated for facebook issue #53
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
