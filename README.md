@@ -45,6 +45,10 @@ v3.1.3.0 - added Taggable, Commentable, and Feeds
 
 v3.2.10.0 - updated blog feature 
 
+v3.2.11.0 - updated notice feature with a page field
+
+v3.2.12.0 - added facebook integration for product detail and blog entries
+
 [1]: http://cbmarcum.github.io/mybusiness/ "MyBusiness Plugin"
 [2]: http://codebuilders.net/project/mybusiness "MyBusiness Project"
 [3]: https://github.com/gpc/taggable "Taggable Plugin"
