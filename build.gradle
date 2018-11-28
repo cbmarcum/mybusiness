@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.12.4" // updated for facebook issue #53
+version "3.2.13.0" // updated for bulk spreadsheet import issue #53
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -41,15 +41,6 @@ dependencyManagement {
         mavenBom "org.grails:grails-bom:$grailsVersion"
     }
     applyMavenExclusions false
-}
-
-// only used for multi-project build
-// normally added in dependencies block/
-// added here for hot reloads
-grails {
-    plugins {
-        compile project(':grails-paypal')
-    }
 }
 
 dependencies {
@@ -92,7 +83,8 @@ dependencies {
     // for attaching photos to domains
     compile 'com.bertramlabs.plugins:selfie:1.2.1'
 
-    // compile project(':grails-paypal') // added in plugins block for hot reload
+    // for paypal - currently needs added to local maven .m2 cache
+    compile 'org.grails.plugins:grails-paypal:1.1.0'
 
     // for hibernate search
     compile 'org.grails.plugins:hibernate-search:2.1.1'
