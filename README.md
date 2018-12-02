@@ -18,11 +18,11 @@ $ pwd
 $ ./gradlew assemble
 $ cd build/libs
 $ mvn install:install-file \
-  -DgroupId=org.grails.plugins \
+  -DgroupId=org.grails.plugin \
   -DartifactId=grails-paypal \
   -Dpackaging=jar \
-  -Dversion=1.1.0 \
-  -Dfile=grails-paypal-1.1.0.jar \
+  -Dversion=1.1.1 \
+  -Dfile=grails-paypal-1.1.1.jar \
   -DgeneratePom=true
 ```
 

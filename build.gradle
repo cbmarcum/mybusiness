@@ -43,6 +43,16 @@ dependencyManagement {
     applyMavenExclusions false
 }
 
+// only used for multi-project build
+// normally added in dependencies block/
+// added here for hot reloads
+grails {
+    plugins {
+        compile project(':grails-paypal')
+    }
+}
+
+
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
@@ -84,7 +94,7 @@ dependencies {
     compile 'com.bertramlabs.plugins:selfie:1.2.1'
 
     // for paypal - currently needs added to local maven .m2 cache
-    compile 'org.grails.plugins:grails-paypal:1.1.0'
+    // compile 'org.grails.plugin:grails-paypal:1.1.1'
 
     // for hibernate search
     compile 'org.grails.plugins:hibernate-search:2.1.1'
