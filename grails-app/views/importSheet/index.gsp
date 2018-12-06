@@ -40,13 +40,14 @@
             </tr>
             </thead>
             <tbody>
-            <g:each in="${importSheetList}" status="i" var="sheet">
+            <g:each in="${importSheetList}" status="i" var="importSheet">
                 <tr>
                     <td>
                         <g:link action="show" id="${importSheet.id}">${importSheet.id}</g:link>
                     </td>
                     <td>${importSheet.sheet.getCloudFile('original')}</td>
                     <td>${importSheet.name}</td>
+                    <td>${importSheet.importSheetStatusType.name}</td>
                     <td><g:formatDate format="yyyy-MMM-dd" date="${importSheet.lastUpdated}"/></td>
                 </tr>
             </g:each>

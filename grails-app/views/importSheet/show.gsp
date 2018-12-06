@@ -24,20 +24,23 @@
         <dl class="dl-horizontal">
 
             <dt><g:message code="importSheet.name.label" default="importSheet.name.label"/></dt>
-            <dd><f:display bean="photo" property="name"/></dd>
+            <dd><f:display bean="importSheet" property="name"/></dd>
+
+            <dt><g:message code="importSheet.importSheetStatusType.label" default="importSheet.importSheetStatusType.label"/></dt>
+            <dd><f:display bean="importSheet" property="importSheetStatusType.name"/></dd>
 
             <dt><g:message code="default.dateCreated.label" default="default.dateCreated.label"/></dt>
-            <dd><f:display bean="photo" property="dateCreated"/></dd>
+            <dd><f:display bean="importSheet" property="dateCreated"/></dd>
 
             <dt><g:message code="default.lastUpdated.label" default="default.lastUpdated.label"/></dt>
-            <dd><f:display bean="photo" property="lastUpdated"/></dd>
+            <dd><f:display bean="importSheet" property="lastUpdated"/></dd>
 
         </dl>
     </div>
 
     <g:form resource="${this.importSheet}" method="DELETE">
         <fieldset class="buttons">
-            <g:link class="edit" action="edit" resource="${this.photo}"><g:message code="default.button.edit.label"
+            <g:link class="edit" action="edit" resource="${this.importSheet}"><g:message code="default.button.edit.label"
                                                                                    default="Edit"/></g:link>
 
             <input class="delete" type="submit"

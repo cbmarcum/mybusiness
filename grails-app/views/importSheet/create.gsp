@@ -27,7 +27,14 @@
             <g:render template="form"/>
         </fieldset>
 
-        <input type="file" name="sheet"/><br/>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="sheet">Spreadsheet</label>
+                <input type="file" id="sheet" name="sheet"/>
+
+                <p class="help-block">Select an .ods or .xls spreadsheet</p>
+            </div>
+        </div>
 
         <fieldset class="buttons">
             <g:submitButton name="create" class="save"

@@ -51,6 +51,12 @@ class ImportSheet {
     }
 
     // no static attachmentOptions like Photos domain
+    // mode options - fit, crop, scale
+    static attachmentOptions = [
+            sheet: [
+                    styles: []
+            ]
+    ]
 
     static embedded = ['sheet'] //required
 
