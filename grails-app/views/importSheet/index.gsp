@@ -47,7 +47,7 @@
                     </td>
                     <td>${importSheet.sheet.getCloudFile('original')}</td>
                     <td>${importSheet.name}</td>
-                    <td>${importSheet.importSheetStatusType.name}</td>
+                    <td><g:link action="processSheet" id="${importSheet.id}">${importSheet.importSheetStatusType.name}</g:link></td>
                     <td><g:formatDate format="yyyy-MMM-dd" date="${importSheet.lastUpdated}"/></td>
                 </tr>
             </g:each>

@@ -36,9 +36,11 @@ class ImportSheetController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    ImportSheetService importSheetService
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond ImportSheet.list(params), model:[importSheetCount: ImportSheet.count()]
+        respond ImportSheet.list(params), model: [importSheetCount: ImportSheet.count()]
     }
 
     def show(ImportSheet importSheet) {
@@ -59,11 +61,11 @@ class ImportSheetController {
 
         if (importSheet.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond importSheet.errors, view:'create'
+            respond importSheet.errors, view: 'create'
             return
         }
 
-        importSheet.save flush:true
+        importSheet.save flush: true
 
         request.withFormat {
             form multipartForm {
@@ -88,18 +90,18 @@ class ImportSheetController {
 
         if (importSheet.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond importSheet.errors, view:'edit'
+            respond importSheet.errors, view: 'edit'
             return
         }
 
-        importSheet.save flush:true
+        importSheet.save flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'importSheet.label', default: 'ImportSheet'), importSheet.id])
                 redirect importSheet
             }
-            '*'{ respond importSheet, [status: OK] }
+            '*' { respond importSheet, [status: OK] }
         }
     }
 
@@ -112,14 +114,14 @@ class ImportSheetController {
             return
         }
 
-        importSheet.delete flush:true
+        importSheet.delete flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'importSheet.label', default: 'ImportSheet'), importSheet.id])
-                redirect action:"index", method:"GET"
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -129,17 +131,96 @@ class ImportSheetController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'importSheet.label', default: 'ImportSheet'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
 
-    // added to for selfie plugin
+    // added for selfie plugin
     def upload() {
         def sheet = new ImportSheet(params)
-        if(!sheet.save()) {
+        if (!sheet.save()) {
             println "Error Saving! ${sheet.errors.allErrors}"
         }
         redirect view: "index"
+    }
+
+    // add process sheet action
+    // call ImportSheetService and return status type
+    // return an ajax update of the status
+    // or
+    //
+    @Transactional
+    def processSheet(ImportSheet importSheet) {
+        println "Original filename: ${importSheet.sheet.originalFilename}"
+        println "Filename: ${importSheet.sheet.fileName}"
+        println "Content Type: ${importSheet.sheet.contentType}"
+        // returns
+        /*
+        Original filename: null
+        Filename: mpp-export-sample.ods
+        Content Type: application/octet-stream
+         */
+
+        log.info("Testing a save...")
+        importSheet.save(flush: true)
+
+        // set tp processing
+        // importSheet.importSheetStatusType = ImportSheetStatusType.PROCESSING
+        // importSheet.save(flush: true)
+
+        if (importSheet.sheet.fileName.endsWith(".ods")) {
+            println "we have a Calc file"
+            log.info("we have a Calc file")
+
+            importSheet.importSheetStatusType = importSheetService.processCalc(importSheet)
+
+            log.info("status is ${importSheet.importSheetStatusType.toString()}")
+
+            if (!importSheet.save(flush: true)) {
+                println "Error Saving! ${importSheet.errors.allErrors}"
+            }
+
+        } else if (importSheet.sheet.fileName.endsWith(".xls")) {
+            println "we have an Excel file"
+            importSheet.importSheetStatusType = importSheetService.processExcel(importSheet)
+            importSheet.save(flush: true)
+        } else if (importSheet.sheet.fileName.endsWith(".xlsx")) {
+            println "we have an Excel XML file"
+            importSheet.importSheetStatusType = importSheetService.processExcel(importSheet)
+            importSheet.save(flush: true)
+        } else {
+            println "no filename match"
+            importSheet.importSheetStatusType = ImportSheetStatusType.FAILED
+            importSheet.save(flush: true)
+        }
+
+
+        /*
+        switch (importSheet.sheet.fileName) {
+            case ~/.*\.odt$/:
+                println "we have a Calc file"
+                importSheet.importSheetStatusType = importSheetService.processCalc(importSheet)
+                break
+            case ~/.*\.xls$/:
+                println "we have an Excel file"
+                importSheet.importSheetStatusType = importSheetService.processExcel(importSheet)
+                break
+            case ~/.*\.xlsx$/:
+                println "we have an Excel XML file"
+                importSheet.importSheetStatusType = importSheetService.processExcel(importSheet)
+                break
+            default:
+            println "no filename match"
+            break
+
+        }
+        */
+
+
+
+        // redirect back to index
+        redirect view: "index"
+
     }
 
 }
