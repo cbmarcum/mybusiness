@@ -136,6 +136,7 @@ class ImportSheetController {
     }
 
     // added for selfie plugin
+    @Transactional
     def upload() {
         def sheet = new ImportSheet(params)
         if (!sheet.save()) {
