@@ -15,7 +15,7 @@
           content="${product?.shortDescription}" />
     <g:if test="${product?.photos}">
         <meta property="og:image"
-              content="${product.photos[0].photo.url("large")}/>
+              content="${product.photos[0].photo.url("large")}"/>
         <meta property="og:image:width" content="400"/>
         <meta property="og:image:height" content="400"/>
     </g:if>
