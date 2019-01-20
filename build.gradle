@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.12.4" // updated for facebook issue #53
+version "3.2.14.0" // updated for aws s3 issue #58
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -51,6 +51,7 @@ grails {
         compile project(':grails-paypal')
     }
 }
+
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
@@ -90,15 +91,22 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-test', version: '5.0.0.M5'
 
     // for attaching photos to domains
-    compile 'com.bertramlabs.plugins:selfie:1.2.1'
+    compile 'com.bertramlabs.plugins:selfie:1.2.8' 
 
-    // compile project(':grails-paypal') // added in plugins block for hot reload
+    // for using karman-aws for photos etc.
+    compile 'com.bertramlabs.plugins:karman-aws:1.1.3'  // there is a 1.1.9 ??
+
+    // for paypal - currently needs added to local maven .m2 cache
+    // compile 'org.grails.plugin:grails-paypal:1.1.1'
 
     // for hibernate search
     compile 'org.grails.plugins:hibernate-search:2.1.1'
     compile 'org.grails.plugins:hibernate5:6.1.4'
     compile 'org.hibernate:hibernate-core:5.2.9.Final'
     compile 'org.hibernate:hibernate-ehcache:5.2.9.Final'
+
+    // for excel import
+    compile 'org.grails.plugins:excel-import:3.0.0' // grails 3.2 - 3.0.1 didn't work
 
 
     console "org.grails:grails-console"

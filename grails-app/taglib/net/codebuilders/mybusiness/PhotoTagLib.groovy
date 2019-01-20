@@ -35,7 +35,8 @@ class PhotoTagLib {
     static defaultEncodeAs = [taglib: 'text']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
 
-
+    // s3 url's look like this:
+    // https://s3.us-east-2.amazonaws.com/mbstore1/Photo/88/photo/51cMZHK7S0L_large.jpg
 
     /**
      * Returns HTML for the ElevateZoom image zoom javascript library.
@@ -49,16 +50,19 @@ class PhotoTagLib {
 
         // <cb:zoomImage imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg/>
         // TODO: get these from config
-        def basePath = 'storage'
-        def bucket = 'uploads'
+        // def basePath = 'storage'
+        // def bucket = 'uploads'
+        // def basePath = 'https://s3.us-east-2.amazonaws.com'
+        def basePath = grailsApplication.config.mybusiness.storage.basePath
+        def bucket = grailsApplication.config.mybusiness.storage.bucket // asw s3
 
         // TODO: add alt and title to image
         def imageId = attrs.imageId
         def cloudUrlLarge = attrs.large
         def cloudUrlSmall = attrs.small
 
-        out << "<img id=\"${imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
-
+        // out << "<img id=\"${imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
+        out << "<img id=\"${imageId}\" src=\"${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"${basePath}/${bucket}/${cloudUrlLarge}\"/>"
 
     }
 
@@ -75,8 +79,11 @@ class PhotoTagLib {
 
         // <cb:zoomImage imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg" thumb="Photo/1/photo/IE9413_XX_43_thumb.jpg" />
         // TODO: get these from config
-        def basePath = 'storage'
-        def bucket = 'uploads'
+        // def basePath = 'storage'
+        // def bucket = 'uploads'
+        // def basePath = 'https://s3.us-east-2.amazonaws.com'
+        def basePath = grailsApplication.config.mybusiness.storage.basePath
+        def bucket = grailsApplication.config.mybusiness.storage.bucket // asw s3
 
         // TODO: add alt and title to image
         def imageId = attrs.imageId
@@ -84,11 +91,16 @@ class PhotoTagLib {
         def cloudUrlSmall = attrs.small
         def cloudUrlThumb = attrs.thumb
 
+        /*
         out << "<a href=\"#\" data-image=\"/${basePath}/${bucket}/${cloudUrlSmall}\""
         out << " data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
         out << "<img id=\"${imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlThumb}\" />"
         out << "</a>"
-
+        */
+        out << "<a href=\"#\" data-image=\"${basePath}/${bucket}/${cloudUrlSmall}\""
+        out << " data-zoom-image=\"${basePath}/${bucket}/${cloudUrlLarge}\"/>"
+        out << "<img id=\"${imageId}\" src=\"${basePath}/${bucket}/${cloudUrlThumb}\" />"
+        out << "</a>"
 
     }
 
@@ -104,16 +116,19 @@ class PhotoTagLib {
 
         // <cb:zoomImage class="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg/>
         // TODO: get these from config
-        def basePath = 'storage'
-        def bucket = 'uploads'
+        // def basePath = 'storage'
+        // def bucket = 'uploads'
+        // def basePath = 'https://s3.us-east-2.amazonaws.com'
+        def basePath = grailsApplication.config.mybusiness.storage.basePath
+        def bucket = grailsApplication.config.mybusiness.storage.bucket // asw s3
 
         // TODO: add alt and title to image
         def clazz = attrs.clazz
         def cloudUrlLarge = attrs.large
         def cloudUrlSmall = attrs.small
 
-        out << "<img class=\"${clazz}\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
-
+        // out << "<img class=\"${clazz}\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
+        out << "<img class=\"${clazz}\" src=\"${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"${basePath}/${bucket}/${cloudUrlLarge}\"/>"
     }
 
     /**
@@ -149,14 +164,17 @@ class PhotoTagLib {
 
         // <cb:image image="Photo/1/photo/IE9413_XX_43_large.jpg" />
         // TODO: get these from config
-        def basePath = 'storage'
-        def bucket = 'uploads'
+        // def basePath = 'storage'
+        // def bucket = 'uploads'
+        // def basePath = 'https://s3.us-east-2.amazonaws.com'
+        def basePath = grailsApplication.config.mybusiness.storage.basePath
+        def bucket = grailsApplication.config.mybusiness.storage.bucket // asw s3
 
         // TODO: add alt and title to image
         def cloudUrl = attrs.image
 
-        out << "<img src=\"/${basePath}/${bucket}/${cloudUrl}\" />"
-
+        // out << "<img src=\"/${basePath}/${bucket}/${cloudUrl}\" />"
+        out << "<img src=\"${basePath}/${bucket}/${cloudUrl}\" />"
 
     }
 
