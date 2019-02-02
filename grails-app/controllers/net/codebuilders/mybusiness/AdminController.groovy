@@ -24,4 +24,47 @@ class AdminController {
     def index() { }
 
     def about() { }
+
+    def indexSearch() {
+
+        /*
+        BlogEntry.search().createIndexAndWait()
+        GoodIdentification.search().createIndexAndWait()
+        ProductCategory.search().createIndexAndWait()
+        Product.search().createIndexAndWait()
+        */
+
+        // index only updated at commit time
+        BlogEntry.search().withTransaction { transaction ->
+            BlogEntry.findAll().each {
+                it.search().index()
+            }
+        }
+
+        // index only updated at commit time
+        GoodIdentification.search().withTransaction { transaction ->
+            GoodIdentification.findAll().each {
+                it.search().index()
+            }
+        }
+
+        // index only updated at commit time
+        ProductCategory.search().withTransaction { transaction ->
+            ProductCategory.findAll().each {
+                it.search().index()
+            }
+        }
+
+        // index only updated at commit time
+        Product.search().withTransaction { transaction ->
+            Product.findAll().each {
+                it.search().index()
+            }
+        }
+
+        redirect(action: "index")
+
+    }
+
+
 }

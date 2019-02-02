@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.14.0" // updated for aws s3 issue #58
+version "3.2.14.1" // updated for hibernate-search 2.1.2
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -100,10 +100,12 @@ dependencies {
     // compile 'org.grails.plugin:grails-paypal:1.1.1'
 
     // for hibernate search
-    compile 'org.grails.plugins:hibernate-search:2.1.1'
+    compile 'org.grails.plugins:hibernate-search:2.1.2'
     compile 'org.grails.plugins:hibernate5:6.1.4'
     compile 'org.hibernate:hibernate-core:5.2.9.Final'
     compile 'org.hibernate:hibernate-ehcache:5.2.9.Final'
+
+    compile "org.grails:grails-datastore-gorm-async:6.1.4.RELEASE"
 
     // for excel import
     compile 'org.grails.plugins:excel-import:3.0.0' // grails 3.2 - 3.0.1 didn't work
