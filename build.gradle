@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.14.1" // updated for hibernate-search 2.1.2
+version "3.2.14.2" // blog editor update
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"

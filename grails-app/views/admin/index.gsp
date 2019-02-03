@@ -58,7 +58,13 @@ limitations under the License.
                 Images are copied and scaled to small (150px W x 150px H) and large (300px W x 300px H).<br/>
                 It is best if images are proportional to this (1X Width x 1X Height) before uploading
                 to eliminate cropping of image.
-                Current image file size is limited to 15,000,000 bytes. This can be adjusted in the code.
+                Current image file size is limited to 15,000,000 bytes. This can be adjusted in the code.<br/>
+            </p>
+
+            <p>
+                There is an HTML editor used for product descriptions.  The editor can also be used to
+                display images on the page.
+                For information on the editor see: <a href="#editor">HTML Editor</a>
             </p>
 
             <p>
@@ -76,6 +82,7 @@ limitations under the License.
                 to eliminate cropping of image.
                 Current image file size is limited to 1MB. This can be adjusted in the code.
             </p>
+
             <p>
                 <g:link controller="photo" action="index">Photo List</g:link>
             </p>
@@ -226,6 +233,49 @@ limitations under the License.
                 <g:link controller="secRole" action="index">Role List</g:link><br/>
                 <g:link controller="secUserSecRole" action="index">User Role List</g:link>
             </p>
+
+            <h2>Blog Entry</h2>
+
+            <p>
+                <b>Blog Entry</b> is a table for storing blog entries by users.<br/>
+                Blogs have multiple associated Tags which can be useful for classifying topics
+                of the blog entry.  Once Tags are added to the entry using a comma separated list
+                they will appear on the right side of the page as links.<br/>
+                Entry lists can also be viewed using an <b>Author/YYYY/MM/DD</b> format such as:<br/>
+                <b>http://codebuilders.net/blog/Carl/2019/01/11</b> <br/>
+                You can also be less specific by omitting parameters from the end going backwards like: <br/>
+                <b>http://codebuilders.net/blog/Carl/2019</b> <br/>
+                For information on the editor see: <a href="#editor">HTML Editor</a>
+            </p>
+
+            <p>
+                <g:link controller="blog" action="list">Blog</g:link>
+            </p>
+
+            <h2 id="editor">HTML Editor</h2>
+
+            <p>
+                <b>HTML Editor</b> is a WYSIWYG (what you see is what you get) HTML editor used in places where HTML data
+            needs to be entered and stored in the database like in product descriptions and blog entries. In the editor
+            you can switch between source code and WYSIWYG modes. In WYSIWYG mode there are a number of
+            formatting tools similar to what you would find in a word processor.
+            </p>
+
+            <p>
+                <b>Images</b> can be added by uploading to them the server or by providing a link to an external
+            image hosted elsewhere like Amazon s3 storage.<br/>
+                To make images responsive and scale properly on smaller devices:
+            <ul>
+                <li>use images of the correct size when viewing on desktop computer without scaling.
+                For an image, that means about 700 pixels wide maximum.</li>
+                <li>Add the CSS style class <b>img-responsive</b> to image.</li>
+            </ul>
+            <p>
+                Caution: Images uploaded using the editor are stored on the server's filesystem and could
+                lost between backups in the unlikely event of a catastrophic server failure.
+            </p>
+        </p>
+
         </div> <%-- /.col --%>
     </div> <%-- /.row --%>
 </div> <!-- /.container -->
