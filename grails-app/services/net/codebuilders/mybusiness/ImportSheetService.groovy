@@ -59,7 +59,8 @@ class ImportSheetService {
     /**
      * Process Calc Spreadsheet
      * Parse file and create or update product tables
-     * @params sht* @return ImportSheetStatusType indicating result status
+     * @params sht The ImportSheet object to process
+     * @return ImportSheetStatusType indicating result status
      */
     @Transactional
     def processCalc(ImportSheet sht) {

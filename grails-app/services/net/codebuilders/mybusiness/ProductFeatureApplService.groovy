@@ -70,7 +70,6 @@ class ProductFeatureApplService {
 
     }
 
-    // creates or updates existing application and deletes obsolete if
     /**
      * Creates or updates existing ProductFeatureAppl or deletes obsolete ones.
      * @param p Product to return ProductFeature from
