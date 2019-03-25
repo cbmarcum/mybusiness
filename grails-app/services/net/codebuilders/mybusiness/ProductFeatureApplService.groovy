@@ -35,6 +35,7 @@ class ProductFeatureApplService {
 
     // TODO: determine a real way to group products like by a style or base number
     // get ProductFeatureAppls by Product
+    @Deprecated
     def getPfaByProduct(Product p) {
 
         // get first 7 characters of part number
@@ -67,6 +68,69 @@ class ProductFeatureApplService {
         log.debug "results size = ${results.size()}"
         return results
 
+    }
+
+    // creates or updates existing application and deletes obsolete if
+    /**
+     * Creates or updates existing ProductFeatureAppl or deletes obsolete ones.
+     * @param p Product to return ProductFeature from
+     * @param c ProductFeatureCategory
+     * @return ProductFeature object
+     */
+    def updateByCategoryAndValue(Product p, ProductFeatureCategory c, String val) {
+        String result = ""
+        def allPfas = p.productFeatureAppls
+        List<ProductFeatureAppl> matchPfas = []
+        List<ProductFeatureAppl> removePfas = []
+
+        // find the category matches
+        for (pfa in allPfas) {
+            if (pfa.productFeature.productFeatureCategory == c) {
+                matchPfas << pfa
+            }
+        }
+
+        // find the feature description match
+        for (pfa in matchPfas) {
+            if (val) {
+                ProductFeature currentPf = pfa.productFeature
+                if (currentPf.description != val) {
+                    log.info("currentPf description = ${currentPf.description}")
+                    log.info("color field val = ${val}")
+                    log.info("feature description needs updated")
+                    ProductFeature newPf = ProductFeature.findWhere(productFeatureCategory: c, description: val)
+                    pfa.productFeature = newPf
+                    pfa.save(flush: true)
+                    result = "feature updated"
+                } else {
+                    log.info("feature description matches value")
+                    result = "feature matched current"
+                }
+
+            } else {
+                // category match with no value needs deleted
+                removePfas << pfa
+            }
+        }
+
+        // if we found obsolete ones delete them
+        if (removePfas) {
+            ProductFeatureAppl.deleteAll(removePfas)
+            result += " and removed obsolete feature"
+        }
+
+        // if no category match and val is not empty, create one
+        if (!matchPfas && val) {
+            ProductFeature newPf = ProductFeature.findWhere(productFeatureCategory: c, description: val)
+            ProductFeatureAppl pfa = new ProductFeatureAppl(
+                    product: p, productFeature: newPf,
+                    productFeatureApplType: ProductFeatureApplType.REQUIRED_FEATURE)
+            pfa.save(flush: true)
+            result = "new feature added"
+
+        }
+
+        return result
     }
 
 }

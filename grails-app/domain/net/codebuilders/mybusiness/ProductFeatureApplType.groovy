@@ -27,7 +27,7 @@ package net.codebuilders.mybusiness
  * Enum class to distinguish types of product features.
  *
  * REQUIRED_FEATURE - a "red" item by product number
- * STANDARD_FEATURE - the standard color of an item than can have optional colors
+ * STANDARD_FEATURE - the standard color of an item that can have optional colors
  * OPTIONAL_FEATURE - an optional color for an item that has a standard color
  * SELECTABLE_FEATURE - and item that requires selection of color
  *
