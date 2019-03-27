@@ -655,35 +655,44 @@ class ImportSheetService {
                 String price = xCell.getFormula().trim()
                 // listPrice is a BigDecimal
                 log.info("Price is ${price}")
-                product.listPrice = new BigDecimal(price)
+
+                if (price.isBigDecimal()) {
+                    product.listPrice = new BigDecimal(price)
+                } else {
+                    log.info("Can't make ${price} a decimal")
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
+                }
 
                 // [productFeatureAppls] (Color)
                 col = 18
                 xCell = xSheet.getCellByPosition(col, row)
-                String colorDesc = xCell.getFormula().trim()
-                log.info("Color is ${colorDesc}")
+                String color = xCell.getFormula().trim()
+                log.info("Color is ${color}")
                 // added after product save
 
-                // size (Size)
+                // [productFeatureAppls] (Size)
                 col = 19
                 xCell = xSheet.getCellByPosition(col, row)
                 String size = xCell.getFormula().trim()
-                // ID of a product feature with a PFC of Size
                 log.info("Size ${size}")
+                // added after product save
 
-                // pattern (Pattern)
+                // [productFeatureAppls] (Pattern)
                 col = 20
                 xCell = xSheet.getCellByPosition(col, row)
                 String pattern = xCell.getFormula().trim()
-                // ID of a product feature with a PFC of Pattern or Design
                 log.info("Pattern or Design is ${pattern}")
+                // added after product save
 
-                // count (Count per Pack)
+                // [productFeatureAppls] (Count per Pack)
                 col = 21
                 xCell = xSheet.getCellByPosition(col, row)
                 String count = xCell.getFormula().trim()
-                // ID of a product feature with a PFC of Count per Pack
                 log.info("Count per Pack is ${count}")
+                // added after product save
 
                 // shipWeight (Package Weight in Pounds)
                 col = 22
@@ -691,6 +700,7 @@ class ImportSheetService {
                 String weight = xCell.getFormula().trim()
                 // shipWeight is a BigDecimal
                 log.info("Package Weight in Pounds is ${weight}")
+                // TODO: check for decimal or turn RED
 
                 // variantGroupId (Variant Group ID)
                 col = 23
@@ -779,16 +789,36 @@ class ImportSheetService {
                 }
 
                 log.info("color applications")
-                // if there is a color, it should be for selection in a variation group.
-                // check if there is already a color product feature associated with the product.
-                // if it's not the correct color delete the pfa, and create a new one.
-                // if there is no color and a pfa exists delete the pfa.
                 ProductFeatureCategory pfcColor = ProductFeatureCategory.findByDescription("Color")
                 log.info("product = ${product}")
                 log.info("pfcColor = ${pfcColor}")
-                log.info("colorDesc = ${colorDesc}")
-                String status = productFeatureApplService.updateByCategoryAndValue(product, pfcColor, colorDesc)
-                log.info("Color was ${status}")
+                log.info("color = ${color}")
+                String colorStatus = productFeatureApplService.updateByCategoryAndValue(product, pfcColor, color)
+                log.info("Color was ${colorStatus}")
+
+                log.info("size applications")
+                ProductFeatureCategory pfcSize = ProductFeatureCategory.findByDescription("Size")
+                log.info("product = ${product}")
+                log.info("pfcSize = ${pfcSize}")
+                log.info("size = ${size}")
+                String sizeStatus = productFeatureApplService.updateByCategoryAndValue(product, pfcSize, size)
+                log.info("Size was ${sizeStatus}")
+
+                log.info("pattern applications")
+                ProductFeatureCategory pfcPattern = ProductFeatureCategory.findByDescription("Pattern or Design")
+                log.info("product = ${product}")
+                log.info("pfcPattern = ${pfcPattern}")
+                log.info("pattern = ${pattern}")
+                String patternStatus = productFeatureApplService.updateByCategoryAndValue(product, pfcPattern, pattern)
+                log.info("Pattern was ${patternStatus}")
+
+                log.info("count applications")
+                ProductFeatureCategory pfcCount = ProductFeatureCategory.findByDescription("Count per Pack")
+                log.info("product = ${product}")
+                log.info("pfcCount = ${pfcCount}")
+                log.info("count = ${count}")
+                String countStatus = productFeatureApplService.updateByCategoryAndValue(product, pfcCount, count)
+                log.info("Count was ${countStatus}")
 
 
             } else {
