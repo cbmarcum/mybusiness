@@ -165,6 +165,9 @@ class ImportSheetService {
 
         println "cellRangeAddress.EndRow = ${endRow}"
 
+        // start off positive
+        sht.comments = "No Errors Found"
+
         // iterate data rows and check cells
         (3..endRow).each { row ->
             boolean newEntry = false
@@ -189,6 +192,7 @@ class ImportSheetService {
                     } else {
                         log.info("ID value can't be converted to a Integer")
                         // TODO: turn status cell bg red
+                        sht.comments = "Errors Found"
                     }
                 }
 
@@ -211,6 +215,7 @@ class ImportSheetService {
                 } else {
                     log.info("Sequence value can't be converted to a Integer")
                     // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
                 }
 
                 ProductFeatureCategory pfc = null
@@ -238,6 +243,7 @@ class ImportSheetService {
                         log.info(error.defaultMessage)
                     }
                     // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
                 }
 
             } else {
@@ -294,6 +300,7 @@ class ImportSheetService {
                     } else {
                         log.info("ID value can't be converted to a Integer")
                         // TODO: turn status cell bg red
+                        sht.comments = "Errors Found"
                     }
                 }
 
@@ -317,6 +324,7 @@ class ImportSheetService {
                 } else {
                     log.info("PCF ${pfcDesc} not found")
                     // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
                     return
                 }
 
@@ -330,6 +338,7 @@ class ImportSheetService {
                 } else {
                     log.info("Sequence value can't be converted to a Integer")
                     // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
                 }
 
                 ProductFeature pf = null
@@ -357,6 +366,7 @@ class ImportSheetService {
                         log.info(error.defaultMessage)
                     }
                     // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
                 }
 
             } else {
@@ -413,6 +423,7 @@ class ImportSheetService {
                     } else {
                         log.info("ID value can't be converted to a Integer")
                         // TODO: turn status cell bg red
+                        sht.comments = "Errors Found"
                     }
                 }
 
@@ -434,6 +445,7 @@ class ImportSheetService {
                 } else {
                     log.info("Parent ID value can't be converted to a Integer")
                     // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
                 }
                 log.info("pcParent is ${pcParent}")
 
@@ -459,6 +471,7 @@ class ImportSheetService {
                         log.info(error.defaultMessage)
                     }
                     // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
                 }
 
             } else {
@@ -518,6 +531,7 @@ class ImportSheetService {
                         id = idStr as Integer
                     } else {
                         log.info("ID value can't be converted to a Integer")
+                        sht.comments = "Errors Found"
                         // TODO: turn status cell bg red
                         // set cell style to red bg
                         XPropertySet xCPS = xCell.guno(XPropertySet.class)
@@ -536,6 +550,7 @@ class ImportSheetService {
                         log.info("Updating Product $id")
                     } else {
                         log.info("No Product ID $id found... skipping")
+                        sht.comments = "Errors Found"
                         // set cell style to red bg
                         XPropertySet xCPS = xCell.guno(XPropertySet.class)
                         xCPS.putAt("CellStyle", "RedBg")
@@ -593,6 +608,7 @@ class ImportSheetService {
                             product.productCategories = productCategoryService.getRelatedCategoriesById(intList)
                         } else {
                             log.info("Not all ID's had categories")
+                            sht.comments = "Errors Found"
                             // set cell style to red bg
                             XPropertySet xCPS = xCell.guno(XPropertySet.class)
                             xCPS.putAt("CellStyle", "RedBg")
@@ -601,6 +617,7 @@ class ImportSheetService {
 
                     } else {
                         log.info("One of the category ID's can't be made an Integer")
+                        sht.comments = "Errors Found"
                         // set cell style to red bg
                         XPropertySet xCPS = xCell.guno(XPropertySet.class)
                         xCPS.putAt("CellStyle", "RedBg")
@@ -660,6 +677,7 @@ class ImportSheetService {
                     product.listPrice = new BigDecimal(price)
                 } else {
                     log.info("Can't make ${price} a decimal")
+                    sht.comments = "Errors Found"
                     // set cell style to red bg
                     XPropertySet xCPS = xCell.guno(XPropertySet.class)
                     xCPS.putAt("CellStyle", "RedBg")
@@ -700,13 +718,24 @@ class ImportSheetService {
                 String weight = xCell.getFormula().trim()
                 // shipWeight is a BigDecimal
                 log.info("Package Weight in Pounds is ${weight}")
-                // TODO: check for decimal or turn RED
+                if (weight.isBigDecimal()) {
+                    product.shipWeight = new BigDecimal(weight)
+                } else {
+                    log.info("Can't make ${weight} a decimal")
+                    sht.comments = "Errors Found"
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
+                }
+
 
                 // variantGroupId (Variant Group ID)
                 col = 23
                 xCell = xSheet.getCellByPosition(col, row)
                 String variantGroupId = xCell.getFormula().trim()
                 log.info("Variant Group ID is ${variantGroupId}")
+                product.variantGroupId = variantGroupId
 
                 // primaryVariant (Is Primary Variant)
                 col = 24
@@ -715,12 +744,39 @@ class ImportSheetService {
                 // primaryVariant is a boolean
                 log.info("Is Primary Variant is ${primaryVariant}")
 
+                if (primaryVariant.toLowerCase() == "yes") {
+                    product.primaryVariant = Boolean.TRUE
+                } else if (primaryVariant.toLowerCase() == "no") {
+                    product.primaryVariant = Boolean.FALSE
+                } else {
+                    log.info("Primary Variant has to be Yes or No")
+                    sht.comments = "Errors Found"
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
+                }
+
                 // display (Display)
                 col = 25
                 xCell = xSheet.getCellByPosition(col, row)
                 String display = xCell.getFormula().trim()
                 // display is a boolean
                 log.info("Display is ${display}")
+
+                if (display.toLowerCase() == "yes") {
+                    product.display = Boolean.TRUE
+                } else if (display.toLowerCase() == "no") {
+                    product.display = Boolean.FALSE
+                } else {
+                    log.info("Display has to be Yes or No")
+                    sht.comments = "Errors Found"
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
+                }
+
 
                 // showcase (Showcase)
                 col = 26
@@ -729,6 +785,19 @@ class ImportSheetService {
                 // showcase is a boolean
                 log.info("Showcase is ${showcase}")
 
+                if (showcase.toLowerCase() == "yes") {
+                    product.showcase = Boolean.TRUE
+                } else if (showcase.toLowerCase() == "no") {
+                    product.showcase = Boolean.FALSE
+                } else {
+                    log.info("Showcase has to be Yes or No")
+                    sht.comments = "Errors Found"
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
+                }
+
                 // outOfStock (Out of Stock)
                 col = 27
                 xCell = xSheet.getCellByPosition(col, row)
@@ -736,12 +805,38 @@ class ImportSheetService {
                 // outOfStock is a boolean
                 log.info("Out of Stock is ${outOfStock}")
 
+                if (outOfStock.toLowerCase() == "yes") {
+                    product.outOfStock = Boolean.TRUE
+                } else if (outOfStock.toLowerCase() == "no") {
+                    product.outOfStock = Boolean.FALSE
+                } else {
+                    log.info("Out of Stock has to be Yes or No")
+                    sht.comments = "Errors Found"
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
+                }
+
                 // webSell (Web Sell)
                 col = 28
                 xCell = xSheet.getCellByPosition(col, row)
                 String webSell = xCell.getFormula().trim()
                 // webSell is a boolean
                 log.info("Web Sell is ${webSell}")
+
+                if (webSell.toLowerCase() == "yes") {
+                    product.webSell = Boolean.TRUE
+                } else if (webSell.toLowerCase() == "no") {
+                    product.webSell = Boolean.FALSE
+                } else {
+                    log.info("Web Sell has to be Yes or No")
+                    sht.comments = "Errors Found"
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
+                }
 
                 // TODO: discontinuation dates
 
@@ -756,7 +851,11 @@ class ImportSheetService {
                     product.errors.allErrors.each { org.springframework.validation.FieldError error ->
                         log.info(error.defaultMessage)
                     }
-                    // TODO: turn status cell bg red
+                    sht.comments = "Errors Found"
+                    // set cell style to red bg
+                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
+                    xCPS.putAt("CellStyle", "RedBg")
+                    return // skip to next
                 }
 
                 // finish up things that need a product saved first
