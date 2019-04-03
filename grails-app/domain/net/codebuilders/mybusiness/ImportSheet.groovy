@@ -35,7 +35,7 @@ import com.bertramlabs.plugins.selfie.Attachment
 class ImportSheet {
 
     String name
-    String comments
+    String comments = ""
     // String alt // for img alt tag
     // String title // for img title tag
     Attachment sheet
@@ -47,7 +47,7 @@ class ImportSheet {
         sheet contentType: ['application/vnd.ms-excel', 'application/vnd.oasis.opendocument.spreadsheet'],
                 fileSize:5*1024*1024 // 5mb
         name(maxSize: 50)
-        comments(maxSize: 60, nullable: true)
+        comments(maxSize: 4000, nullable: true)
     }
 
     // no static attachmentOptions like Photos domain

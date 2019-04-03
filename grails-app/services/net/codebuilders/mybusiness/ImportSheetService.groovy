@@ -20,6 +20,7 @@
 
 package net.codebuilders.mybusiness
 
+import com.sun.star.util.XCloseable
 import grails.transaction.Transactional
 
 import com.sun.star.beans.XPropertySet
@@ -28,6 +29,7 @@ import com.sun.star.connection.NoConnectException
 import com.sun.star.frame.XComponentLoader
 import com.sun.star.frame.XController
 import com.sun.star.frame.XModel
+import com.sun.star.frame.XStorable
 import com.sun.star.lang.XComponent
 import com.sun.star.lang.XMultiComponentFactory
 import com.sun.star.sheet.XCellRangeAddressable
@@ -69,9 +71,9 @@ class ImportSheetService {
 
         // work on getting the file out...
         // File f = sht.sheet.getCloudFile("original")
-        def sUrl = sht.sheet.url("original")
+        String sUrl = sht.sheet.url("original")
         log.info("sUrl = ${sUrl}")
-        log.info("sUrl is a ${sUrl.getClass()}") // string
+        log.info("filename = ${sht.sheet.getCloudFile("original").toString()}")
 
 
         // start calc test
@@ -128,6 +130,7 @@ class ImportSheetService {
             log.error("Something is wrong with AOO")
             e.printStackTrace()
             // System.exit(1)
+            // TODO: set failed and return to controller
         }
         // end connect
 
@@ -143,6 +146,15 @@ class ImportSheetService {
         xSpreadsheetDocument = xComponent.getSpreadsheetDocument(mxRemoteContext)
 
         XSpreadsheet xSheetPFC = xSpreadsheetDocument.getSheetByName("PFC")
+
+        StringBuilder sb = new StringBuilder()
+        boolean hasErrors = false
+        boolean hasPfErrors = false
+        boolean hasPfcErrors = false
+        boolean hasPcErrors = false
+        boolean hasProductErrors = false
+
+        sb.append("<h3>Product Feature Categories</h3>")
 
         log.info("Processing Product Feature Categories ...")
 
@@ -164,9 +176,6 @@ class ImportSheetService {
         Integer endRow = cellRangeAddress.EndRow
 
         println "cellRangeAddress.EndRow = ${endRow}"
-
-        // start off positive
-        sht.comments = "No Errors Found"
 
         // iterate data rows and check cells
         (3..endRow).each { row ->
@@ -191,8 +200,9 @@ class ImportSheetService {
                         pfcId = idStr as Integer
                     } else {
                         log.info("ID value can't be converted to a Integer")
-                        // TODO: turn status cell bg red
-                        sht.comments = "Errors Found"
+                        sb.append("Row ${row} skipped. Column ${col}. ID value can't be converted to a Integer <br />")
+                        hasPfcErrors = true
+                        return
                     }
                 }
 
@@ -214,12 +224,12 @@ class ImportSheetService {
                     sequenceNum = number as Integer
                 } else {
                     log.info("Sequence value can't be converted to a Integer")
-                    // TODO: turn status cell bg red
-                    sht.comments = "Errors Found"
+                    sb.append("Row ${row} skipped. Column ${col}. Sequence value can't be converted to a Integer <br />")
+                    hasPfcErrors = true
+                    return
                 }
 
                 ProductFeatureCategory pfc = null
-
 
                 if (newEntry) {
                     // not in db yet
@@ -235,15 +245,14 @@ class ImportSheetService {
                 if (pfc.validate()) {
                     pfc.save(flush: true)
                     log.info("PFC ${desc} saved")
-                    // TODO: turn status cell bg green
                 } else {
                     // print validation errors
                     log.info("PFC did not validate")
                     pfc.errors.allErrors.each { org.springframework.validation.FieldError error ->
                         log.info(error.defaultMessage)
                     }
-                    // TODO: turn status cell bg red
-                    sht.comments = "Errors Found"
+                    sb.append("Row ${row} failed validation <br />")
+                    hasPfcErrors = true
                 }
 
             } else {
@@ -252,10 +261,17 @@ class ImportSheetService {
 
         }
 
+        if (hasPfcErrors) {
+            hasErrors = true
+        } else {
+            sb.append("No product feature category errors.")
+        }
+
         // product features
         XSpreadsheet xSheetPF = xSpreadsheetDocument.getSheetByName("PF")
 
         log.info("Processing Product Features ...")
+        sb.append("<h3>Product Features</h3>")
 
         // validate data
         // --- Find the used area ---
@@ -299,8 +315,9 @@ class ImportSheetService {
                         pfId = idStr as Integer
                     } else {
                         log.info("ID value can't be converted to a Integer")
-                        // TODO: turn status cell bg red
-                        sht.comments = "Errors Found"
+                        sb.append("Row ${row} skipped. Column ${col}. ID value can't be converted to a Integer. <br />")
+                        hasPfErrors = true
+                        return
                     }
                 }
 
@@ -320,11 +337,10 @@ class ImportSheetService {
                 ProductFeatureCategory pfc = ProductFeatureCategory.findByDescription(pfcDesc)
                 if (pfc) {
                     log.info("PCF = ${pfc}")
-                    // TODO: turn status cell bg green
                 } else {
                     log.info("PCF ${pfcDesc} not found")
-                    // TODO: turn status cell bg red
-                    sht.comments = "Errors Found"
+                    sb.append("Row ${row} skipped. Column ${col}. PCF ${pfcDesc} not found. <br />")
+                    hasPfErrors = true
                     return
                 }
 
@@ -337,16 +353,19 @@ class ImportSheetService {
                     sequenceNum = number as Integer
                 } else {
                     log.info("Sequence value can't be converted to a Integer")
-                    // TODO: turn status cell bg red
-                    sht.comments = "Errors Found"
+                    sb.append("Row ${row} skipped. Column ${col}. Sequence value can't be converted to a Integer <br />")
+                    hasPfErrors = true
+                    return
                 }
 
                 ProductFeature pf = null
 
                 if (newEntry) {
                     // not in db yet
-                    pf = new ProductFeature([description           : desc, shortDescription: shortDesc,
-                                             productFeatureCategory: pfc, sequenceNum: sequenceNum])
+                    pf = new ProductFeature([description           : desc,
+                                             shortDescription      : shortDesc,
+                                             productFeatureCategory: pfc,
+                                             sequenceNum           : sequenceNum])
                 } else {
                     pf = ProductFeature.get(pfId)
                     pf.description = desc
@@ -358,15 +377,14 @@ class ImportSheetService {
                 if (pf.validate()) {
                     pf.save(flush: true)
                     log.info("PF ${desc} saved")
-                    // TODO: turn status cell bg green
                 } else {
                     // print validation errors
                     log.info("PF did not validate")
                     pf.errors.allErrors.each { org.springframework.validation.FieldError error ->
                         log.info(error.defaultMessage)
                     }
-                    // TODO: turn status cell bg red
-                    sht.comments = "Errors Found"
+                    sb.append("Row ${row} failed validation <br />")
+                    hasPfErrors = true
                 }
 
             } else {
@@ -375,10 +393,17 @@ class ImportSheetService {
 
         } // end each PF row
 
+        if (hasPfErrors) {
+            hasErrors = true
+        } else {
+            sb.append("No product feature errors.")
+        }
+
         // product categories
         XSpreadsheet xSheetPC = xSpreadsheetDocument.getSheetByName("PC")
 
         log.info("Processing Product Categories ...")
+        sb.append("<h3>Product Categories</h3>")
 
         // validate data
         // --- Find the used area ---
@@ -422,8 +447,9 @@ class ImportSheetService {
                         pcId = idStr as Integer
                     } else {
                         log.info("ID value can't be converted to a Integer")
-                        // TODO: turn status cell bg red
-                        sht.comments = "Errors Found"
+                        sb.append("Row ${row} skipped. Column ${col}. ID value can't be converted to a Integer. <br />")
+                        hasPcErrors = true
+                        return
                     }
                 }
 
@@ -444,8 +470,9 @@ class ImportSheetService {
                     pcParent = ProductCategory.get(parentId)
                 } else {
                     log.info("Parent ID value can't be converted to a Integer")
-                    // TODO: turn status cell bg red
-                    sht.comments = "Errors Found"
+                    sb.append("Row ${row} skipped. Column ${col}. Parent ID value can't be converted to a Integer. <br />")
+                    hasPcErrors = true
+                    return
                 }
                 log.info("pcParent is ${pcParent}")
 
@@ -463,15 +490,14 @@ class ImportSheetService {
                 if (pc.validate()) {
                     pc.save(flush: true)
                     log.info("PC ${desc} saved")
-                    // TODO: turn status cell bg green
                 } else {
                     // print validation errors
                     log.info("PC did not validate")
                     pc.errors.allErrors.each { org.springframework.validation.FieldError error ->
                         log.info(error.defaultMessage)
                     }
-                    // TODO: turn status cell bg red
-                    sht.comments = "Errors Found"
+                    sb.append("Row ${row} failed validation <br />")
+                    hasPcErrors = true
                 }
 
             } else {
@@ -480,10 +506,17 @@ class ImportSheetService {
 
         } // end each PC row
 
+        if (hasPcErrors) {
+            hasErrors = true
+        } else {
+            sb.append("No product category errors.")
+        }
+
         // products
         XSpreadsheet xSheet = xSpreadsheetDocument.getSheetByName("Products")
 
         log.info("Processing Products ...")
+        sb.append("<h3>Products</h3>")
 
         // validate data
         // --- Find the used area ---
@@ -531,11 +564,8 @@ class ImportSheetService {
                         id = idStr as Integer
                     } else {
                         log.info("ID value can't be converted to a Integer")
-                        sht.comments = "Errors Found"
-                        // TODO: turn status cell bg red
-                        // set cell style to red bg
-                        XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                        xCPS.putAt("CellStyle", "RedBg")
+                        sb.append("Row ${row} skipped. Column ${col}. ID value can't be converted to a Integer. <br />")
+                        hasProductErrors = true
                         return // skip to next
                     }
                 }
@@ -550,10 +580,8 @@ class ImportSheetService {
                         log.info("Updating Product $id")
                     } else {
                         log.info("No Product ID $id found... skipping")
-                        sht.comments = "Errors Found"
-                        // set cell style to red bg
-                        XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                        xCPS.putAt("CellStyle", "RedBg")
+                        sb.append("Row ${row} skipped. Column ${col}. No Product ID $id found. <br />")
+                        hasProductErrors = true
                         return // skip to next
                     }
                 }
@@ -608,24 +636,23 @@ class ImportSheetService {
                             product.productCategories = productCategoryService.getRelatedCategoriesById(intList)
                         } else {
                             log.info("Not all ID's had categories")
-                            sht.comments = "Errors Found"
-                            // set cell style to red bg
-                            XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                            xCPS.putAt("CellStyle", "RedBg")
+                            sb.append("Row ${row} skipped. Column ${col}. Not all ID's had categories. <br />")
+                            hasProductErrors = true
                             return // skip to next
                         }
 
                     } else {
                         log.info("One of the category ID's can't be made an Integer")
-                        sht.comments = "Errors Found"
-                        // set cell style to red bg
-                        XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                        xCPS.putAt("CellStyle", "RedBg")
+                        sb.append("Row ${row} skipped. Column ${col}. One of the category ID's can't be made an Integer. <br />")
+                        hasProductErrors = true
                         return // skip to next
                     }
 
                 } else {
                     log.info("Primary Category ID's is empty")
+                    sb.append("Row ${row} skipped. Column ${col}. Primary Category ID's is empty. <br />")
+                    hasProductErrors = true
+                    return
                 }
 
                 // [goodIdentifications] (UPCA)
@@ -677,10 +704,8 @@ class ImportSheetService {
                     product.listPrice = new BigDecimal(price)
                 } else {
                     log.info("Can't make ${price} a decimal")
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} skipped. Column ${col}. Can't make ${price} a decimal. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -722,10 +747,8 @@ class ImportSheetService {
                     product.shipWeight = new BigDecimal(weight)
                 } else {
                     log.info("Can't make ${weight} a decimal")
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} skipped. Column ${col}. Can't make ${weight} a decimal. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -750,10 +773,8 @@ class ImportSheetService {
                     product.primaryVariant = Boolean.FALSE
                 } else {
                     log.info("Primary Variant has to be Yes or No")
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} skipped. Column ${col}. Primary Variant has to be Yes or No. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -770,10 +791,8 @@ class ImportSheetService {
                     product.display = Boolean.FALSE
                 } else {
                     log.info("Display has to be Yes or No")
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} skipped. Column ${col}. Display has to be Yes or No. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -791,10 +810,8 @@ class ImportSheetService {
                     product.showcase = Boolean.FALSE
                 } else {
                     log.info("Showcase has to be Yes or No")
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} skipped. Column ${col}. Showcase has to be Yes or No. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -811,10 +828,8 @@ class ImportSheetService {
                     product.outOfStock = Boolean.FALSE
                 } else {
                     log.info("Out of Stock has to be Yes or No")
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} skipped. Column ${col}. Out of Stock has to be Yes or No. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -831,10 +846,8 @@ class ImportSheetService {
                     product.webSell = Boolean.FALSE
                 } else {
                     log.info("Web Sell has to be Yes or No")
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} skipped. Column ${col}. Web Sell has to be Yes or No. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -844,17 +857,14 @@ class ImportSheetService {
                 if (product.validate()) {
                     product.save(flush: true)
                     log.info("Product ${product.number} saved")
-                    // TODO: turn status cell bg green
                 } else {
                     // print validation errors
                     log.info("Product did not validate")
                     product.errors.allErrors.each { org.springframework.validation.FieldError error ->
                         log.info(error.defaultMessage)
                     }
-                    sht.comments = "Errors Found"
-                    // set cell style to red bg
-                    XPropertySet xCPS = xCell.guno(XPropertySet.class)
-                    xCPS.putAt("CellStyle", "RedBg")
+                    sb.append("Row ${row} failed validation. <br />")
+                    hasProductErrors = true
                     return // skip to next
                 }
 
@@ -926,14 +936,56 @@ class ImportSheetService {
 
         } // end each Product row
 
-        // Disconnect and terminate OOo server
-        log.info("We would disconnect the connector here...")
-        bootstrapSocketConnector.disconnect()
+        if (hasProductErrors) {
+            hasErrors = true
+        } else {
+            sb.append("No product errors.")
+        }
 
         // end calc test
+        if (hasErrors) {
+             sht.importSheetStatusType = ImportSheetStatusType.COMPLETED_WITH_ERRORS
+        } else {
+            sht.importSheetStatusType = ImportSheetStatusType.COMPLETED_WITHOUT_ERRORS
+        }
+
+        // pre-validation
+        if (sb.size() >= 4000) {
+            sht.comments = "Error listings exceeded 4000 character limit !!!"
+        } else {
+            sht.comments = sb.toString()
+        }
+
+        log.info("Validating ImportSheet ${sht}")
+        if (sht.validate()) {
+            sht.save(flush: true)
+            log.info("ImportSheet ${sht.name} saved")
+        } else {
+            // print validation errors
+            log.info("ImportSheet did not validate")
+            sht.errors.allErrors.each { org.springframework.validation.FieldError error ->
+                log.info(error.defaultMessage)
+            }
+
+        }
+
+        log.info("Closing spreadsheet")
+        XCloseable xCloseable = xComponent.guno(XCloseable.class)
+        xCloseable.close(false)
+
+        // Disconnect and terminate OOo server
+        log.info("Disconnecting the connector")
+        bootstrapSocketConnector.disconnect()
 
 
-        return ImportSheetStatusType.COMPLETED
+        // end calc test
+        if (hasErrors) {
+            return ImportSheetStatusType.COMPLETED_WITH_ERRORS
+        } else {
+            return ImportSheetStatusType.COMPLETED_WITHOUT_ERRORS
+        }
+
+
     }
 
     /**

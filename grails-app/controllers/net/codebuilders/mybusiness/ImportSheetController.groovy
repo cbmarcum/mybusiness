@@ -172,13 +172,10 @@ class ImportSheetController {
         if (importSheet.sheet.fileName.endsWith(".ods")) {
             log.info("we have a Calc file")
 
-            importSheet.importSheetStatusType = importSheetService.processCalc(importSheet)
+            ImportSheetStatusType result = importSheetService.processCalc(importSheet)
 
-            log.info("status is ${importSheet.importSheetStatusType.toString()}")
+            log.info("status is ${result.toString()}")
 
-            if (!importSheet.save(flush: true)) {
-                log.error "Error Saving! ${importSheet.errors.allErrors}"
-            }
 
         } else if (importSheet.sheet.fileName.endsWith(".xls")) {
             log.info "we have an Excel file"

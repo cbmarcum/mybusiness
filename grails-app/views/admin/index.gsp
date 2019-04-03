@@ -159,6 +159,17 @@ limitations under the License.
                 <g:link controller="goodIdentification" action="index">Good Identification List</g:link>
             </p>
 
+            <h2>Import Sheet</h2>
+
+            <p>
+                <b>Import Sheet</b> is a table to hold product spreadsheets used to add and update
+            product listings as well as comments generated during processing.
+            </p>
+
+            <p>
+                <g:link controller="importSheet" action="index">Import Sheet List</g:link>
+            </p>
+
             <h2>Specials</h2>
 
             <p>
@@ -270,6 +281,7 @@ limitations under the License.
                 For an image, that means about 700 pixels wide maximum.</li>
                 <li>Add the CSS style class <b>img-responsive</b> to image.</li>
             </ul>
+
             <p>
                 Caution: Images uploaded using the editor are stored on the server's filesystem and could
                 lost between backups in the unlikely event of a catastrophic server failure.

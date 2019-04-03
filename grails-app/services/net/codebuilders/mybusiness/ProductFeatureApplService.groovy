@@ -83,11 +83,16 @@ class ProductFeatureApplService {
         List<ProductFeatureAppl> removePfas = []
 
         // find the category matches
+        log.info("${allPfas.size()} PFA's found")
         for (pfa in allPfas) {
-            if (pfa.productFeature.productFeatureCategory == c) {
+            log.info("pfa.productFeature = ${pfa.productFeature}")
+            log.info("pfa.productFeature.productFeatureCategory = ${pfa.productFeature?.productFeatureCategory}")
+            if (pfa.productFeature?.productFeatureCategory == c) {
                 matchPfas << pfa
             }
         }
+
+        log.info("${matchPfas.size()} PFA's matched category")
 
         // find the feature description match
         for (pfa in matchPfas) {
@@ -120,6 +125,7 @@ class ProductFeatureApplService {
 
         // if no category match and val is not empty, create one
         if (!matchPfas && val) {
+            log.info("creating ProductFeatureAppl of ${val} in category ${c.description}")
             ProductFeature newPf = ProductFeature.findWhere(productFeatureCategory: c, description: val)
             ProductFeatureAppl pfa = new ProductFeatureAppl(
                     product: p, productFeature: newPf,

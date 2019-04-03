@@ -42,4 +42,8 @@ class ProductFeatureCategory {
     Integer sequenceNum = 0  // sequence of category
     Date dateCreated // auto timestamp
     Date lastUpdated // auto timestamp
+
+    String toString() {
+        return "${description} - id:${id}"
+    }
 }
