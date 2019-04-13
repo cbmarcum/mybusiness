@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.14.2" // blog editor update
+version "3.2.15.0" // #56 import sheet feature
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
