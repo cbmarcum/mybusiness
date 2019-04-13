@@ -45,8 +45,8 @@ class Photo {
     static constraints = {
         photo contentType: ['image/png','image/jpeg'], fileSize:1024*1024 // 1mb
         name(maxSize: 50)
-        alt(maxSize: 50, nullable: true)
-        title(maxSize: 50, nullable: true)
+        alt(maxSize: 100, nullable: true)
+        title(maxSize: 100, nullable: true)
     }
 
     // mode options - fit, crop, scale
