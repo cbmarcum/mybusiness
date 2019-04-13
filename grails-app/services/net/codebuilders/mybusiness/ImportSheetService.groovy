@@ -20,7 +20,7 @@
 
 package net.codebuilders.mybusiness
 
-import com.sun.star.util.XCloseable
+import grails.core.GrailsApplication
 import grails.transaction.Transactional
 
 import com.sun.star.beans.XPropertySet
@@ -41,10 +41,19 @@ import com.sun.star.sheet.XSpreadsheetView
 import com.sun.star.sheet.XUsedAreaCursor
 import com.sun.star.sheet.XViewFreezable
 import com.sun.star.table.*
+import com.sun.star.util.XCloseable
 import com.sun.star.uno.XComponentContext
 
 import ooo.connector.BootstrapSocketConnector
 import ooo.connector.server.OOoServer
+
+import com.bertramlabs.plugins.karman.*
+
+import org.apache.commons.io.FilenameUtils
+import org.springframework.mock.web.MockMultipartFile
+
+import java.time.LocalDate
+import java.time.ZoneId
 
 /**
  * Service for ImportSheet
@@ -54,6 +63,7 @@ import ooo.connector.server.OOoServer
 @Transactional(readOnly = true)
 class ImportSheetService {
 
+    GrailsApplication grailsApplication
     ProductService productService
     ProductFeatureApplService productFeatureApplService
     ProductCategoryService productCategoryService
@@ -66,14 +76,56 @@ class ImportSheetService {
      */
     @Transactional
     def processCalc(ImportSheet sht) {
-        println "Entered processCalc"
         log.info("Entered processCalc")
+
+        StringBuilder sb = new StringBuilder()
+        boolean hasErrors = false
+        boolean hasPfErrors = false
+        boolean hasPfcErrors = false
+        boolean hasPcErrors = false
+        boolean hasPhotoErrors = false
+        boolean hasProductErrors = false
 
         // work on getting the file out...
         // File f = sht.sheet.getCloudFile("original")
         String sUrl = sht.sheet.url("original")
         log.info("sUrl = ${sUrl}")
         log.info("filename = ${sht.sheet.getCloudFile("original").toString()}")
+
+        // AWS S3 for images
+        def provider = StorageProvider.create(
+                provider: grailsApplication.config.getProperty('mybusiness.storage.provider'),
+                accessKey: grailsApplication.config.getProperty('mybusiness.storage.accessKey'),
+                secretKey: grailsApplication.config.getProperty('mybusiness.storage.secretKey'),
+                //optional
+                region: grailsApplication.config.getProperty('mybusiness.storage.region'),
+                protocol: 'https',
+                useGzip: false,
+                keepAlive: false,
+                maxConnections: 50
+        )
+        log.info("provider is a ${provider.class}")
+
+        List<Directory> dirs = provider.getDirectories()
+        dirs.each { dir ->
+            log.info("dir name = ${dir.name}")
+        }
+
+        List<CloudFile> cloudFiles = provider[grailsApplication.config.getProperty('mybusiness.storage.bucket')].listFiles(prefix: 'Temp/')
+        cloudFiles.each { file ->
+            log.info("cloud file name = ${file.name}")
+            log.info("cloud file url = ${file.getURL()}")
+        }
+
+        /*
+        CloudFile cf = cloudFiles.find { it.name.contains('nylon-muzzle-black') }
+        if (cf) {
+            log.info("Found ${cf.name}")
+            log.info("content type = ${cf.getContentType()}")
+        } else {
+            log.info("No file found with nylon-muzzle-black in the name")
+        }
+        */
 
 
         // start calc test
@@ -119,20 +171,32 @@ class ImportSheetService {
 
         } catch (NoConnectException nce) {
 
-            log.error("OOo is not responding")
+            log.error("Apache OpenOffice is not responding")
+            sht.comments = "Apache OpenOffice is not responding"
+            hasErrors = true
             nce.printStackTrace()
         } catch (BootstrapException be) {
 
             log.error("ERROR: can't get a component context from a running office ...")
-            println "First check the Office Path string in the script..."
+            log.error("First check the Office Path string in the script...")
+            sht.comments = "ERROR: can't get a component context from a running office ..."
+            hasErrors = true
             be.printStackTrace()
         } catch (Exception e) {
-            log.error("Something is wrong with AOO")
+            log.error("Something is wrong with Apache OpenOffice")
+            sht.comments = "Something is wrong with Apache OpenOffice"
+            hasErrors = true
             e.printStackTrace()
             // System.exit(1)
-            // TODO: set failed and return to controller
         }
         // end connect
+
+        // if we have AOO problem we have to return
+        if (hasErrors) {
+            sht.importSheetStatusType = ImportSheetStatusType.FAILED
+            sht.save(flush: true)
+            return ImportSheetStatusType.FAILED
+        }
 
         // replaces initDocument()
         XComponentLoader aLoader = mxRemoteContext.componentLoader
@@ -147,16 +211,11 @@ class ImportSheetService {
 
         XSpreadsheet xSheetPFC = xSpreadsheetDocument.getSheetByName("PFC")
 
-        StringBuilder sb = new StringBuilder()
-        boolean hasErrors = false
-        boolean hasPfErrors = false
-        boolean hasPfcErrors = false
-        boolean hasPcErrors = false
-        boolean hasProductErrors = false
+        /* ***************************************************************** */
 
-        sb.append("<h3>Product Feature Categories</h3>")
-
+        // product feature categories
         log.info("Processing Product Feature Categories ...")
+        sb.append("<h3>Product Feature Categories</h3>")
 
         // validate data
         // --- Find the used area ---
@@ -266,6 +325,8 @@ class ImportSheetService {
         } else {
             sb.append("No product feature category errors.")
         }
+
+        /* ***************************************************************** */
 
         // product features
         XSpreadsheet xSheetPF = xSpreadsheetDocument.getSheetByName("PF")
@@ -399,6 +460,8 @@ class ImportSheetService {
             sb.append("No product feature errors.")
         }
 
+        /* ***************************************************************** */
+
         // product categories
         XSpreadsheet xSheetPC = xSpreadsheetDocument.getSheetByName("PC")
 
@@ -512,6 +575,133 @@ class ImportSheetService {
             sb.append("No product category errors.")
         }
 
+        /* ***************************************************************** */
+
+        // product photos
+        XSpreadsheet xSheetPhoto = xSpreadsheetDocument.getSheetByName("Photos")
+
+        log.info("Processing Product Photos ...")
+        sb.append("<h3>Product Photos</h3>")
+
+        // validate data
+        // --- Find the used area ---
+        xCursor = xSheetPhoto.createCursor()
+
+        // get the used area so we know how many rows
+        xUsedCursor = xCursor.guno(XUsedAreaCursor.class)
+        // xUsedCursor and xCursor are interfaces of the same object -
+        // so modifying xUsedCursor takes effect on xCursor:
+        xUsedCursor.gotoStartOfUsedArea(false)
+        xUsedCursor.gotoEndOfUsedArea(true)
+
+        xAddr = xCursor.guno(XCellRangeAddressable.class)
+
+        cellRangeAddress = xAddr.getRangeAddress()
+
+        endRow = cellRangeAddress.EndRow
+
+        println "cellRangeAddress.EndRow = ${endRow}"
+
+        // iterate data rows and check cells
+        (3..endRow).each { row ->
+            boolean newEntry = false
+            int photoId = 0
+            int col = 1
+            XCell xCell = xSheetPhoto.getCellByPosition(col, row)
+            // assert xCell.getFormula() == "TEST_SKU_1"
+            if (xCell.getFormula() == "Update") {
+                log.info("Row ${row} needs updated")
+
+                col = 2
+                xCell = xSheetPhoto.getCellByPosition(col, row)
+
+                if (xCell.type == CellContentType.EMPTY) {
+                    newEntry = true
+                    log.info("ID is empty")
+                } else {
+                    String idStr = xCell.getFormula().trim()
+
+                    if (idStr.isInteger()) {
+                        photoId = idStr as Integer
+                    } else {
+                        log.info("ID value can't be converted to a Integer")
+                        sb.append("Row ${row} skipped. Column ${col}. ID value can't be converted to a Integer. <br />")
+                        hasPhotoErrors = true
+                        return
+                    }
+                }
+
+                col = 3
+                xCell = xSheetPhoto.getCellByPosition(col, row)
+                String name = xCell.getFormula().trim()
+                log.info("Name is ${name}")
+
+                col = 4
+                xCell = xSheetPhoto.getCellByPosition(col, row)
+                String alt = xCell.getFormula().trim()
+                log.info("Alt is ${alt}")
+
+                col = 5
+                xCell = xSheetPhoto.getCellByPosition(col, row)
+                String title = xCell.getFormula().trim()
+                log.info("Title is ${title}")
+
+                Photo photo = null
+                MockMultipartFile mf = null
+
+                if (newEntry) {
+                    // not in db yet
+                    // find photo
+                    CloudFile cf = cloudFiles.find { it.name.contains(name) }
+                    if (cf) {
+                        log.info("Found ${cf.name}")
+                        log.info("content type = ${cf.getContentType()}")
+                        log.info("utils name = ${FilenameUtils.getName(cf.name)}")
+                        mf = new MockMultipartFile(name, FilenameUtils.getName(cf.name), cf.getContentType(), cf.bytes)
+                    } else {
+                        log.info("No file found with ${name} in the name")
+                        sb.append("No file found with ${name} in the name.")
+                    }
+
+                    photo = new Photo([name : name,
+                                       alt  : alt,
+                                       title: title,
+                                       photo: mf])
+                } else {
+                    photo = ProductFeature.get(photoId)
+                    photo.name = name
+                    photo.alt = alt
+                    photo.title = title
+                    // we don't update photo
+                }
+
+                if (photo.validate()) {
+                    photo.save(flush: true)
+                    log.info("Photo ${name} saved")
+                } else {
+                    // print validation errors
+                    log.info("Photo did not validate")
+                    photo.errors.allErrors.each { org.springframework.validation.FieldError error ->
+                        log.info(error.defaultMessage)
+                    }
+                    sb.append("Row ${row} failed validation <br />")
+                    hasPhotoErrors = true
+                }
+
+            } else {
+                log.info("Skipping row ${row}.")
+            }
+        }
+
+        if (hasPhotoErrors) {
+            hasErrors = true
+        } else {
+            sb.append("No photo errors.")
+        }
+
+
+        /* ***************************************************************** */
+
         // products
         XSpreadsheet xSheet = xSpreadsheetDocument.getSheetByName("Products")
 
@@ -549,6 +739,7 @@ class ImportSheetService {
 
                 Product product = null
                 List<ProductCategory> productCategories = []
+                List<Photo> photos = []
 
                 // id
                 col = 2
@@ -691,7 +882,111 @@ class ImportSheetService {
                 log.info("Tax Code is ${taxCode}")
                 product.taxCode = taxCode
 
-                // TODO: images
+                col = 12
+                xCell = xSheet.getCellByPosition(col, row)
+                String image1 = xCell.getFormula().trim()
+                log.info("Image 1 is ${image1}")
+                if (image1) {
+                    Photo photo1 = Photo.findByName(image1)
+                    if (photo1) {
+                        log.info("adding photo 1 ${photo1} to photos")
+                        photos << photo1
+                    } else {
+                        log.info("No photo 1 with name ${image1} found")
+                        sb.append("Row ${row} skipped. Column ${col}. No photo 1 with name ${image1} found. <br />")
+                        hasProductErrors = true
+                        return // skip to next
+                    }
+                }
+
+                col = 13
+                xCell = xSheet.getCellByPosition(col, row)
+                String image2 = xCell.getFormula().trim()
+                log.info("Image 2 is ${image2}")
+                if (image2) {
+                    Photo photo2 = Photo.findByName(image2)
+                    if (photo2) {
+                        log.info("adding photo 2 ${photo2} to photos")
+                        photos << photo2
+                    } else {
+                        log.info("No photo 2 with name ${image2} found")
+                        sb.append("Row ${row} skipped. Column ${col}. No photo 2 with name ${image2} found. <br />")
+                        hasProductErrors = true
+                        return // skip to next
+                    }
+                }
+
+                col = 14
+                xCell = xSheet.getCellByPosition(col, row)
+                String image3 = xCell.getFormula().trim()
+                log.info("Image 3 is ${image3}")
+                if (image3) {
+                    Photo photo3 = Photo.findByName(image3)
+                    if (photo3) {
+                        log.info("adding photo 3 ${photo3} to photos")
+                        photos << photo3
+                    } else {
+                        log.info("No photo 3 with name ${image3} found")
+                        sb.append("Row ${row} skipped. Column ${col}. No photo 3 with name ${image3} found. <br />")
+                        hasProductErrors = true
+                        return // skip to next
+                    }
+                }
+
+                col = 15
+                xCell = xSheet.getCellByPosition(col, row)
+                String image4 = xCell.getFormula().trim()
+                log.info("Image 4 is ${image4}")
+                if (image4) {
+                    Photo photo4 = Photo.findByName(image4)
+                    if (photo4) {
+                        log.info("adding photo 4 ${photo4} to photos")
+                        photos << photo4
+                    } else {
+                        log.info("No photo 4 with name ${image4} found")
+                        sb.append("Row ${row} skipped. Column ${col}. No photo 4 with name ${image4} found. <br />")
+                        hasProductErrors = true
+                        return // skip to next
+                    }
+                }
+
+                col = 16
+                xCell = xSheet.getCellByPosition(col, row)
+                String image5 = xCell.getFormula().trim()
+                log.info("Image 5 is ${image5}")
+                if (image5) {
+                    Photo photo5 = Photo.findByName(image5)
+                    if (photo5) {
+                        log.info("adding photo5 ${photo5} to photos")
+                        photos << photo5
+                    } else {
+                        log.info("No photo 5 with name ${image5} found")
+                        sb.append("Row ${row} skipped. Column ${col}. No photo 5 with name ${image5} found. <br />")
+                        hasProductErrors = true
+                        return // skip to next
+                    }
+                }
+
+                if (!photos) {
+                    // add no-image
+                    Photo photo0 = Photo.findByName("no-image")
+                    if (photo0) {
+                        log.info("adding photo0 ${photo0} to photos")
+                        photos << photo0
+                        log.info("adding photos to product")
+                        product.photos = photos
+                    } else {
+                        log.info("No listed photos found and no-image not found")
+                        sb.append("Row ${row} skipped. Column ${col}. No listed photos found and no-image not found. <br />")
+                        hasProductErrors = true
+                        return // skip to next
+                    }
+                } else {
+                    // add to product
+                    log.info("adding photos to product")
+                    product.photos = photos
+                }
+
 
                 // listPrice (Price)
                 col = 17
@@ -851,7 +1146,48 @@ class ImportSheetService {
                     return // skip to next
                 }
 
-                // TODO: discontinuation dates
+                // salesDiscontinuationDate (Sales Discontinuation Date)
+                col = 29
+                xCell = xSheet.getCellByPosition(col, row)
+                String salesStr = xCell.getFormula().trim()
+                // salesDiscontinuationDate is a Date
+                log.info("Sales Discontinuation Date is ${salesStr}")
+                if (salesStr.isLong()) {
+                    long salesLong = salesStr as Long
+                    // 25569 days between Calc/Excel Epoch of 1899-12-30 and UNIX/Linux Epoch of 1970-01-01
+                    LocalDate salesLocal = LocalDate.ofEpochDay(salesLong - 25569)
+                    log.info("salesLocal = ${salesLocal}")
+                    Date salesDate = Date.from(salesLocal.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    product.salesDiscontinuationDate = salesDate
+                } else {
+                    // not an long
+                    log.info("Sales Discontinuation Date must be a valid date")
+                    sb.append("Row ${row} skipped. Column ${col}. Sales Discontinuation Date must be a valid date <br />")
+                    hasProductErrors = true
+                    return // skip to next
+                }
+
+                // supportDiscontinuationDate (Support Discontinuation Date)
+                col = 30
+                xCell = xSheet.getCellByPosition(col, row)
+                String supportStr = xCell.getFormula().trim()
+                // supportDiscontinuationDate is a Date
+                log.info("Support Discontinuation Date is ${supportStr}")
+                if (supportStr.isLong()) {
+                    long supportLong = supportStr as Long
+                    // 25569 days between Calc/Excel Epoch of 1899-12-30 and UNIX/Linux Epoch of 1970-01-01
+                    LocalDate supportLocal = LocalDate.ofEpochDay(supportLong - 25569)
+                    log.info("supportLocal = ${supportLocal}")
+                    Date supportDate = Date.from(supportLocal.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    product.supportDiscontinuationDate = supportDate
+                } else {
+                    // not an long
+                    log.info("Support Discontinuation Date must be a valid date")
+                    sb.append("Row ${row} skipped. Column ${col}. Support Discontinuation Date must be a valid date <br />")
+                    hasProductErrors = true
+                    return // skip to next
+                }
+
 
                 log.info("Validating Product ${product}")
                 if (product.validate()) {
@@ -936,6 +1272,8 @@ class ImportSheetService {
 
         } // end each Product row
 
+        /* ***************************************************************** */
+
         if (hasProductErrors) {
             hasErrors = true
         } else {
@@ -944,7 +1282,7 @@ class ImportSheetService {
 
         // end calc test
         if (hasErrors) {
-             sht.importSheetStatusType = ImportSheetStatusType.COMPLETED_WITH_ERRORS
+            sht.importSheetStatusType = ImportSheetStatusType.COMPLETED_WITH_ERRORS
         } else {
             sht.importSheetStatusType = ImportSheetStatusType.COMPLETED_WITHOUT_ERRORS
         }
@@ -984,7 +1322,6 @@ class ImportSheetService {
         } else {
             return ImportSheetStatusType.COMPLETED_WITHOUT_ERRORS
         }
-
 
     }
 
