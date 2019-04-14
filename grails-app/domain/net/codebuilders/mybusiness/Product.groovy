@@ -92,7 +92,7 @@ class Product {
     List<String> otherAttributes = []
     List <Photo> photos = []
 
-    // sku, upc, etc can also by in GoodIdentification
+    // sku, upc, etc can also be in GoodIdentification
     // this number is easier to show in product list
     String number = "" // primary part number for product listing - for sku amazon 40, walmart 50
     String name = ""  // part name - ebay 80 char
@@ -103,7 +103,7 @@ class Product {
     String largeDescription = "" // large detail page description
     String conditionDescription = "" // to further describe condition especially for used - ebay 1000
     String variantGroupId = ""  // to group variants together for color, size, countPerPack, etc.
-    String taxCode = ''  // for a yet undetermined tax system
+    String taxCode = ''  // using taxware US tax code also used by walmart. see US_Tax_Codes_2017
 
     BigDecimal listPrice = 0.00 // catalog price
 
@@ -114,15 +114,16 @@ class Product {
     // or a product with no other variation
     Boolean primaryVariant = true
 
-    Boolean display = true // display in catalog
+    Boolean display = true // display in product list
     Boolean showcase = false // use for special display
     Boolean outOfStock = false // show as out of stock
-    Boolean webSell = true // can be added to cart
+    Boolean webSell = true // can be added to cart - false gets Call for Availability
 
     Date dateCreated // auto timestamp
     Date lastUpdated // auto timestamp
-    Date salesDiscontinuationDate
-    Date supportDiscontinuationDate
+    // used in criteria for product listing
+    Date salesDiscontinuationDate = new Date().parse('yyyy/MM/dd', '2070/01/01')
+    Date supportDiscontinuationDate = new Date().parse('yyyy/MM/dd', '2070/01/01')
 
     // for paypal
     BigDecimal shipWeight = 0.00 // ship weight in pounds

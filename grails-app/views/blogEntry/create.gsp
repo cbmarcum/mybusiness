@@ -54,8 +54,14 @@
                          maxLength="80" placeholder="80 chars max"/>
             </div>
 
-            <g:actionSubmit action="publish" value="${message(code: 'blog.publish.button', default: 'Publish')}"/>
+        <%--<g:actionSubmit action="publish" value="${message(code: 'blog.publish.button', default: 'Publish')}"/>--%>
         <%--<g:actionSubmit action="save" value="${message(code:'blog.save.button',default:'Save Draft')}" />--%>
+
+            <fieldset class="buttons">
+                <input class="save" type="submit"
+                       value="${message(code: 'blog.publish.button', default: 'Publish')}"/>
+            </fieldset>
+
         </g:form>
     </div>
 

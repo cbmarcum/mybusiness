@@ -37,7 +37,8 @@ public enum ImportSheetStatusType {
 
     READY('Ready'),
     PROCESSING('Processing'),
-    COMPLETED('Completed'),
+    COMPLETED_WITH_ERRORS('Completed with errors'),
+    COMPLETED_WITHOUT_ERRORS('Completed without errors'),
     FAILED('Failed')
 
     static constraints = {
@@ -52,7 +53,7 @@ public enum ImportSheetStatusType {
     }
 
     static list() {
-        [READY, PROCESSING, COMPLETED, FAILED]
+        [READY, PROCESSING, COMPLETED_WITH_ERRORS, COMPLETED_WITHOUT_ERRORS, FAILED]
     }
 
 }

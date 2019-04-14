@@ -146,6 +146,14 @@ grails.commentable.poster.evaluator = mybusiness.author.evaluator
 grails.plugin.seed.autoSeed = true
 // grails.plugin.seed.environment='[development]'
 
+// for cloud storage used by karman and selfie
+mybusiness.storage.provider = 'YOUR-PROVIDER' // ex. s3
+mybusiness.storage.accessKey = 'KEY'
+mybusiness.storage.secretKey = 'KEY'
+mybusiness.storage.region = 'YOUR-REGION' // ex. us-east-2
+mybusiness.storage.bucket = 'BUCKET'
+
+
 // for selfie plugin
 grails {
     plugin {

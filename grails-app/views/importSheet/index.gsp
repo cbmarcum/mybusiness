@@ -18,6 +18,12 @@
         <h1><g:message code="default.list.label" args="[entityName]"/></h1>
     </div>
 
+    <div>
+        After uploading a spreadsheet, select the Ready link to process the sheets.<br/>
+        Link will change to Completed or Failed when finished.<br/>
+        Failed links can be followed to see details.
+    </div>
+
     <g:render template="/common/flash-message"/>
 
     <div class="table-responsive">
@@ -47,7 +53,19 @@
                     </td>
                     <td>${importSheet.sheet.getCloudFile('original')}</td>
                     <td>${importSheet.name}</td>
-                    <td><g:link action="processSheet" id="${importSheet.id}">${importSheet.importSheetStatusType.name}</g:link></td>
+                    <g:if test="${importSheet.importSheetStatusType.name == 'Ready'}">
+                        <td>
+                            <g:link action="processSheet"
+                                    id="${importSheet.id}">${importSheet.importSheetStatusType.name}</g:link>
+                        </td>
+                    </g:if>
+                    <g:else>
+                        <td>
+                            <g:link action="show"
+                                    id="${importSheet.id}">${importSheet.importSheetStatusType.name}</g:link>
+                        </td>
+                    </g:else>
+
                     <td><g:formatDate format="yyyy-MMM-dd" date="${importSheet.lastUpdated}"/></td>
                 </tr>
             </g:each>

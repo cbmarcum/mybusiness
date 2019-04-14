@@ -152,9 +152,9 @@ class ImportSheetController {
     //
     @Transactional
     def processSheet(ImportSheet importSheet) {
-        println "Original filename: ${importSheet.sheet.originalFilename}"
-        println "Filename: ${importSheet.sheet.fileName}"
-        println "Content Type: ${importSheet.sheet.contentType}"
+        log.info("Original filename: ${importSheet.sheet.originalFilename}")
+        log.info("Filename: ${importSheet.sheet.fileName}")
+        log.info("Content Type: ${importSheet.sheet.contentType}")
         // returns
         /*
         Original filename: null
@@ -165,32 +165,28 @@ class ImportSheetController {
         log.info("Testing a save...")
         importSheet.save(flush: true)
 
-        // set tp processing
+        // set to processing
         // importSheet.importSheetStatusType = ImportSheetStatusType.PROCESSING
         // importSheet.save(flush: true)
 
         if (importSheet.sheet.fileName.endsWith(".ods")) {
-            println "we have a Calc file"
             log.info("we have a Calc file")
 
-            importSheet.importSheetStatusType = importSheetService.processCalc(importSheet)
+            ImportSheetStatusType result = importSheetService.processCalc(importSheet)
 
-            log.info("status is ${importSheet.importSheetStatusType.toString()}")
+            log.info("status is ${result.toString()}")
 
-            if (!importSheet.save(flush: true)) {
-                println "Error Saving! ${importSheet.errors.allErrors}"
-            }
 
         } else if (importSheet.sheet.fileName.endsWith(".xls")) {
-            println "we have an Excel file"
+            log.info "we have an Excel file"
             importSheet.importSheetStatusType = importSheetService.processExcel(importSheet)
             importSheet.save(flush: true)
         } else if (importSheet.sheet.fileName.endsWith(".xlsx")) {
-            println "we have an Excel XML file"
+            log.info "we have an Excel XML file"
             importSheet.importSheetStatusType = importSheetService.processExcel(importSheet)
             importSheet.save(flush: true)
         } else {
-            println "no filename match"
+            log.info "no filename match"
             importSheet.importSheetStatusType = ImportSheetStatusType.FAILED
             importSheet.save(flush: true)
         }

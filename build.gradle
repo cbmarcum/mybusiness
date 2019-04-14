@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.14.1" // updated for hibernate-search 2.1.2
+version "3.2.15.0" // #56 import sheet feature
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -109,6 +109,15 @@ dependencies {
 
     // for excel import
     compile 'org.grails.plugins:excel-import:3.0.0' // grails 3.2 - 3.0.1 didn't work
+    
+    // for openoffice
+    compile "net.codebuilders:juh:4.1.6"
+    compile "net.codebuilders:ridl:4.1.6"
+    compile "net.codebuilders:unoil:4.1.6"
+    compile "net.codebuilders:jurt:4.1.6"
+    compile "net.codebuilders:bootstrap-connector:4.1.6.0"
+    // compile "net.codebuilders:guno-extension:4.1.6.0"
+    compile "net.codebuilders:guno-extension:4.1.6.9-SNAPSHOT"
 
 
     console "org.grails:grails-console"

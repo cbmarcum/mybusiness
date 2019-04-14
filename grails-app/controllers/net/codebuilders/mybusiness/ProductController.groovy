@@ -54,6 +54,7 @@ class ProductController {
     ShoppingCartService shoppingCartService
     def springSecurityService
     NoticeService noticeService
+    ProductCategoryService productCategoryService
 
     def index(Integer max) {
 
@@ -341,6 +342,10 @@ class ProductController {
             return
         }
 
+        // make sure we have all the ancestor categories
+        List<ProductCategory> tempList = product.productCategories
+        product.productCategories = productCategoryService.getRelatedCategories(tempList)
+
         product.save flush: true
 
         request.withFormat {
@@ -369,6 +374,10 @@ class ProductController {
             respond product.errors, view: 'edit'
             return
         }
+
+        // make sure we have all the ancestor categories
+        List<ProductCategory> tempList = product.productCategories
+        product.productCategories = productCategoryService.getRelatedCategories(tempList)
 
         product.save flush: true
 
