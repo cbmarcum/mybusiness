@@ -159,6 +159,7 @@ class ImportSheetService {
             // Create OOo server with additional -headless option
             List oooOptions = OOoServer.getDefaultOOoOptions()
             oooOptions.add("-headless")
+            oooOptions.add("-nofirststartwizard")
             OOoServer oooServer = new OOoServer(oooExeFolder, oooOptions)
             // Connect to OOo
             bootstrapSocketConnector = new BootstrapSocketConnector(oooServer)
