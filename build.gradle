@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version "3.2.15.1" // #56 import sheet feature
+version "3.2.15.2" // #56 import sheet feature
 group "net.codebuilders.mybusiness"
 
 apply plugin:"eclipse"
@@ -117,8 +117,8 @@ dependencies {
     compile "net.codebuilders:jurt:4.1.6"
     compile "net.codebuilders:bootstrap-connector:4.1.6.0"
     // compile "net.codebuilders:guno-extension:4.1.6.0"
-    compile "net.codebuilders:guno-extension:4.1.6.9-SNAPSHOT"
-
+    // compile "net.codebuilders:guno-extension:4.1.6.9-SNAPSHOT"
+    compile "net.codebuilders:guno-extension:4.1.6.10"
 
     console "org.grails:grails-console"
     profile "org.grails.profiles:web-plugin:3.1.8"

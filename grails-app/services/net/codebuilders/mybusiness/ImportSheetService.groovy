@@ -92,6 +92,26 @@ class ImportSheetService {
         log.info("sUrl = ${sUrl}")
         log.info("filename = ${sht.sheet.getCloudFile("original").toString()}")
 
+        // workaround for null XComponent when trying to open a http or https url.
+        // may be because it's read-only. not tested yet.
+        URL source = new URL(sUrl)
+        File deleteMe = new File("/tmp/temp-sheet.ods")
+        if (deleteMe.exists()) {
+            log.info("temp file found... deleting...")
+            deleteMe.delete()
+        }
+        File tmp = new File("/tmp/temp-sheet.ods")
+        source.withInputStream { is ->
+            tmp.withOutputStream { os->
+                def bs = new BufferedOutputStream( os )
+                bs << is
+            }
+        }
+        // replace sUrl with temp file path
+        sUrl = "file:///${tmp.getAbsolutePath()}"
+        log.info("new sUrl = ${sUrl}")
+        // end workaround
+
         // AWS S3 for images
         def provider = StorageProvider.create(
                 provider: grailsApplication.config.getProperty('mybusiness.storage.provider'),
@@ -201,12 +221,22 @@ class ImportSheetService {
 
         // replaces initDocument()
         XComponentLoader aLoader = mxRemoteContext.componentLoader
+        if (aLoader) {
+            log.info("XComponentLoader = ${aLoader}")
+        } else {
+            log.info("Didn't get an XComponentLoader")
+        }
 
         // xComponent = aLoader.loadComponentFromURL(
         //         "private:factory/scalc", "_default", 0, new com.sun.star.beans.PropertyValue[0])
 
         xComponent = aLoader.loadComponentFromURL(
-                sUrl, "_default", 0, new com.sun.star.beans.PropertyValue[0])
+                sUrl, "_blank", 0, new com.sun.star.beans.PropertyValue[0])
+        if (xComponent) {
+            log.info("XComponent = ${xComponent}")
+        } else {
+            log.info("Didn't get an XComponent")
+        }
 
         xSpreadsheetDocument = xComponent.getSpreadsheetDocument(mxRemoteContext)
 
@@ -1315,6 +1345,9 @@ class ImportSheetService {
         // Disconnect and terminate OOo server
         log.info("Disconnecting the connector")
         bootstrapSocketConnector.disconnect()
+
+        // clean up tmp file
+        tmp.delete()
 
 
         // end calc test
