@@ -5,7 +5,8 @@
         <i class="fas fa-exclamation-triangle fa-2x">&nbsp;</i>
         <ul>
             <g:eachError bean="${this.product}" var="error">
-                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>>
+                <li>
+                    <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>
                     <g:message error="${error}"/>
                 </li>
             </g:eachError>

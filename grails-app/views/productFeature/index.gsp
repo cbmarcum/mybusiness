@@ -37,7 +37,7 @@
                                   title="${message(code: 'product.shortDescription.label', default: 'product.shortDescription.label')}"/>
 
                 <g:sortableColumn property="sequenceNum"
-                                  title="${message(code: 'default.sequenceNum.label', default: 'pdefault.sequenceNum.label')}"/>
+                                  title="${message(code: 'default.sequenceNum.label', default: 'default.sequenceNum.label')}"/>
 
                 <g:sortableColumn property="lastUpdated"
                                   title="${message(code: 'default.lastUpdated.label', default: 'default.lastUpdated.label')}"/>
