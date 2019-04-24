@@ -23,9 +23,6 @@
         <table class="table table-condensed">
             <thead>
             <tr>
-                <g:sortableColumn property="id"
-                                  title="${message(code: 'default.id.label', default: 'default.id.label')}"/>
-
                 <g:sortableColumn property="secUser"
                                   title="${message(code: 'secUser.label', default: 'secUser.label')}"/>
 
@@ -37,10 +34,11 @@
             <g:each in="${secUserSecRoleList}" status="i" var="item">
                 <tr>
                     <td>
-                        <g:link action="show" id="${item.id}">${item.id}</g:link>
+                        <g:link action="show" secUserSecRole="${item}">${item.secUser.username}</g:link>
                     </td>
-                    <td>${item.secUser.username}</td>
-                    <td>${item.secRole.authority}</td>
+                    <td>
+                        <g:link action="show" secUserSecRole="${item}">${item.secRole.authority}</g:link>
+                    </td>
                 </tr>
             </g:each>
             </tbody>
