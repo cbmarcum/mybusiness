@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <g:set var="entityName" value="${message(code: 'productFeatureAppl.label', default: 'ProductFeatureAppl')}"/>
+    <g:set var="entityName" value="${message(code: 'productFeatureAppl.label', default: 'productFeatureAppl.label')}"/>
     <title><g:message code="default.show.label" args="[entityName]"/></title>
 </head>
 
@@ -11,26 +11,13 @@
     <a href="#show-productFeatureAppl" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                              default="Skip to content&hellip;"/></a>
 
-    <div class="nav" role="navigation">
-        <ul>
-            <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-            <li><g:link class="list" action="index"><g:message code="default.list.label"
-                                                               args="[entityName]"/></g:link></li>
-            <li><g:link class="create" action="create"><g:message code="default.new.label"
-                                                                  args="[entityName]"/></g:link></li>
-        </ul>
-    </div>
+    <g:render template="/common/subnav-list-create"/>
 
     <div id="show-productFeatureAppl" class="page-header">
         <h1><g:message code="default.show.label" args="[entityName]"/></h1>
     </div>
 
-    <g:if test="${flash.message}">
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                    aria-hidden="true">&times;</span></button>
-            <i class="fas fa-info-circle fa-2x"></i>&nbsp;${flash.message}</div>
-    </g:if>
+    <g:render template="/common/flash-message"/>
 
     <div>
         <dl class="dl-horizontal">
@@ -48,17 +35,13 @@
 
             <dt><g:message code="default.dateCreated.label" default="default.dateCreated.label"/></dt>
             <dd><f:display bean="productFeatureAppl" property="dateCreated">
-                <g:formatDate format="yyyy-MMM-dd" date="${value}"/>
-            </f:display></dd>
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/></f:display></dd>
 
             <dt><g:message code="default.lastUpdated.label" default="default.lastUpdated.label"/></dt>
             <dd><f:display bean="productFeatureAppl" property="lastUpdated">
-                <g:formatDate format="yyyy-MMM-dd" date="${value}"/>
-            </f:display></dd>
-
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/></f:display></dd>
         </dl>
     </div>
-
 
     <g:form resource="${this.productFeatureAppl}" method="DELETE">
         <fieldset class="buttons">
