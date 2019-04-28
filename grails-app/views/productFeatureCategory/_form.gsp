@@ -14,7 +14,7 @@
             <span class="required-indicator">*</span>
         </label>
         <g:field type="text" class="form-control" name="description"
-                 value="${productFeatureCategory?.shortDescription}"
+                 value="${productFeatureCategory?.description}"
                  maxLength="50" placeholder="50 chars max" required="true"/>
     </div>
 
