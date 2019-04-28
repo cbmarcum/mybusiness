@@ -210,7 +210,7 @@
 
         </label>
         <g:select name="productCategories" from="${net.codebuilders.mybusiness.ProductCategory.list()}"
-                  multiple="multiple"
+                  multiple="true"
                   optionKey="id" optionValue="description" size="5" value="${product?.productCategories*.id}"
                   class="many-to-many"/>
     </div>
@@ -227,7 +227,7 @@
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'otherAttributes', 'error')} ">
         <label for="otherAttributes">
-            <g:message code="product.otherAttributes.label" default="product.otherAttributes.labe"/>
+            <g:message code="product.otherAttributes.label" default="product.otherAttributes.label"/>
         </label>
     </div>
 

@@ -2,33 +2,36 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <g:set var="entityName" value="${message(code: 'productFeature.label', default: 'ProductFeature')}"/>
+    <g:set var="entityName" value="${message(code: 'productFeature.label', default: 'productFeature.label')}"/>
     <title><g:message code="default.create.label" args="[entityName]"/></title>
 </head>
 
 <body>
-<a href="#create-productFeature" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
-                                                                       default="Skip to content&hellip;"/></a>
+<div class="container">
 
-<g:render template="/common/subnav-list"/>
+    <a href="#create-productFeature" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
+                                                                           default="Skip to content&hellip;"/></a>
 
-<div id="create-productFeature" class="page-header">
-    <h1><g:message code="default.create.label" args="[entityName]"/></h1>
-</div>
+    <g:render template="/common/subnav-list"/>
 
-<g:render template="/common/flash-message"/>
+    <div id="create-productFeature" class="page-header">
+        <h1><g:message code="default.create.label" args="[entityName]"/></h1>
+    </div>
 
-<g:render template="has-errors"/>
+    <g:render template="/common/flash-message"/>
 
-<g:form action="save">
-    <fieldset class="form">
-        <f:all bean="productFeature"/>
-    </fieldset>
-    <fieldset class="buttons">
-        <g:submitButton name="create" class="save"
-                        value="${message(code: 'default.button.create.label', default: 'Create')}"/>
-    </fieldset>
-</g:form>
+    <g:render template="has-errors"/>
 
+    <g:form action="save">
+        <fieldset class="form">
+            <g:render template="form"/>
+        </fieldset>
+        <fieldset class="buttons">
+            <g:submitButton name="create" class="save"
+                            value="${message(code: 'default.button.create.label', default: 'Create')}"/>
+        </fieldset>
+    </g:form>
+
+</div> <%-- /.container --%>
 </body>
 </html>

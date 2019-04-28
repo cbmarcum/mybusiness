@@ -15,7 +15,7 @@
         </label>
         <g:field type="text" class="form-control" name="description"
                  value="${productFeatureCategory?.shortDescription}"
-                 maxLength="50" placeholder="50 chars max"/>
+                 maxLength="50" placeholder="50 chars max" required="true"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: productFeatureCategory, field: 'shortDescription', 'error')} ">
@@ -26,7 +26,7 @@
         </label>
         <g:field type="text" class="form-control" name="shortDescription"
                  value="${productFeatureCategory?.shortDescription}"
-                 maxLength="25" placeholder="25 chars max"/>
+                 maxLength="25" placeholder="25 chars max" required="true"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: productFeatureCategory, field: 'sequenceNum', 'error')} ">
