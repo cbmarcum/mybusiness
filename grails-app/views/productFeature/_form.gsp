@@ -12,7 +12,7 @@
             <g:message code="productFeatureCategory.label" default="productFeatureCategory.label"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select name="productFeatureCategory" from="${net.codebuilders.mybusiness.ProductFeatureCategory.list()}"
+        <g:select class="form-control" name="productFeatureCategory" from="${net.codebuilders.mybusiness.ProductFeatureCategory.list()}"
                   optionKey="id" optionValue="description"
                   value="${productFeature?.productFeatureCategory?.id}"/>
     </div>

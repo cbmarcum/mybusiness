@@ -124,34 +124,35 @@
 
 </div>
 
+<div>
+    <div class="checkbox-inline ${hasErrors(bean: product, field: 'display', 'error')} ">
+        <label>
+            <g:checkBox name="display" value="${product?.display}"/>
+            <g:message code="product.display.label" default="product.display.label"/>
+        </label>
+    </div>
 
-<div class="checkbox-inline ${hasErrors(bean: product, field: 'display', 'error')} ">
-    <label>
-        <g:checkBox name="display" value="${product?.display}"/>
-        <g:message code="product.display.label" default="product.display.label"/>
-    </label>
-</div>
+    <div class="checkbox-inline ${hasErrors(bean: product, field: 'showcase', 'error')} ">
+        <label for="showcase">
+            <g:checkBox name="showcase" value="${product?.showcase}"/>
+            <g:message code="product.showcase.label" default="product.showcase.labele"/>
+        </label>
 
-<div class="checkbox-inline ${hasErrors(bean: product, field: 'showcase', 'error')} ">
-    <label for="showcase">
-        <g:checkBox name="showcase" value="${product?.showcase}"/>
-        <g:message code="product.showcase.label" default="product.showcase.labele"/>
-    </label>
+    </div>
 
-</div>
+    <div class="checkbox-inline ${hasErrors(bean: product, field: 'outOfStock', 'error')} ">
+        <label for="outOfStock">
+            <g:checkBox name="outOfStock" value="${product?.outOfStock}"/>
+            <g:message code="product.outOfStock.label" default="product.outOfStock.label"/>
+        </label>
+    </div>
 
-<div class="checkbox-inline ${hasErrors(bean: product, field: 'outOfStock', 'error')} ">
-    <label for="outOfStock">
-        <g:checkBox name="outOfStock" value="${product?.outOfStock}"/>
-        <g:message code="product.outOfStock.label" default="product.outOfStock.label"/>
-    </label>
-</div>
-
-<div class="checkbox-inline ${hasErrors(bean: product, field: 'webSell', 'error')} ">
-    <label for="webSell">
-        <g:checkBox name="webSell" value="${product?.webSell}"/>
-        <g:message code="product.webSell.label" default="product.webSell.label"/>
-    </label>
+    <div class="checkbox-inline ${hasErrors(bean: product, field: 'webSell', 'error')} ">
+        <label for="webSell">
+            <g:checkBox name="webSell" value="${product?.webSell}"/>
+            <g:message code="product.webSell.label" default="product.webSell.label"/>
+        </label>
+    </div>
 </div>
 
 <div class="row">
@@ -178,11 +179,11 @@
         <label for="productFeatureAppls">
             <g:message code="product.productFeatureAppls.label" default="product.productFeatureAppls.label"/>
         </label>
-
         <ul class="one-to-many">
             <g:each in="${product?.productFeatureAppls ?}" var="p">
                 <li><g:link controller="productFeatureAppl" action="show"
-                            id="${p.id}"><b>${p.productFeature.productFeatureCategory.description}</b> - ${p?.productFeature?.description}</g:link></li>
+                            id="${p.id}"><b>${p.productFeature.productFeatureCategory.description}</b> - ${p?.productFeature?.description}</g:link>
+                </li>
             </g:each>
             <g:if test="${params.action == 'edit'}">
                 <li class="add">
@@ -204,15 +205,16 @@
             Example: Selecting Shirts will also add Apparel. Hold CTRL to select additional categories.
         </p>
     </div>
+
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'productCategories', 'error')} ">
         <label for="productCategories">
-            <g:message code="product.productCategories.label" default="product.productCategories.labels"/>
+            <g:message code="product.productCategories.label" default="product.productCategories.label"/>
 
         </label>
         <g:select name="productCategories" from="${net.codebuilders.mybusiness.ProductCategory.list()}"
                   multiple="true"
-                  optionKey="id" optionValue="description" size="5" value="${product?.productCategories*.id}"
-                  class="many-to-many"/>
+                  optionKey="id" size="5" value="${product?.productCategories*.id}"
+                  class="form-control many-to-many"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'productType', 'error')} required">
@@ -220,8 +222,8 @@
             <g:message code="product.productType.label" default="product.productType.label"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select name="productType" from="${net.codebuilders.mybusiness.ProductType?.values()}"
-                  keys="${net.codebuilders.mybusiness.ProductType.values()*.name()}" required=""
+        <g:select class="form-control" name="productType" from="${net.codebuilders.mybusiness.ProductType?.values()}"
+                  keys="${net.codebuilders.mybusiness.ProductType.values()*.name()}" required="true"
                   value="${product?.productType?.name()}"/>
     </div>
 
