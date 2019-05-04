@@ -11,7 +11,7 @@
             <span class="required-indicator">*</span>
         </label>
         <g:select class="selectpicker form-control" name="product" from="${net.codebuilders.mybusiness.Product?.list()}"
-                  optionKey="id" size="5" value="${productFeatureAppl?.product?.id}"
+                  optionKey="id" data-size="4" value="${productFeatureAppl?.product?.id}"
                   required="true" multiple data-max-options="1" data-live-search="true" title="Select a product by sku or id"/>
     </div>
 
@@ -22,7 +22,7 @@
         </label>
         <g:select class="selectpicker form-control" name="productFeature"
                   from="${net.codebuilders.mybusiness.ProductFeature?.list()}"
-                  optionKey="id" size="5" value="${productFeatureAppl?.productFeature?.id}"
+                  optionKey="id" data-size="4" value="${productFeatureAppl?.productFeature?.id}"
                   required="true" multiple data-max-options="1" data-live-search="true" title="Select product feature"/>
     </div>
 

@@ -22,8 +22,8 @@
         <label for="parent">
             <g:message code="productCategory.parent.label" default="productCategory.parent.label"/>
         </label>
-        <g:select class="form-control" name="parent" from="${net.codebuilders.mybusiness.ProductCategory.list()}"
-                  optionKey="id"
+        <g:select class="selectpicker form-control" name="parent" from="${net.codebuilders.mybusiness.ProductCategory.list()}"
+                  optionKey="id" data-size="4"
                   value="${productCategory?.parent?.id}" noSelection="${['null': 'No Parent']}"/>
     </div>
 

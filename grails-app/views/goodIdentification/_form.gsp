@@ -10,9 +10,9 @@
             <g:message code="product.label" default="product.label"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select class="form-control" name="product" from="${net.codebuilders.mybusiness.Product?.list()}"
-                  optionKey="id" size="5" value="${goodIdentification?.product?.id}"
-                  required="true" />
+        <g:select class="selectpicker form-control" name="product" from="${net.codebuilders.mybusiness.Product?.list()}"
+                  optionKey="id" data-size="4" value="${goodIdentification?.product?.id}"
+                  required="true" multiple data-max-options="1" data-live-search="true" title="Select a product by sku or id" />
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: goodIdentification, field: 'goodIdentificationType', 'error')} required">
