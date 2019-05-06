@@ -15,6 +15,7 @@ class BlogController {
     def allowedMethods = [publish: 'POST']
 
     def springSecurityService
+    NoticeService noticeService
 
     def afterInterceptor = { model ->
         def layout = grailsApplication.config.blog.page.layout
@@ -197,11 +198,14 @@ class BlogController {
         def allTags = BlogEntry.executeQuery(listAllHQL)
         */
 
+        def notices = noticeService.getCurrentNoticesByPage("Blog")
+
         render(view: "/blogEntry/list", model: [entries     : entries,
                                                 authors     : findBlogAuthors(),
                                                 tagNames    : BlogEntry.allTags,
                                                 // tagNames    : allTags,
-                                                totalEntries: totalEntries])
+                                                totalEntries: totalEntries,
+                                                noticeList: notices])
     }
 
     def search = {

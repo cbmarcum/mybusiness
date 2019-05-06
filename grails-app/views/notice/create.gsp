@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <g:set var="entityName" value="${message(code: 'notice.label', default: 'Notice')}"/>
+    <g:set var="entityName" value="${message(code: 'notice.label', default: 'notice.label')}"/>
     <title><g:message code="default.create.label" args="[entityName]"/></title>
     <ckeditor:resources/>
     <asset:stylesheet src="bootstrap-datepicker3.css"/>
@@ -16,36 +16,24 @@
 
     <g:render template="/common/subnav-list"/>
 
-    <div id="create-notice" class="content scaffold-create" role="main">
+    <div id="create-notice" class="page-header">
         <h1><g:message code="default.create.label" args="[entityName]"/></h1>
-
-        <g:render template="/common/flash-message"/>
-
-        <g:rendor template="has-errors"/>
-
-        <g:form action="save">
-            <fieldset class="form">
-                <f:field class="form-control" bean="notice" property="name"/>
-                <div class="fieldcontain ${hasErrors(bean: notice, field: 'longDescription', 'error')} ">
-                    <label for="longDescription">
-                        <g:message code="notice.longDescription.label" default="Long Description"/>
-
-                    </label>
-                    <ckeditor:editor name="longDescription" height="200px" width="90%" toolbar="Basic">
-                        ${notice?.longDescription}
-                    </ckeditor:editor>
-                </div>
-                <f:field bean="notice" property="display"/>
-                <f:field class="form-control" bean="notice" property="fromDate"/>
-                <f:field bean="notice" property="thruDate"/>
-                <f:field bean="notice" property="page"/>
-            </fieldset>
-            <fieldset class="buttons">
-                <g:submitButton name="create" class="save"
-                                value="${message(code: 'default.button.create.label', default: 'Create')}"/>
-            </fieldset>
-        </g:form>
     </div>
+
+    <g:render template="/common/flash-message"/>
+
+    <g:render template="has-errors"/>
+
+    <g:form action="save">
+        <fieldset class="form">
+            <g:render template="form"/>
+        </fieldset>
+        <fieldset class="buttons">
+            <g:submitButton name="create" class="save"
+                            value="${message(code: 'default.button.create.label', default: 'Create')}"/>
+        </fieldset>
+    </g:form>
+
 </div>
 </body>
 </html>

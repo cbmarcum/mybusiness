@@ -20,6 +20,8 @@
 
     <g:render template="/common/flash-message"/>
 
+    <g:render template="/common/notice-message"/>
+
     <div style="padding-top: 20px;">
         <h3>
             A blog about Code Builders, MyBusiness, and other software development topics.
