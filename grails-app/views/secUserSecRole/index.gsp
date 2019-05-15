@@ -34,10 +34,10 @@
             <g:each in="${secUserSecRoleList}" status="i" var="item">
                 <tr>
                     <td>
-                        <g:link action="show" secUserSecRole="${item}">${item.secUser.username}</g:link>
+                        <g:link action="show" params="[secUser: item.secUser, secRole: item.secRole]">${item.secUser.username}</g:link>
                     </td>
                     <td>
-                        <g:link action="show" secUserSecRole="${item}">${item.secRole.authority}</g:link>
+                        <g:link action="show" params="[secUser: item.secUser, secRole: item.secRole]">${item.secRole.authority}</g:link>
                     </td>
                 </tr>
             </g:each>
