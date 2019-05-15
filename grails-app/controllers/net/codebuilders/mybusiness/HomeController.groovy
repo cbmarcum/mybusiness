@@ -2,12 +2,12 @@ package net.codebuilders.mybusiness
 
 class HomeController {
 
-    def noticeService
+    NoticeService noticeService
     def rssFeedService
 
     def index() {
-        def notices = noticeService.getCurrentNotices()
+        def notices = noticeService.getCurrentNoticesByPage("Home")
         def feeds = rssFeedService.getFeedsByDisplay()
-        [noticeInstanceList: notices, feedList: feeds]
+        [noticeList: notices, feedList: feeds]
     }
 }

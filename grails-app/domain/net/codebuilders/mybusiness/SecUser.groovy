@@ -7,43 +7,43 @@ import groovy.transform.ToString
 @ToString(includes='username', includeNames=true, includePackage=false)
 class SecUser implements Serializable {
 
-	private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1
 
-	transient springSecurityService
+    transient springSecurityService
 
-	String username
-	String password
-	boolean enabled = true
-	boolean accountExpired
-	boolean accountLocked
-	boolean passwordExpired
+    String username
+    String password
+    boolean enabled = true
+    boolean accountExpired
+    boolean accountLocked
+    boolean passwordExpired
 
-	Set<SecRole> getAuthorities() {
-		SecUserSecRole.findAllBySecUser(this)*.secRole
-	}
+    Set<SecRole> getAuthorities() {
+        SecUserSecRole.findAllBySecUser(this)*.secRole
+    }
 
-	def beforeInsert() {
-		encodePassword()
-	}
+    def beforeInsert() {
+        encodePassword()
+    }
 
-	def beforeUpdate() {
-		if (isDirty('password')) {
-			encodePassword()
-		}
-	}
+    def beforeUpdate() {
+        if (isDirty('password')) {
+            encodePassword()
+        }
+    }
 
-	protected void encodePassword() {
-		password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
-	}
+    protected void encodePassword() {
+        password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+    }
 
-	static transients = ['springSecurityService']
+    static transients = ['springSecurityService']
 
-	static constraints = {
-		password blank: false, password: true
-		username blank: false, unique: true
-	}
+    static constraints = {
+        password blank: false, password: true
+        username blank: false, unique: true
+    }
 
-	static mapping = {
-		password column: '`password`'
-	}
+    static mapping = {
+        password column: '`password`'
+    }
 }

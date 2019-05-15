@@ -296,7 +296,7 @@ class ProductController {
         }
         */
 
-        def notices = noticeService.getCurrentNoticesByPage("product")
+        def notices = noticeService.getCurrentNoticesByPage("Product")
 
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 

@@ -2,12 +2,11 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}"/>
+    <g:set var="entityName" value="${message(code: 'product.label', default: 'product.label')}"/>
     <title><g:message code="default.show.label" args="[entityName]"/></title>
 </head>
 
 <body>
-
 <div class="container">
 
     <a href="#show-product" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
@@ -78,20 +77,24 @@
             <dd><f:display bean="product" property="webSell"/></dd>
 
             <dt><g:message code="default.dateCreated.label" default="Created Date"/></dt>
-            <dd><f:display bean="product" property="dateCreated"/></dd>
+            <dd><f:display bean="product" property="dateCreated"/>
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/></dd>
 
             <dt><g:message code="default.lastUpdated.label" default="Last Updated Date"/></dt>
-            <dd><f:display bean="product" property="lastUpdated"/></dd>
+            <dd><f:display bean="product" property="lastUpdated"/>
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/></dd>
 
             <dt><g:message code="product.salesDiscontinuationDate.label"
                            default="Sales Discontinuation Date"/></dt>
-            <dd><f:display bean="product" property="salesDiscontinuationDate"/></dd>
+            <dd><f:display bean="product" property="salesDiscontinuationDate"/>
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/></dd>
 
             <dt><g:message code="product.supportDiscontinuationDate.label"
                            default="Support Discontinuation Date"/></dt>
-            <dd><f:display bean="product" property="supportDiscontinuationDate"/></dd>
+            <dd><f:display bean="product" property="supportDiscontinuationDate"/>
+                <g:formatDate format="yyyy-MMM-dd" date="${value}"/></dd>
 
-            <dt><g:message code="product.goodIdentifications.label" default="Good Identifications"/></dt>
+            <dt><g:message code="goodIdentifications.label" default="Good Identifications"/></dt>
             <dd>
                 <g:each in="${product.goodIdentifications}" var="pg">
                     <b>${pg.goodIdentificationType}</b> - ${pg.value}<br/>
@@ -230,6 +233,6 @@
         </fieldset>
     </g:form>
 
-</div> <!-- container -->
+</div> <%-- /.container --%>
 </body>
 </html>
