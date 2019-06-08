@@ -14,19 +14,29 @@ buildscript {
     }
 }
 
-version "3.2.15.3" // #63 admin forms cleanup
-group "net.codebuilders.mybusiness"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "org.grails.grails-plugin"
+// apply plugin: "org.grails.grails-plugin-publish"
+apply plugin: "org.grails.grails-gsp"
+apply plugin: "asset-pipeline"
 
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"org.grails.grails-plugin"
-apply plugin:"org.grails.grails-plugin-publish"
-apply plugin:"org.grails.grails-gsp"
-apply plugin:"asset-pipeline"
+apply plugin: "application"
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+version "3.2.15.3" // #63 admin forms cleanup
+group "net.codebuilders"
+description 'MyBusiness - a Grails 3.2 plugin for E-Commerce'
+mainClassName = 'net.codebuilders.mybusiness.Application'
+
+// ext.isReleaseVersion = !version.endsWith("SNAPSHOT") // used to not pgp sign snapshots
 
 ext {
     grailsVersion = project.grailsVersion
     gradleWrapperVersion = project.gradleWrapperVersion
+    // isReleaseVersion = !version.endsWith("SNAPSHOT") // used to not pgp sign snapshots
+    isReleaseVersion = false  // until we fix signing
 }
 
 repositories {
@@ -83,7 +93,7 @@ dependencies {
 
     // ajax tags like formRemote that were deprecated in 2.4
     compile 'org.grails.plugins:ajax-tags:1.0.0'
-    
+
     // for adding seed data since bootstrap.groovy doesn't run
     compile 'com.bertramlabs.plugins:seed-me:3.1.1'
 
@@ -91,7 +101,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-test', version: '5.0.0.M5'
 
     // for attaching photos to domains
-    compile 'com.bertramlabs.plugins:selfie:1.2.8' 
+    compile 'com.bertramlabs.plugins:selfie:1.2.8'
 
     // for using karman-aws for photos etc.
     compile 'com.bertramlabs.plugins:karman-aws:1.1.3'  // there is a 1.1.9 ??
@@ -109,7 +119,7 @@ dependencies {
 
     // for excel import
     compile 'org.grails.plugins:excel-import:3.0.0' // grails 3.2 - 3.0.1 didn't work
-    
+
     // for openoffice
     compile "net.codebuilders:juh:4.1.6"
     compile "net.codebuilders:ridl:4.1.6"
@@ -139,6 +149,8 @@ targetCompatibility = 1.8
 task wrapper(type: Wrapper) {
     gradleVersion = gradleWrapperVersion
 }
+
+/*
 grailsPublish {
     // TODO: Provide values here
     user = 'user'
@@ -149,10 +161,11 @@ grailsPublish {
     }
     title = "My Plugin"
     desc = "Full plugin description"
-    developers = [johndoe:"John Doe"]
+    developers = [johndoe: "John Doe"]
     portalUser = ""
-    portalPassword = ""    
+    portalPassword = ""
 }
+*/
 
 assets {
     packagePlugin = true
@@ -162,4 +175,109 @@ assets {
 jar {
     exclude "**/META-INF/assets/**"
     exclude "**/META-INF/assets.list"
+}
+
+groovydoc {
+    docTitle = "MyBusiness Plugin API"
+    header = "Code Builders, LLC" // doesn't seem to work
+    footer = "Generated documentation ${version}"
+    windowTitle = docTitle
+    use = true // create class and package usage pages
+}
+
+archivesBaseName = 'mybusiness'
+
+signing {
+    // only pgp sign if not a snapshot and we are uploading to maven repo
+    // required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    required { isReleaseVersion }
+    sign configurations.archives
+}
+
+uploadArchives.repositories.mavenDeployer {
+    // pgp sign the pom file also
+    // beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+    configuration = configurations.archives
+
+
+    // examples:
+    // url: "file://localhost/tmp/myRepo/"
+    // url: "https://repository.apache.org/service/local/staging/deploy/maven2/" // Apache Nexus
+    // url: "http://oss.sonatype.org/service/local/staging/deploy/maven2/"
+    // url: "file://$buildDir/myRepo/" // local build directory
+    repository(url: "file://$buildDir/myRepo/") {
+        // (userName: mavenUser, password: mavenPassword)
+    }
+
+    // pom.project
+    pom.project {
+        name 'MyBusiness Plugin API'
+        packaging 'jar'
+        description 'MyBusiness - a Grails 3.2 plugin for E-Commerce'
+        url 'http://codebuilders.net'
+        inceptionYear '2016'
+
+        scm {
+            url 'https://github.com/cbmarcum/mybusiness'
+            developerConnection 'https://github.com/cbmarcum/mybusiness'
+            connection 'https://github.com/cbmarcum/mybusiness'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                name 'Carl Marcum'
+                email 'carl.marcum@codebuilders.net'
+                url 'http://codebuilders.net'
+                // see: http://www.mail-archive.com/user@gradle.codehaus.org/msg05368.html
+                // organization 'Code Builders, LLC'
+                organization = 'Code Builders, LLC' // <-- note we use assignment here
+                organizationUrl 'http://codebuilders.net'
+
+            }
+        }
+    }
+
+}
+
+
+groovydoc.mustRunAfter clean
+jar.mustRunAfter groovydoc
+
+groovydoc.dependsOn clean
+jar.dependsOn groovydoc
+
+// custom tasks for creating source/javadoc jars
+task mySourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+/*
+task myCopyResources(type: Copy, dependsOn: groovydoc) {
+    into groovydoc.destinationDir
+    from sourceSets.main.resources
+}
+
+task myGroovydocJar(type: Jar, dependsOn: myCopyResources) {
+    classifier = 'javadoc'
+    from groovydoc.destinationDir
+}
+*/
+task myGroovydocJar(type: Jar, dependsOn: groovydoc) {
+    classifier = 'javadoc'
+    from groovydoc.destinationDir
+}
+
+// add groovydoc/source jar tasks as artifacts
+artifacts {
+    archives mySourcesJar
+    archives myGroovydocJar
 }
