@@ -27,7 +27,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 
-version "3.3.15.0" // grails 3.3 upgrade
+version "3.3.15.2" // grails 3.3 upgrade
 group "net.codebuilders"
 description 'MyBusiness - a Grails 3.3 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'
@@ -46,6 +46,7 @@ repositories {
     maven { url "https://repo.grails.org/grails/core" }
     maven { url "http://dl.bintray.com/stefanogualdi/plugins" } // ckeditor
     maven { url "http://dl.bintray.com/lgrignon/plugins" } // hibernate search
+    maven { url "https://dl.bintray.com/cmarcum/maven/" } // our grails-paypal
 }
 
 dependencyManagement {
@@ -58,12 +59,13 @@ dependencyManagement {
 // only used for multi-project build
 // normally added in dependencies block/
 // added here for hot reloads
+/*
 grails {
     plugins {
         compile project(':grails-paypal')
     }
 }
-
+*/
 
 dependencies {
     // standard 3.3 plugin
@@ -90,7 +92,7 @@ dependencies {
     provided "org.grails:grails-plugin-domain-class"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.14.2"
     testCompile "org.grails:grails-gorm-testing-support"
-    testCompile "org.grails:grails-plugin-testing"
+    // testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails.plugins:geb"
     testCompile "org.grails:grails-web-testing-support"
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
@@ -125,6 +127,7 @@ dependencies {
 
     // for paypal - currently needs added to local maven .m2 cache
     // compile 'org.grails.plugin:grails-paypal:1.1.1'
+    compile 'net.codebuilders:grails-paypal:3.3.1'
 
     // for hibernate search
     compile("org.grails.plugins:hibernate-search:2.3.0")
@@ -221,7 +224,7 @@ uploadArchives.repositories.mavenDeployer {
     pom.project {
         name 'MyBusiness Plugin API'
         packaging 'jar'
-        description 'MyBusiness - a Grails 3.2 plugin for E-Commerce'
+        description 'MyBusiness - a Grails 3.3 plugin for E-Commerce'
         url 'http://codebuilders.net'
         inceptionYear '2016'
 
