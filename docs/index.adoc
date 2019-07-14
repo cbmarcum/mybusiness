@@ -9,8 +9,10 @@ We are currently porting features from our proprietary MyBusiness(TM) applicatio
 
 Currently the plugin contains these features:
 
+* Products including categories, features, feature categories, and good identifications
 * Security and Authentication using Spring-Security-Core
 * Contact form with Google Re-Captcha
+* Blog
 * eBay product listings with zooming images 
 * Google business reviews
 * Notices for display by date range
@@ -19,10 +21,9 @@ Currently the plugin contains these features:
 
 Features yet to be ported over.
 
-* Products including categories, features, feature categories, and good identifications
 * Product movies
 * Specials
-* Blog
+
 
 
 Planned new features
