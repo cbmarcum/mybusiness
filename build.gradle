@@ -59,6 +59,7 @@ dependencyManagement {
 // only used for multi-project build
 // normally added in dependencies block/
 // added here for hot reloads
+// use dependency block for building releases
 /*
 grails {
     plugins {
@@ -125,8 +126,7 @@ dependencies {
     // for using karman-aws for photos etc.
     compile 'com.bertramlabs.plugins:karman-aws:1.2.1'
 
-    // for paypal - currently needs added to local maven .m2 cache
-    // compile 'org.grails.plugin:grails-paypal:1.1.1'
+    // for paypal
     compile 'net.codebuilders:grails-paypal:3.3.2'
 
     // for hibernate search
