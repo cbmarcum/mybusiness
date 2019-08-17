@@ -23,7 +23,7 @@
 
 package net.codebuilders.mybusiness
 
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 
 /**
  * Service class for ShoppingCart
@@ -34,7 +34,7 @@ import grails.transaction.Transactional
 @Transactional
 class ShoppingCartService {
 
-    boolean transactional = true // TODO: is this transactional redundant ??
+    // boolean transactional = true // TODO: is this transactional redundant ??
 
     def createShoppingCart() {
         def sessionID = SessionUtils.getSession().id
@@ -47,13 +47,11 @@ class ShoppingCartService {
 
     def addToShoppingCart(Product product, Integer qty = 1, ShoppingCart previousShoppingCart = null) {
 
-        // TODO: remove println
-        println("entered add to cart")
+        log.info("entered add to cart")
 
         def shoppingCart = getShoppingCart()
 
-        // TODO: remove println
-        println("cart = ${shoppingCart}")
+        log.info("cart = ${shoppingCart}")
 
         def quantity = CartQuantity.findByShoppingCartAndProduct(shoppingCart, product)
         if (quantity) {
@@ -122,7 +120,7 @@ class ShoppingCartService {
 
     Set getItems(ShoppingCart previousShoppingCart = null) {
         def shoppingCart = getShoppingCart()
-        println("items = ${shoppingCart.items}")
+        log.info("items = ${shoppingCart.items}")
         return shoppingCart.items
     }
 
@@ -156,7 +154,7 @@ class ShoppingCartService {
         }
 
         // DEBUG
-        println("shopping cart = ${shoppingCart}")
+        log.info("shopping cart = ${shoppingCart}")
 
         return shoppingCart
     }

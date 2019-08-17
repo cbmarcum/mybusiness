@@ -27,7 +27,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 
-version "3.3.16.0" // grails 3.3 security domain update
+version "3.3.16.1" // grails-paypal update
 group "net.codebuilders"
 description 'MyBusiness - a Grails 3.3 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'
@@ -127,7 +127,7 @@ dependencies {
 
     // for paypal - currently needs added to local maven .m2 cache
     // compile 'org.grails.plugin:grails-paypal:1.1.1'
-    compile 'net.codebuilders:grails-paypal:3.3.1'
+    compile 'net.codebuilders:grails-paypal:3.3.2'
 
     // for hibernate search
     compile("org.grails.plugins:hibernate-search:2.3.0")

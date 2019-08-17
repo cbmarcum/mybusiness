@@ -24,13 +24,14 @@
 package net.codebuilders.mybusiness
 
 import org.grails.plugin.paypal.*
+import grails.gorm.transactions.Transactional
 
 /**
  * Controller class for ShoppingCart
  *
  * Derived from Grails 2 ShoppingCart Plugin by Björn Wilmsmann, MetaSieve
  */
-
+@Transactional(readOnly = true)
 class ShoppingCartController {
 
     def shoppingCartService // inject service
@@ -46,7 +47,7 @@ class ShoppingCartController {
 
     def list() {}
 
-
+    @Transactional
     def add() {
         def product
 
@@ -70,6 +71,7 @@ class ShoppingCartController {
     }
 
     // add to cart for js effect to render portion (last line of method)
+    @Transactional
     def add2() {
         def product
 
@@ -93,8 +95,9 @@ class ShoppingCartController {
     }
 
     // add to cart for js effect to render added to cart message
+    @Transactional
     def add3() {
-        println params.toString()
+        log.info params.toString()
         def product
 
         product = Product.get(params.id)
@@ -106,22 +109,22 @@ class ShoppingCartController {
             } else {
                 // product.addToShoppingCart()
                 // TODO: remove println
-                println("in s.c. controller add3")
-                println("calling addToCart")
-                println("service = ${shoppingCartService}")
-                println("product = ${product}")
-                println("LOG TEST")
+                log.info("in s.c. controller add3")
+                log.info("calling addToCart")
+                log.info("service = ${shoppingCartService}")
+                log.info("product = ${product}")
+                log.info("LOG TEST")
                 log.info("LOG TEST")
                 shoppingCartService.addToShoppingCart(product)
             }
         } else {
             // product.addToShoppingCart()
             // TODO: remove println
-            println("in s.c. controller add3")
-            println("calling addToCart")
-            println("service = ${shoppingCartService}")
-            println("product = ${product}")
-            println("LOG TEST else")
+            log.info("in s.c. controller add3")
+            log.info("calling addToCart")
+            log.info("service = ${shoppingCartService}")
+            log.info("product = ${product}")
+            log.info("LOG TEST else")
             log.info("LOG TEST else")
             shoppingCartService.addToShoppingCart(product)
         }
@@ -129,7 +132,7 @@ class ShoppingCartController {
         render(product.number + ' added to cart')
     }
 
-
+    @Transactional
     def remove() {
         def product
 
@@ -154,6 +157,7 @@ class ShoppingCartController {
         // redirect(action:show, params:params)
     }
 
+    @Transactional
     def removeAll() {
         def product
 
@@ -178,9 +182,9 @@ class ShoppingCartController {
         // redirect(action:show, params:params)
     }
 
-
+    @Transactional
     def checkOut() {
-        log.debug "entered checkout"
+        log.info "entered checkout"
 
         def payment = new Payment()
         payment.buyerId = 10
@@ -192,49 +196,49 @@ class ShoppingCartController {
 
         shoppingCartService.getItems().each { item ->
 
-            log.debug ""
-            log.debug "item ="
-            item.properties.each { log.debug "$it.key -> $it.value" }
+            log.info ""
+            log.info "item ="
+            item.properties.each { log.info "$it.key -> $it.value" }
             // get the Product from the cart item
             // def product = Product.findByShoppingItem(item) // FIX ME !!
             def product = Product.find(item)
             assert product != null
-            log.debug ""
-            log.debug "product = ${product}"
+            log.info ""
+            log.info "product = ${product}"
             PaymentItem paymentItem = new PaymentItem()
             assert paymentItem != null
 
             paymentItem.itemName = product.name
-            log.debug "paymentItem.itemName = ${paymentItem.itemName}"
+            log.info "paymentItem.itemName = ${paymentItem.itemName}"
 
             paymentItem.itemNumber = (product.number ?: "No Number")
-            log.debug "paymentItem.itemNumber = ${paymentItem.itemNumber}"
+            log.info "paymentItem.itemNumber = ${paymentItem.itemNumber}"
 
             paymentItem.amount = product.listPrice
-            log.debug "paymentItem.amount = ${paymentItem.amount}"
+            log.info "paymentItem.amount = ${paymentItem.amount}"
 
             paymentItem.quantity = shoppingCartService.getQuantity(item)
-            log.debug "paymentItem.quantity = ${paymentItem.quantity}"
+            log.info "paymentItem.quantity = ${paymentItem.quantity}"
 
             // only works with our modified paypal paymentItem
             paymentItem.weight = product.shipWeight
-            log.debug "paymentItem.weight = ${paymentItem.weight}"
+            log.info "paymentItem.weight = ${paymentItem.weight}"
 
             payment.addToPaymentItems(paymentItem)
-            log.debug ""
-            log.debug "paymentItem ="
-            paymentItem.properties.each { log.debug "$it.key -> $it.value" }
+            log.info ""
+            log.info "paymentItem ="
+            paymentItem.properties.each { log.info "$it.key -> $it.value" }
         }
 
-        log.debug "payment before save = "
-        payment.properties.each { log.debug "$it.key -> $it.value" }
+        log.info "payment before save = "
+        payment.properties.each { log.info "$it.key -> $it.value" }
 
         payment.save(failOnError: true, flush: true)
 
         // DEBUG
-        log.debug ""
-        log.debug "payment after save = "
-        payment.properties.each { log.debug "$it.key -> $it.value" }
+        log.info ""
+        log.info "payment after save = "
+        payment.properties.each { log.info "$it.key -> $it.value" }
 
         // def transactionId = payment.transactionId
 
@@ -242,26 +246,26 @@ class ShoppingCartController {
         // everything else is saved in payment
         def m = [transactionId: payment.transactionId]
 
-        log.debug ""
-        log.debug "m = "
-        m.properties.each { log.debug "$it.key -> $it.value" }
+        log.info ""
+        log.info "m = "
+        m.properties.each { log.info "$it.key -> $it.value" }
 
         // empty the cart
         shoppingCartService.emptyShoppingCart()
 
 
-        log.debug "calling redirect..."
+        log.info "calling redirect..."
         redirect(controller: 'paypal', action: 'uploadCart', params: m)
     }
 
     // test to check properties instead of redirect to paypal
     def test() {
-        println ""
-        println "entering test action..."
+        log.info ""
+        log.info "entering test action..."
         // params.properties.each { println "$it.key -> $it.value" }
-        println "transactionId = ${params.transactionId}"
+        log.info "transactionId = ${params.transactionId}"
         def payment = Payment.findByTransactionId(params.transactionId)
-        println payment
+        log.info payment
     }
 
 
