@@ -30,18 +30,22 @@ package net.codebuilders.mybusiness
  */
 
 class ShoppingCartTagLib {
+    
+    static namespace = "sc" // <sc:each>
+    
     static defaultEncodeAs = [taglib:'text']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
-    static namespace = "sc"
 
     def shoppingCartService
 
     def each = { attrs, body ->
         def items = shoppingCartService.getItems()
 
-        items?.sort { a, b -> a.id <=> b.id }.each { item ->
-            def itemInfo = ['item':item,
-                            'qty':shoppingCartService.getQuantity(item)]
+        items?.sort { a, b -> a.id <=> b.id }.each { item -> 
+            Integer qty = shoppingCartService.getQuantity(item)
+            BigDecimal itemTotal = item.listPrice * qty
+            
+            def itemInfo = ['item':item, 'qty':qty, 'itemTotal':itemTotal]
 
             out << body(itemInfo)
         }
