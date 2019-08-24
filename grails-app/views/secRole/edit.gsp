@@ -31,7 +31,8 @@
                     <input class="btn btn-success" type="submit"
                     value="${message(code: 'default.button.update.label', default: 'Update')}"/>
                 </div>
+            </g:form>
 
-            </div> <%-- /.container --%>
-        </body>
-    </html>
+        </div> <%-- /.container --%>
+    </body>
+</html>
