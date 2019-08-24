@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta name="layout" content="main"/>
-    <g:set var="entityName" value="${message(code: 'photo.label', default: 'Photo')}"/>
-    <title><g:message code="default.create.label" args="[entityName]"/></title>
-</head>
+    <head>
+        <meta name="layout" content="main"/>
+        <g:set var="entityName" value="${message(code: 'photo.label', default: 'Photo')}"/>
+        <title><g:message code="default.create.label" args="[entityName]"/></title>
+    </head>
 
-<body>
-<div class="container">
+    <body>
+        <div class="container">
 
-    <a href="#create-photo" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
-                                                                  default="Skip to content&hellip;"/></a>
+            <a href="#create-photo" class="sr-only sr-only-focusable" tabindex="-1"><g:message code="default.link.skip.label"
+                    default="Skip to content&hellip;"/></a>
 
-    <g:render template="/common/subnav-list"/>
+                <g:render template="/common/subnav-list"/>
 
-    <div id="create-photo" class="page-header">
-        <h1><g:message code="default.create.label" args="[entityName]"/></h1>
-    </div>
+            <div id="create-photo" class="page-header">
+                <h1><g:message code="default.create.label" args="[entityName]"/></h1>
+            </div>
 
-    <g:render template="/common/flash-message"/>
+            <g:render template="/common/flash-message"/>
 
-    <g:render template="has-errors"/>
+            <g:render template="has-errors"/>
 
-    <g:uploadForm name="upload" url="[action: 'upload', controller: 'photo']">
-        <fieldset class="form">
-            <g:render template="form"/>
-        </fieldset>
+            <g:uploadForm name="upload" url="[action: 'upload', controller: 'photo']">
+                <fieldset class="form">
+                    <g:render template="form"/>
+                </fieldset>
 
-        <input type="file" name="photo"/><br/>
+                <input type="file" name="photo"/><br/>
 
-        <fieldset class="buttons">
-            <g:submitButton name="create" class="save"
-                            value="${message(code: 'default.button.create.label', default: 'Create')}"/>
-        </fieldset>
-    </g:uploadForm>
+                <div>
+                    <g:submitButton name="create" class="btn btn-success"
+                    value="${message(code: 'default.button.create.label', default: 'Create')}"/>
+                </div>
+            </g:uploadForm>
 
-</div> <%-- /.container --%>
-</body>
+        </div> <%-- /.container --%>
+    </body>
 </html>
