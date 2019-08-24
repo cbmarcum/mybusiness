@@ -50,11 +50,11 @@ class BootstrapTagLib {
 
         // display previous link when not on firststep
         def disabledPrev = (currentstep > firststep) ? "" : "disabled"
-        linkTagAttrs.class = 'prevLink'
-        //		linkParams.offset = offset - max
-        writer << "<nav>"
+        linkTagAttrs.class = 'page-link'
+        // linkParams.offset = offset - max
+        writer << '<nav aria-label="page navigation" class="d-flex justify-content-center mb-5 mt-3">'
         writer << "<ul class='pagination'>"
-        writer << "<li class='${linkTagAttrs.class} ${disabledPrev}'>"
+        writer << "<li class='page-item ${disabledPrev}'>"
         writer << link(linkTagAttrs.clone()) {
             (attrs.prev ?: messageSource.getMessage('paginate.prev', null, messageSource.getMessage('default.paginate.prev', null, 'Previous', locale), locale))
         }
@@ -62,7 +62,7 @@ class BootstrapTagLib {
 
         // display steps when steps are enabled and laststep is not firststep
         if (steps && laststep > firststep) {
-            linkTagAttrs.class = 'step'
+            linkTagAttrs.class = 'page-link'
 
             // determine begin and endstep paging variables
             int beginstep	= currentstep - Math.round(maxsteps / 2) + (maxsteps % 2)
@@ -82,7 +82,8 @@ class BootstrapTagLib {
             // display firststep link when beginstep is not firststep
             if (beginstep > firststep) {
                 linkParams.offset = 0
-                writer << "<li>"
+                writer << "<li class='page-item'>"
+                linkTagAttrs.class = 'page-link'
                 writer << link(linkTagAttrs.clone()) {firststep.toString()}
                 writer << "</li>"
                 writer << '<li class="disabled"><a href="#">…</a></li>'
@@ -91,11 +92,12 @@ class BootstrapTagLib {
             // display paginate steps
             (beginstep..endstep).each { i ->
                 if (currentstep == i) {
-                    writer << "<li class='active'><a href='#'>"+i.toString()+"</a></li>"
+                    writer << "<li class='page-item active'><a href='#' class='page-link'>"+i.toString()+"</a></li>"
                 }
                 else {
                     linkParams.offset = (i - 1) * max
-                    writer << "<li>"
+                    writer << "<li class='page-item'>"
+                    linkTagAttrs.class = 'page-link'
                     writer << link(linkTagAttrs.clone()) {i.toString()}
                     writer << "</li>"
                 }
@@ -104,18 +106,19 @@ class BootstrapTagLib {
             // display laststep link when endstep is not laststep
             if (endstep < laststep) {
                 linkParams.offset = (laststep -1) * max
-                writer << '<li class="disabled"><a href="#">…</a></li>'
-                writer << "<li>"
+                writer << '<li class="page-item disabled"><a href="#" class="page-link">…</a></li>'
+                writer << "<li class='page-item'>"
+                linkTagAttrs.class = 'page-link'
                 writer << link(linkTagAttrs.clone()) { laststep.toString() }
                 writer << "</li>"
             }
         }
 
         // display next link when not on laststep
-        linkTagAttrs.class = 'nextLink'
+        linkTagAttrs.class = 'page-link'
         def disabledNext = (currentstep < laststep) ? "" : "disabled"
         linkParams.offset = (currentstep)*max
-        writer << "<li class='${linkTagAttrs.class} ${disabledNext}'>"
+        writer << "<li class='page-item ${disabledNext}'>"
         writer << link(linkTagAttrs.clone()) {
             (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, messageSource.getMessage('default.paginate.next', null, 'Next', locale), locale))
         }
@@ -124,7 +127,6 @@ class BootstrapTagLib {
         writer << "</nav>"
     }
 
-	
     /**
      * A simple date picker that renders a date as selects.<br/>
      * This is just an initial hack - can be widely improved!
@@ -418,5 +420,5 @@ class BootstrapTagLib {
             attrs.put(attrName, attrValue)
         }
     }
-
+    
 }
