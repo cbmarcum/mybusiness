@@ -1,30 +1,27 @@
 /*
- * *************************************************************
+ * ************************************************************************
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Copyright 2016-2019 Carl Marcum - Code Builders, LLC
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * *************************************************************
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * ************************************************************************
  */
 
 package net.codebuilders.mybusiness
 
 /**
- * Tag Library class for the ElevateZoom image zoom javascript library.
+ * Tag Library class for use with displaying product images using the "Sell" Bootstrap theme.
  *
  * @author Carl Marcum
  */
@@ -38,6 +35,34 @@ class PhotoTagLib {
     // s3 url's look like this:
     // https://s3.us-east-2.amazonaws.com/mbstore1/Photo/88/photo/51cMZHK7S0L_large.jpg
 
+    /**
+     * Returns HTML for image tags used in the "Sell" Bootstrap theme product list page.
+     *
+     * @attr clazz REQUIRED The imageId attribute
+     * @attr large REQUIRED The large image URL
+     * @attr alt REQUIRED The alt attribute
+     */
+    def imageByClass = { attrs, body ->
+
+        // <cb:imageByClass clazz="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" alt="something"/>
+        // <cb:zoomImageByClass clazz="img-fluid" large="${large}" alt="something"/>
+        // TODO: get these from config
+        // def basePath = 'storage'
+        // def bucket = 'uploads'
+        // def basePath = 'https://s3.us-east-2.amazonaws.com'
+        def basePath = grailsApplication.config.mybusiness.storage.basePath
+        def bucket = grailsApplication.config.mybusiness.storage.bucket // asw s3
+
+        // TODO: add alt and title to image
+        def clazz = attrs.clazz
+        def cloudUrlLarge = attrs.large
+        def alt = attrs.alt
+
+        // out << "<img class=\"${clazz}\" src=\"/${basePath}/${bucket}/${cloudUrlSmall}\" data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
+        // <img src="img/mpp/camo-hoodie-green_large.jpg" alt="product" class="img-fluid"/>
+        out << "<img class=\"${clazz}\" src=\"${basePath}/${bucket}/${cloudUrlLarge}\" alt=\"${alt}\"/>"
+    }
+    
     /**
      * Returns HTML for the ElevateZoom image zoom javascript library.
      * Used for the current image from gallery to zoom.
@@ -67,17 +92,15 @@ class PhotoTagLib {
     }
 
     /**
-     * Returns HTML for the ElevateZoom image zoom javascript library.
-     * Used for the thumbnail gallery to display additional images.
+     * Returns HTML for image tags used in the "Sell" Bootstrap theme product detail page.
      *
-     * @attr imageId REQUIRED The imageId attribute
      * @attr large REQUIRED The large image URL
-     * @attr small REQUIRED The small image URL
-     * @attr thumb REQUIRED The thumb image URL
+     * @attr footer REQUIRED The data-footer attribute
+     * @attr alt REQUIRED The alt attribute
      */
     def zoomGallery = { attrs, body ->
 
-        // <cb:zoomImage imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg" small="Photo/1/photo/IE9413_XX_43_small.jpg" thumb="Photo/1/photo/IE9413_XX_43_thumb.jpg" />
+        // <cb:zoomGallery imageId="zoom_01" large="Photo/1/photo/IE9413_XX_43_large.jpg"  />
         // TODO: get these from config
         // def basePath = 'storage'
         // def bucket = 'uploads'
@@ -86,20 +109,26 @@ class PhotoTagLib {
         def bucket = grailsApplication.config.mybusiness.storage.bucket // asw s3
 
         // TODO: add alt and title to image
-        def imageId = attrs.imageId
+        // def imageId = attrs.imageId
         def cloudUrlLarge = attrs.large
-        def cloudUrlSmall = attrs.small
-        def cloudUrlThumb = attrs.thumb
+        def footer = attrs.footer
+        def alt = attrs.alt
+        // def cloudUrlSmall = attrs.small
+        // def cloudUrlThumb = attrs.thumb
 
         /*
-        out << "<a href=\"#\" data-image=\"/${basePath}/${bucket}/${cloudUrlSmall}\""
-        out << " data-zoom-image=\"/${basePath}/${bucket}/${cloudUrlLarge}\"/>"
-        out << "<img id=\"${imageId}\" src=\"/${basePath}/${bucket}/${cloudUrlThumb}\" />"
-        out << "</a>"
-        */
-        out << "<a href=\"#\" data-image=\"${basePath}/${bucket}/${cloudUrlSmall}\""
-        out << " data-zoom-image=\"${basePath}/${bucket}/${cloudUrlLarge}\"/>"
-        out << "<img id=\"${imageId}\" src=\"${basePath}/${bucket}/${cloudUrlThumb}\" />"
+        <a href="img/mpp/camo-hoodie-green_large.jpg" data-footer="Modern Jacket 1 - Caption text" data-toggle="lightbox" data-gallery="product-gallery" class="d-block mb-4">
+        <div data-toggle="zoom" data-image="img/mpp/camo-hoodie-green_large.jpg">
+        <img src="img/mpp/camo-hoodie-green_large.jpg" alt="Modern Jacket 1" class="img-fluid">
+        </div>
+        </a>
+        
+         */
+        out << "<a href=\"${basePath}/${bucket}/${cloudUrlLarge}\" "
+        out << "data-footer=\"${footer}\" data-toggle=\"lightbox\" data-gallery=\"product-gallery\" class=\"d-block mb-4\" >"
+        out << "<div data-toggle=\"zoom\" data-image=\"${basePath}/${bucket}/${cloudUrlLarge}\" >"
+        out << "<img src=\"${basePath}/${bucket}/${cloudUrlLarge}\" alt=\"${alt}\" class=\"img-fluid\" />"
+        out << "</div>"
         out << "</a>"
 
     }
