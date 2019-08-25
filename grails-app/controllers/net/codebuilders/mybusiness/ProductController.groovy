@@ -104,7 +104,7 @@ class ProductController {
             }
         }
 
-        params.max = Math.min(params.max ? params.int('max') : 3, 100) //  3 was 10, changed for demo
+        params.max = Math.min(params.max ? params.int('max') : 12, 100) 
         params.offset = params.offset ? params.int('offset') : 0
 
         if (params.keyword) {
