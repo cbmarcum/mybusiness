@@ -54,7 +54,8 @@
             <span class="required-indicator">*</span>
         </label>
         <g:field type="number" class="form-control" name="listPrice"
-                 value="${fieldValue(bean: product, field: 'listPrice')}" required="true"/>
+                 value="${fieldValue(bean: product, field: 'listPrice')}" required="true" 
+                     min="0" step="0.01" />
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'shipWeight', 'error')}">
@@ -63,7 +64,8 @@
             <span class="required-indicator">*</span>
         </label>
         <g:field type="number" class="form-control" name="shipWeight" required="true"
-                 value="${fieldValue(bean: product, field: 'shipWeight')}"/>
+                 value="${fieldValue(bean: product, field: 'shipWeight')}" 
+                     min="0" step="0.01" />
     </div>
 
 </div> <%-- /.row --%>
