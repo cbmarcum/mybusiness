@@ -31,7 +31,7 @@ limitations under the License.
             </div> <!-- /.page-header -->
             <p>
                 Welcome to the <b>Administrative Home Page</b>. Here you will find instructions and links
-            to view and edit main Product database table and helper tables such as
+            to view and edit the main Product database table and helper tables such as
             Product Feature, Product Feature Category, and Product Feature Application as will as other tasks.
             </p>
 
@@ -50,15 +50,7 @@ limitations under the License.
             <p><b>Product</b> is a table for items displayed in the application product pages.</p>
 
             <p>
-                Product images must be in GIF, PNG, and JPG format.  JPG (JPEG) files can be
-                used if the server the MyBusiness application is running on has Oracle Java 7
-                and not OpenJDK version of Java. Images can be edited and converted
-                to using many image editing programs such as Adobe Photoshop or the free
-                open-source alternative GIMP available at <g:link base="www.gimp.org">www.gimp.org</g:link><br/>
-                Images are copied and scaled to small (150px W x 150px H) and large (300px W x 300px H).<br/>
-                It is best if images are proportional to this (1X Width x 1X Height) before uploading
-                to eliminate cropping of image.
-                Current image file size is limited to 15,000,000 bytes. This can be adjusted in the code.<br/>
+                Product images use Photos listed in the next section. Multiples photos and be linked to a Product.<br/>
             </p>
 
             <p>
@@ -110,23 +102,11 @@ limitations under the License.
                 <g:link controller="productFeature" action="index">Product Feature List</g:link>
             </p>
 
-            <h2>Standard Feature Application</h2>
-
-            <p>
-                <b>Standard Feature Application</b> is a join table that ties a Product Feature to
-            a Product.  This builds the list of standard features on a product's detail page.
-            </p>
-
-            <p>
-                <g:link controller="standardFeatureAppl" action="index">Standard Feature Application List</g:link>
-            </p>
-
             <h2>Product Feature Application</h2>
 
             <p>
                 <b>Product Feature Application</b> is a join table that ties a Product Feature to
-            a Product.  The purpose of this is to enable applying a cost and a p/n code to a feature by
-            what product it is applied to.  This builds the list of selectable options by feature
+            a Product.  This is used to build the list of selectable options by feature
             category on a product's detail page.
             </p>
 
@@ -137,9 +117,14 @@ limitations under the License.
             <h2>Product Category</h2>
 
             <p>
-                <b>Product Category</b> is a table for product categories. Product may
-            belong to many categories. Examples would be "Pistols", "Holsters",
-            and "Ammunition".
+                <b>Product Category</b> is a table for product categories. Products may
+            belong to many categories. Examples would be "Dog Supplies", "Collars",
+            and "New Products".  
+            Product Categories have a hierarchy that allows sub-categories to be more specific.
+            When selecting Product Categories using the Product create or edit forms you only 
+            need to select the most specific ones. For example selecting Collars will 
+            automatically add Dog Supplies. If this also a New Product you will need to 
+            select this also as New Products is not a ancestor of Collars.
             </p>
 
             <p>
@@ -151,7 +136,8 @@ limitations under the License.
             <p>
                 <b>Good Identification</b> is a table to hold various codes and id numbers
             a product may have. Product has a "number" field that is for the primary
-            number used to identify it and is used in product listing. Good Identification
+            number used to identify it and is used in product listings This could be any 
+            id you want but is usually the SKU. Good Identification
             is for additional codes such a SKU, UPC, etc.
             </p>
 
