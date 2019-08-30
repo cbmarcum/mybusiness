@@ -23,7 +23,7 @@
 
 package net.codebuilders.mybusiness
 
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 
 /**
  * Service class for GoodIdentification

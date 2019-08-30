@@ -21,7 +21,7 @@
 package net.codebuilders.mybusiness
 
 import grails.core.GrailsApplication
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 
 import com.sun.star.beans.XPropertySet
 import com.sun.star.comp.helper.BootstrapException
