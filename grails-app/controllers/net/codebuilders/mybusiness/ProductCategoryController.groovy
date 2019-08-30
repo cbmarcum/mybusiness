@@ -24,7 +24,7 @@
 package net.codebuilders.mybusiness
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 
 /**
  * Controller class for ProductCategory
