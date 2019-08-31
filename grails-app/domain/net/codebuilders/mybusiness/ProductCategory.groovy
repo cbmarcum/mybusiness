@@ -50,7 +50,7 @@ class ProductCategory {
 
     // formatted for use in form select fields
     String toString() {
-        return "${description} < ${parent?.description ?: 'No Parent'} - id:${id}"
+        return "${description} - id:${id} > ${parent?.description ?: 'No Parent'}"
     }
 
 }
