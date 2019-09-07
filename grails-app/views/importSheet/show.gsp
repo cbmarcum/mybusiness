@@ -30,11 +30,11 @@
                     <dd><f:display bean="importSheet" property="importSheetStatusType.name"/></dd>
 
                     <dt><g:message code="importSheet.comments.label" default="importSheet.comments.label"/></dt>
-                    <dd><f:display bean="importSheet" property="comments"/></dd>
+                   <dd>${importSheet?.comments.encodeAsRaw()}</dd>
 
                     <dt><g:message code="default.dateCreated.label" default="default.dateCreated.label"/></dt>
                     <dd><f:display bean="importSheet" property="dateCreated"/></dd>
-
+                    
                     <dt><g:message code="default.lastUpdated.label" default="default.lastUpdated.label"/></dt>
                     <dd><f:display bean="importSheet" property="lastUpdated"/></dd>
 
