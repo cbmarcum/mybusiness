@@ -39,6 +39,8 @@ import grails.plugins.hibernate.search.HibernateSearchGrailsPlugin
 
 import grails.plugin.springsecurity.SpringSecurityUtils
 
+import net.codebuilders.mybusiness.ProductCategory
+
 
 /**
  * Controller class for Product
@@ -296,12 +298,19 @@ class ProductController {
             }
         }
         */
+       
+        log.info("params.category= ${params.category}")
+        def productCategory = params.category ? ProductCategory.findById(params.category)?.description : "All Products"
+        log.info("productCategory = ${productCategory}")
 
         def notices = noticeService.getCurrentNoticesByPage("Product")
+        
+        // used for no-image if a product is missing one.
+        def noImage = Photo.findByName("no-image")?.photo?.getCloudFile("large")
 
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 
-        respond productList, model: [productCount: productCount, noticeList: notices]
+        respond productList, model: [productCategory: productCategory, productCount: productCount, noticeList: notices, noImage: noImage]
 
     }
 
