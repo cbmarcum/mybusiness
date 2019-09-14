@@ -27,7 +27,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 
-version "3.3.17.14" // default no-image if no image found for product but in controller not view
+version "3.3.17.15" // added primary variant to product form
 group "net.codebuilders"
 description 'MyBusiness - a Grails 3.3 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'

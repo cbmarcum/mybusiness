@@ -39,7 +39,7 @@
         <g:field type="text" class="form-control" name="variantGroupId" value="${product?.variantGroupId}"
                  maxLength="50" placeholder="50 chars max"/>
     </div>
-
+    
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'taxCode', 'error')} ">
         <label for="taxCode">
             <g:message code="product.taxCode.label" default="product.taxCode.label"/>
@@ -127,6 +127,13 @@
 </div>
 
 <div>
+    <div class="checkbox-inline ${hasErrors(bean: product, field: 'primaryVariant', 'error')} ">
+        <label for="primaryVariant">
+            <g:checkBox name="primaryVariant" value="${product?.primaryVariant}"/>
+            <g:message code="product.primaryVariant.label" default="product.primaryVariant.label"/>
+        </label>
+    </div>
+    
     <div class="checkbox-inline ${hasErrors(bean: product, field: 'display', 'error')} ">
         <label>
             <g:checkBox name="display" value="${product?.display}"/>
@@ -137,9 +144,8 @@
     <div class="checkbox-inline ${hasErrors(bean: product, field: 'showcase', 'error')} ">
         <label for="showcase">
             <g:checkBox name="showcase" value="${product?.showcase}"/>
-            <g:message code="product.showcase.label" default="product.showcase.labele"/>
+            <g:message code="product.showcase.label" default="product.showcase.label"/>
         </label>
-
     </div>
 
     <div class="checkbox-inline ${hasErrors(bean: product, field: 'outOfStock', 'error')} ">
