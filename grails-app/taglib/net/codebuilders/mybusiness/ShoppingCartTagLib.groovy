@@ -40,13 +40,13 @@ class ShoppingCartTagLib {
 
     def each = { attrs, body ->
         def items = shoppingCartService.getItems()
-
+        
         items?.sort { a, b -> a.id <=> b.id }.each { item -> 
             Integer qty = shoppingCartService.getQuantity(item)
             BigDecimal itemTotal = item.listPrice * qty
             
             def itemInfo = ['item':item, 'qty':qty, 'itemTotal':itemTotal]
-
+            
             out << body(itemInfo)
         }
     }
