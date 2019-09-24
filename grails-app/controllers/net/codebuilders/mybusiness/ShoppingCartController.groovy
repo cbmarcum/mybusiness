@@ -131,6 +131,44 @@ class ShoppingCartController {
 
         render(product.number + ' added to cart')
     }
+    
+    // add to cart to render quickCartContents
+    @Transactional
+    def add4() {
+        log.info params.toString()
+        def product
+
+        product = Product.get(params.id)
+
+        if (params.version) {
+            def version = params.version.toLong()
+            if (product.version > version) {
+                product.errors.rejectValue("version", "product.optimistic.locking.failure", message(code: "Product.already.updated"))
+            } else {
+                // product.addToShoppingCart()
+                // TODO: remove println
+                log.info("in s.c. controller add4")
+                log.info("params.version = true")
+                log.info("calling addToCart")
+                log.info("service = ${shoppingCartService}")
+                log.info("product = ${product}")
+                log.info("LOG TEST 4")
+                shoppingCartService.addToShoppingCart(product)
+            }
+        } else {
+            // product.addToShoppingCart()
+            // TODO: remove println
+            log.info("in s.c. controller add4")
+            log.info("params.version = true")
+            log.info("calling addToCart")
+            log.info("service = ${shoppingCartService}")
+            log.info("product = ${product}")
+            log.info("LOG TEST 4 else")
+            shoppingCartService.addToShoppingCart(product)
+        }
+
+        render(template: 'quickCartContent')
+    }
 
     @Transactional
     def remove() {
@@ -266,6 +304,23 @@ class ShoppingCartController {
         log.info "transactionId = ${params.transactionId}"
         def payment = Payment.findByTransactionId(params.transactionId)
         log.info payment
+    }
+    
+    
+    // COPIED these 2 actions FROM ProductController
+    // TODO: test using these from everywhere and removing the 2 in product controller.
+    def ajaxUpdateCartQty() {
+
+        log.info "entered ajaxUpdateCartQty"
+        def cartQty = shoppingCartService.getItems().size()
+        log.info "qty=${cartQty}"
+        render "${cartQty}"
+    }
+    
+    def ajaxUpdateQuickCartContent() {
+
+        log.info "entered ajaxUpdateQuickCartContent"
+        render(template: '/shoppingCart/quickCartContent')
     }
 
 

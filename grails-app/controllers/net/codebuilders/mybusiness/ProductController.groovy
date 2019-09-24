@@ -444,13 +444,17 @@ class ProductController {
     }
 
     def ajaxUpdateCartQty() {
-// TODO: remove println
-        println "entered ajaxUpdateCartQty"
+        
         log.info "entered ajaxUpdateCartQty"
         def cartQty = shoppingCartService.getItems().size()
-        println "qty=${cartQty}"
         log.debug "qty=${cartQty}"
         render "${cartQty}"
+    }
+    
+    def ajaxUpdateQuickCartContent() {
+
+        log.info "entered ajaxUpdateQuickCartContent"
+        render(template: '/shoppingCart/quickCartContent')
     }
 
     @Transactional
