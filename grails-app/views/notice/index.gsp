@@ -23,28 +23,24 @@
                 <table class="table table-condensed">
                     <thead>
                         <tr>
-
                             <g:sortableColumn property="name"
                             title="${message(code: 'default.name.label', default: 'default.name.label')}"/>
 
-                            <g:sortableColumn property="longDescription"
-                            title="${message(code: 'notice.longDescription.label', default: 'notice.longDescription.label')}"/>
+                            <g:sortableColumn property="page"
+                            title="${message(code: 'notice.page.label', default: 'notice.page.label')}"/>
 
                             <g:sortableColumn property="fromDate"
                             title="${message(code: 'notice.fromDate.label', default: 'notice.fromDate.label')}"/>
 
                             <g:sortableColumn property="thruDate"
                             title="${message(code: 'notice.thruDate.label', default: 'notice.thruDate.label')}"/>
-
                         </tr>
                     </thead>
                     <tbody>
                         <g:each in="${noticeList}" status="i" var="item">
                             <tr>
-                                <td>
-                                    <g:link action="show" id="${item.name}">${item.name}</g:link>
-                                    </td>
-                                    <td>${item.longDescription.take(20)} ...</td>
+                                <td><g:link action="show" id="${item.id}">${item.name}</g:link></td>
+                                <td>${item.page}</td>
                                 <td><g:formatDate format="yyyy-MMM-dd" date="${item.fromDate}"/></td>
                                 <td><g:formatDate format="yyyy-MMM-dd" date="${item.thruDate}"/></td>
                             </tr>
