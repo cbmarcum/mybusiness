@@ -14,7 +14,7 @@
 
     <g:render template="/common/subnav-create"/>
 
-    <div id="list-photo" class="page=header">
+    <div id="list-photo" class="page-header">
         <h1><g:message code="default.list.label" args="[entityName]"/></h1>
     </div>
 
