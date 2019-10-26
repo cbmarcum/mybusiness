@@ -576,7 +576,7 @@ class ImportSheetService {
                     // not in db yet
                     pc = new ProductCategory([description: desc, parent: pcParent])
                 } else {
-                    pc = ProductFeature.get(pcId)
+                    pc = ProductCategory.get(pcId)
                     pc.description = desc
                     pc.parent = pcParent
                 }
@@ -699,7 +699,7 @@ class ImportSheetService {
                                        title: title,
                                        photo: mf])
                 } else {
-                    photo = ProductFeature.get(photoId)
+                    photo = Photo.get(photoId)
                     photo.name = name
                     photo.alt = alt
                     photo.title = title

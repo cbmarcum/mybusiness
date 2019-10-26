@@ -35,10 +35,10 @@
             <dd><f:display bean="product" property="shortDescription"/></dd>
 
             <dt><g:message code="product.longDescription.label" default="Long Description"/></dt>
-            <dd><f:display bean="product" property="longDescription"/></dd>
+            <dd>${product?.longDescription.encodeAsRaw()}</dd>
 
             <dt><g:message code="product.largeDescription.label" default="Large Description"/></dt>
-            <dd><f:display bean="product" property="largeDescription"/></dd>
+            <dd>${product?.largeDescription.encodeAsRaw()}</dd>
 
             <dt><g:message code="product.conditionDescription.label" default="Condition Description"/></dt>
             <dd><f:display bean="product" property="conditionDescription"/></dd>
@@ -148,7 +148,7 @@
         <table class="table">
 
             <tbody>
-            <g:each in="${product.photos}" var="photo">
+            <g:each in="${product?.photos}" var="photo">
                 <tr>
                     <td>
                         <cb:image image="${photo.photo.getCloudFile('thumb')}"/><br/>
