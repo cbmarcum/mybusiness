@@ -1,5 +1,5 @@
 /*
-* *************************************************************
+ * *************************************************************
  *
  * Copyright 2018 Code Builders, LLC
  *
@@ -114,15 +114,15 @@ class ImportSheetService {
 
         // AWS S3 for images
         def provider = StorageProvider.create(
-                provider: grailsApplication.config.getProperty('mybusiness.storage.provider'),
-                accessKey: grailsApplication.config.getProperty('mybusiness.storage.accessKey'),
-                secretKey: grailsApplication.config.getProperty('mybusiness.storage.secretKey'),
-                //optional
-                region: grailsApplication.config.getProperty('mybusiness.storage.region'),
-                protocol: 'https',
-                useGzip: false,
-                keepAlive: false,
-                maxConnections: 50
+            provider: grailsApplication.config.getProperty('mybusiness.storage.provider'),
+            accessKey: grailsApplication.config.getProperty('mybusiness.storage.accessKey'),
+            secretKey: grailsApplication.config.getProperty('mybusiness.storage.secretKey'),
+            //optional
+            region: grailsApplication.config.getProperty('mybusiness.storage.region'),
+            protocol: 'https',
+            useGzip: false,
+            keepAlive: false,
+            maxConnections: 50
         )
         log.info("provider is a ${provider.class}")
 
@@ -140,12 +140,12 @@ class ImportSheetService {
         /*
         CloudFile cf = cloudFiles.find { it.name.contains('nylon-muzzle-black') }
         if (cf) {
-            log.info("Found ${cf.name}")
-            log.info("content type = ${cf.getContentType()}")
+        log.info("Found ${cf.name}")
+        log.info("content type = ${cf.getContentType()}")
         } else {
-            log.info("No file found with nylon-muzzle-black in the name")
+        log.info("No file found with nylon-muzzle-black in the name")
         }
-        */
+         */
 
 
         // start calc test
@@ -231,7 +231,7 @@ class ImportSheetService {
         //         "private:factory/scalc", "_default", 0, new com.sun.star.beans.PropertyValue[0])
 
         xComponent = aLoader.loadComponentFromURL(
-                sUrl, "_blank", 0, new com.sun.star.beans.PropertyValue[0])
+            sUrl, "_blank", 0, new com.sun.star.beans.PropertyValue[0])
         if (xComponent) {
             log.info("XComponent = ${xComponent}")
         } else {
@@ -324,7 +324,7 @@ class ImportSheetService {
                 if (newEntry) {
                     // not in db yet
                     pfc = new ProductFeatureCategory([description     : desc,
-                                                      shortDescription: shortDesc, sequenceNum: sequenceNum])
+                            shortDescription: shortDesc, sequenceNum: sequenceNum])
                 } else {
                     pfc = ProductFeatureCategory.get(pfcId)
                     pfc.description = desc
@@ -455,9 +455,9 @@ class ImportSheetService {
                 if (newEntry) {
                     // not in db yet
                     pf = new ProductFeature([description           : desc,
-                                             shortDescription      : shortDesc,
-                                             productFeatureCategory: pfc,
-                                             sequenceNum           : sequenceNum])
+                            shortDescription      : shortDesc,
+                            productFeatureCategory: pfc,
+                            sequenceNum           : sequenceNum])
                 } else {
                     pf = ProductFeature.get(pfId)
                     pf.description = desc
@@ -554,22 +554,28 @@ class ImportSheetService {
 
                 col = 4
                 xCell = xSheetPC.getCellByPosition(col, row)
-                String parentIdStr = xCell.getFormula().trim()
-                // log.info("Parent is ${parent}")
-
                 ProductCategory pcParent = null
-                int parentId = 0
-                if (parentIdStr.isInteger()) {
-                    parentId = parentIdStr as Integer
-                    pcParent = ProductCategory.get(parentId)
+                
+                if (xCell.type == CellContentType.EMPTY) {
+                    log.info("Parent ID is empty")
                 } else {
-                    log.info("Parent ID value can't be converted to a Integer")
-                    sb.append("Row ${row} skipped. Column ${col}. Parent ID value can't be converted to a Integer. <br />")
-                    hasPcErrors = true
-                    return
-                }
-                log.info("pcParent is ${pcParent}")
+                    String parentIdStr = xCell.getFormula().trim()
+                    // log.info("Parent is ${parent}")
 
+                    int parentId = 0
+                    if (parentIdStr.isInteger()) {
+                        parentId = parentIdStr as Integer
+                        pcParent = ProductCategory.get(parentId)
+                    } else {
+                        log.info("Parent ID value can't be converted to a Integer")
+                        sb.append("Row ${row} skipped. Column ${col}. Parent ID value can't be converted to a Integer. <br />")
+                        hasPcErrors = true
+                        return
+                    }
+                    log.info("pcParent is ${pcParent}")
+                    
+                }
+                
                 ProductCategory pc = null
 
                 if (newEntry) {
@@ -695,9 +701,9 @@ class ImportSheetService {
                     }
 
                     photo = new Photo([name : name,
-                                       alt  : alt,
-                                       title: title,
-                                       photo: mf])
+                            alt  : alt,
+                            title: title,
+                            photo: mf])
                 } else {
                     photo = Photo.get(photoId)
                     photo.name = name
@@ -1240,12 +1246,12 @@ class ImportSheetService {
                 // if it's a new entry we can just create one
                 if (newEntry) {
                     GoodIdentification upcaGoodId = new GoodIdentification(
-                            product: product, goodIdentificationType: GoodIdentificationType.UPCA, value: upca)
+                        product: product, goodIdentificationType: GoodIdentificationType.UPCA, value: upca)
                     upcaGoodId.save(flush: true)
                 } else {
                     // if it's an update, check if we have one to update
                     GoodIdentification upcaGoodId = GoodIdentification.findOrCreateByProductAndGoodIdentificationType(
-                            product, GoodIdentificationType.UPCA)
+                        product, GoodIdentificationType.UPCA)
                     upcaGoodId.value = upca
                     upcaGoodId.save(flush: true)
                 }
@@ -1253,13 +1259,13 @@ class ImportSheetService {
                 // if it's a new entry we can just create one
                 if (newEntry) {
                     GoodIdentification manufGoodId = new GoodIdentification(
-                            product: product, goodIdentificationType: GoodIdentificationType.MANUFACTURER_ID,
-                            value: manufId)
+                        product: product, goodIdentificationType: GoodIdentificationType.MANUFACTURER_ID,
+                        value: manufId)
                     manufGoodId.save(flush: true)
                 } else {
                     // if it's an update, get or create one
                     GoodIdentification manufGoodId = GoodIdentification.findOrCreateByProductAndGoodIdentificationType(
-                            product, GoodIdentificationType.MANUFACTURER_ID)
+                        product, GoodIdentificationType.MANUFACTURER_ID)
                     manufGoodId.value = manufId
                     manufGoodId.save(flush: true)
                 }
