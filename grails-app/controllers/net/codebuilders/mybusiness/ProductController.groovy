@@ -166,7 +166,7 @@ class ProductController {
                 }
 
                 if (params.category) {
-                    must { keyword "productCategories.description", params.category }
+                    must { keyword "productCategories.id", params.category }
                 }
 
                 if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
@@ -209,7 +209,7 @@ class ProductController {
                 }
 
                 if (params.category) {
-                    must { keyword "productCategories.description", params.category }
+                    must { keyword "productCategories.id", params.category }
                 }
 
 
@@ -234,7 +234,7 @@ class ProductController {
                 wildcard "number", "*"
 
                 if (params.category) {
-                    must { keyword "productCategories.description", params.category }
+                    must { keyword "productCategories.id", params.category }
                 }
 
                 if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
@@ -261,7 +261,7 @@ class ProductController {
                 wildcard "number", "*"
 
                 if (params.category) {
-                    must { keyword "productCategories.description", params.category }
+                    must { keyword "productCategories.id", params.category }
                 }
 
                 if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
