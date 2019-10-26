@@ -39,6 +39,8 @@ import grails.plugins.hibernate.search.HibernateSearchGrailsPlugin
 
 import grails.plugin.springsecurity.SpringSecurityUtils
 
+import net.codebuilders.mybusiness.ProductCategory
+
 
 /**
  * Controller class for Product
@@ -61,12 +63,12 @@ class ProductController {
 
         /* before search
         params.max = Math.min(max ?: 10, 100)
-         if (params.category) {
-             def products = productService.getProductsByProdCatAndDisplay(params)
-             respond products, model: [productCount: products.size()]
-         } else {
-             respond Product.list(params), model: [productCount: Product.count()]
-         }
+        if (params.category) {
+        def products = productService.getProductsByProdCatAndDisplay(params)
+        respond products, model: [productCount: products.size()]
+        } else {
+        respond Product.list(params), model: [productCount: Product.count()]
+        }
          */
 
         // using search
@@ -125,8 +127,8 @@ class ProductController {
 
 
             def command = [
-                    dateTo : new Date(),
-                    keyword: params.keyword // was keyword: params.list('q').join()
+                dateTo : new Date(),
+                keyword: params.keyword // was keyword: params.list('q').join()
             ]
 
 
@@ -226,7 +228,7 @@ class ProductController {
         } else {
 
             def command = [
-                    dateTo: new Date()
+                dateTo: new Date()
             ]
 
             productList = Product.search().list {
@@ -287,21 +289,28 @@ class ProductController {
         // for debugging missing photos
         /*
         productList.each {
-            log.info "${it.number} ${it.name}"
-            // log.info "photos[0].photo.name = ${it.photos[0].photo.name}"
-            if (it.photos) {
-                log.info "has ${it.photos.size()} photos."
-            } else {
-                log.info "has no photos."
-            }
+        log.info "${it.number} ${it.name}"
+        // log.info "photos[0].photo.name = ${it.photos[0].photo.name}"
+        if (it.photos) {
+        log.info "has ${it.photos.size()} photos."
+        } else {
+        log.info "has no photos."
         }
-        */
+        }
+         */
 
+        log.info("params.category= ${params.category}")
+        def productCategory = params.category ? ProductCategory.findById(params.category)?.description : "All Products"
+        log.info("productCategory = ${productCategory}")
+        
         def notices = noticeService.getCurrentNoticesByPage("Product")
 
+        // used for no-image if a product is missing one.
+        def noImage = Photo.findByName("no-image")?.photo?.getCloudFile("large")
+        
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 
-        respond productList, model: [productCount: productCount, noticeList: notices]
+        respond productList, model: [productCategory: productCategory, productCount: productCount, noticeList: notices, noImage: noImage]
 
     }
 
@@ -422,7 +431,7 @@ class ProductController {
     }
 
     def ajaxUpdateCartQty() {
-// TODO: remove println
+        // TODO: remove println
         println "entered ajaxUpdateCartQty"
         log.info "entered ajaxUpdateCartQty"
         def cartQty = shoppingCartService.getItems().size()
