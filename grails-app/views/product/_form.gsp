@@ -2,7 +2,7 @@
 
 <p>
     <span class="required-indicator">*</span>&nbsp;=&nbsp;
-<g:message code="default.form.required.label" default="Denotes a required field"/>
+    <g:message code="default.form.required.label" default="Denotes a required field"/>
 </p>
 
 <div class="row">
@@ -13,7 +13,7 @@
             <span class="required-indicator">*</span>
         </label>
         <g:field type="text" class="form-control" name="number" value="${product?.number}"
-                 maxLength="40" placeholder="40 chars max" required="true"/>
+            maxLength="40" placeholder="40 chars max" required="true"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'name', 'error')} ">
@@ -21,7 +21,7 @@
             <g:message code="product.name.label" default="product.name.label"/>
         </label>
         <g:field type="text" class="form-control" name="name" value="${product?.name}"
-                 maxLength="80" placeholder="80 chars max"/>
+            maxLength="80" placeholder="80 chars max"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'brand', 'error')} ">
@@ -29,7 +29,7 @@
             <g:message code="product.brand.label" default="product.brand.label"/>
         </label>
         <g:field type="text" class="form-control" name="brand" value="${product?.brand}"
-                 maxLength="60" placeholder="60 chars max"/>
+            maxLength="60" placeholder="60 chars max"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'variantGroupId', 'error')} ">
@@ -37,7 +37,7 @@
             <g:message code="product.variantGroupId.label" default="product.variantGroupId.label"/>
         </label>
         <g:field type="text" class="form-control" name="variantGroupId" value="${product?.variantGroupId}"
-                 maxLength="50" placeholder="50 chars max"/>
+            maxLength="50" placeholder="50 chars max"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'taxCode', 'error')} ">
@@ -45,7 +45,7 @@
             <g:message code="product.taxCode.label" default="product.taxCode.label"/>
         </label>
         <g:field type="text" class="form-control" name="taxCode" value="${product?.taxCode}"
-                 maxLength="50" placeholder="50 chars max"/>
+            maxLength="50" placeholder="50 chars max"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'listPrice', 'error')}">
@@ -54,8 +54,8 @@
             <span class="required-indicator">*</span>
         </label>
         <g:field type="number" class="form-control" name="listPrice"
-                 value="${fieldValue(bean: product, field: 'listPrice')}" required="true" 
-                     min="0" step="0.01" />
+        value="${fieldValue(bean: product, field: 'listPrice')}" required="true" 
+            min="0" step="0.01" />
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'shipWeight', 'error')}">
@@ -64,8 +64,8 @@
             <span class="required-indicator">*</span>
         </label>
         <g:field type="number" class="form-control" name="shipWeight" required="true"
-                 value="${fieldValue(bean: product, field: 'shipWeight')}" 
-                     min="0" step="0.01" />
+        value="${fieldValue(bean: product, field: 'shipWeight')}" 
+            min="0" step="0.01" />
     </div>
 
 </div> <%-- /.row --%>
@@ -75,7 +75,7 @@
         <g:message code="product.shortDescription.label" default="product.shortDescription.label"/>
     </label>
     <g:field type="text" class="form-control" name="shortDescription" value="${product?.shortDescription}"
-             maxLength="200" placeholder="200 chars max"/>
+        maxLength="200" placeholder="200 chars max"/>
 </div>
 
 <div class="form-group ${hasErrors(bean: product, field: 'longDescription', 'error')} ">
@@ -101,8 +101,8 @@
         <g:message code="product.conditionDescription.label" default="product.conditionDescription.label"/>
     </label>
     <g:field type="text" class="form-control" name="conditionDescription"
-             value="${product?.conditionDescription}"
-             maxLength="1000" placeholder="1000 chars max"/>
+    value="${product?.conditionDescription}"
+        maxLength="1000" placeholder="1000 chars max"/>
 </div>
 
 <div class="row">
@@ -112,18 +112,25 @@
             <g:message code="product.salesDiscontinuationDate.label" default="product.salesDiscontinuationDate.label"/>
         </label>
         <g:datePicker class="form-control" name="salesDiscontinuationDate" precision="day"
-                      value="${product?.salesDiscontinuationDate}" default="none" noSelection="['': '']"/>
+        value="${product?.salesDiscontinuationDate}" default="none" noSelection="['': '']"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'supportDiscontinuationDate', 'error')} ">
         <label for="supportDiscontinuationDate">
             <g:message code="product.supportDiscontinuationDate.label"
-                       default="product.supportDiscontinuationDate.labe"/>
+                default="product.supportDiscontinuationDate.labe"/>
         </label>
         <g:datePicker class="form-control" name="supportDiscontinuationDate" precision="day"
-                      value="${product?.supportDiscontinuationDate}" default="none" noSelection="['': '']"/>
+        value="${product?.supportDiscontinuationDate}" default="none" noSelection="['': '']"/>
     </div>
 
+</div>
+
+<div class="checkbox-inline ${hasErrors(bean: product, field: 'primaryVariant', 'error')} ">
+    <label for="primaryVariant">
+        <g:checkBox name="primaryVariant" value="${product?.primaryVariant}"/>
+        <g:message code="product.primaryVariant.label" default="product.primaryVariant.label"/>
+    </label>
 </div>
 
 <div>
@@ -137,7 +144,7 @@
     <div class="checkbox-inline ${hasErrors(bean: product, field: 'showcase', 'error')} ">
         <label for="showcase">
             <g:checkBox name="showcase" value="${product?.showcase}"/>
-            <g:message code="product.showcase.label" default="product.showcase.labele"/>
+            <g:message code="product.showcase.label" default="product.showcase.label"/>
         </label>
 
     </div>
@@ -164,15 +171,15 @@
             <g:message code="goodIdentifications.label" default="goodIdentifications.label"/>
         </label>
         <ul class="one-to-many">
-            <g:each in="${product?.goodIdentifications ?}" var="p">
+            <g:each in="${product?.goodIdentifications}" var="p">
                 <li><g:link controller="goodIdentification" action="show"
-                            id="${p.id}"><b>${p?.goodIdentificationType.name}</b> - ${p?.value}</g:link></li>
-            </g:each>
-            <g:if test="${params.action == 'edit'}">
+                    id="${p.id}"><b>${p?.goodIdentificationType.name}</b> - ${p?.value}</g:link></li>
+                    </g:each>
+                    <g:if test="${params.action == 'edit'}">
                 <li class="add">
                     <g:link controller="goodIdentification" action="create"
-                            params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'goodIdentification.label', default: 'GoodIdentification')])}</g:link>
-                </li>
+                    params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'goodIdentification.label', default: 'GoodIdentification')])}</g:link>
+                    </li>
             </g:if>
         </ul>
     </div>
@@ -182,15 +189,15 @@
             <g:message code="product.productFeatureAppls.label" default="product.productFeatureAppls.label"/>
         </label>
         <ul class="one-to-many">
-            <g:each in="${product?.productFeatureAppls ?}" var="p">
+            <g:each in="${product?.productFeatureAppls}" var="p">
                 <li><g:link controller="productFeatureAppl" action="show"
-                            id="${p.id}"><b>${p.productFeature.productFeatureCategory.description}</b> - ${p?.productFeature?.description}</g:link>
-                </li>
+                    id="${p.id}"><b>${p.productFeature.productFeatureCategory.description}</b> - ${p?.productFeature?.description}</g:link>
+                    </li>
             </g:each>
             <g:if test="${params.action == 'edit'}">
                 <li class="add">
                     <g:link controller="productFeatureAppl" action="create"
-                            params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'productFeatureAppl.label', default: 'ProductFeatureAppl')])}
+                    params="['product.id': product?.id]">${message(code: 'default.add.label', args: [message(code: 'productFeatureAppl.label', default: 'ProductFeatureAppl')])}
                     </g:link>
                 </li>
             </g:if>
@@ -214,9 +221,9 @@
 
         </label>
         <g:select name="productCategories" from="${net.codebuilders.mybusiness.ProductCategory.list()}"
-                  multiple="true"
-                  optionKey="id" size="5" value="${product?.productCategories*.id}"
-                  class="form-control many-to-many"/>
+            multiple="true"
+        optionKey="id" size="5" value="${product?.productCategories*.id}"
+            class="form-control many-to-many"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'productType', 'error')} required">
@@ -225,8 +232,8 @@
             <span class="required-indicator">*</span>
         </label>
         <g:select class="form-control" name="productType" from="${net.codebuilders.mybusiness.ProductType?.values()}"
-                  keys="${net.codebuilders.mybusiness.ProductType.values()*.name()}" required="true"
-                  value="${product?.productType?.name()}"/>
+        keys="${net.codebuilders.mybusiness.ProductType.values()*.name()}" required="true"
+        value="${product?.productType?.name()}"/>
     </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'otherAttributes', 'error')} ">
