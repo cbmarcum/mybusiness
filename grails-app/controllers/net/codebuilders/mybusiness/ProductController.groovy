@@ -408,7 +408,20 @@ class ProductController {
             notFound()
             return
         }
+        
+        // since we're not using belongsTo because the database is established
+        // we'll delete the join table references manually.
 
+        product.goodIdentifications.each { gid -> 
+            log.info("deleting goodId ${gid.toString()}")
+            gid.delete()
+        }
+        product.productFeatureAppls.each { pfa -> 
+            log.info("deleting pfa ${pfa.toString()}")
+            pfa.delete()
+        }
+        product.save()
+        
         product.delete flush: true
 
         request.withFormat {
