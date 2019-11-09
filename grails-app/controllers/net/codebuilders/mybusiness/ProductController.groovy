@@ -306,11 +306,13 @@ class ProductController {
         def notices = noticeService.getCurrentNoticesByPage("Product")
 
         // used for no-image if a product is missing one.
-        def noImage = Photo.findByName("no-image")?.photo?.getCloudFile("large")
+        def noImageLarge = Photo.findByName("no-image")?.photo?.getCloudFile("large")
+        def noImageSmall = Photo.findByName("no-image")?.photo?.getCloudFile("small")
         
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 
-        respond productList, model: [productCategory: productCategory, productCount: productCount, noticeList: notices, noImage: noImage]
+        respond productList, model: [productCategory: productCategory, productCount: productCount, 
+            noticeList: notices, noImageLarge: noImageLarge, noImageSmall: noImageSmall]
 
     }
 
