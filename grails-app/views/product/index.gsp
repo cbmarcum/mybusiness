@@ -54,7 +54,7 @@
                             </g:if>
                             <g:else>
                                 <g:set var="large" value="${noImageLarge}"/>
-                                <g:set var="large" value="${noImageSmall}"/>
+                                <g:set var="small" value="${noImageSmall}"/>
                             </g:else>
                             <tr>
                                 <td width="160px">
