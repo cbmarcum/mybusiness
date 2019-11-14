@@ -27,7 +27,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 
-version "3.3.16.3" // added needed updates from master after branch created
+version "3.3.16.4" 
 group "net.codebuilders"
 description 'MyBusiness - a Grails 3.3 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'

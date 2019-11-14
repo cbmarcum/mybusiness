@@ -3,12 +3,7 @@
     <head>
         <meta name="layout" content="main">
         <g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}"/>
-        <g:if test="${params.category}">
-            <g:set var="entityCategory" value="${params.category}"/>
-        </g:if>
-        <g:else>
-            <g:set var="entityCategory" value="All Products"/>
-        </g:else>
+        <g:set var="entityCategory" value="${productCategory}"/>
 
         <title><g:message code="default.list.label" args="[entityName]"/></title>
 
