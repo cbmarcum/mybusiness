@@ -1,264 +1,207 @@
-<%@ page import="net.codebuilders.mybusiness.ProductService" %>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta name="layout" content="main" />
+        <g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}"/>
+        <title><g:message code="default.detail.label" args="[product.name]"/></title>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="layout" content="main"/>
-    <g:set var="entityName" value="${message(code: 'product.label', default: 'Product')}"/>
-    <title><g:message code="default.detail.label" args="[product.name]"/></title>
+        <!-- facebook open graph meta tags -->
+        <g:render template="fb-meta-tags-detail"/>
 
-    <!-- facebook open graph meta tags -->
-    <meta property="og:url" content="${grailsApplication.config.grails.serverURL}${request.forwardURI}"/>
-    <meta property="og:title" content="${product.name}"/>
-    <meta property="og:site_name" content="Code Builders, LLC Site"/>
-    <meta property="og:description"
-          content="${product?.shortDescription}" />
-    <g:if test="${product?.photos}">
-        <meta property="og:image"
-              content="${product.photos[0].photo.url("large")}"/>
-        <meta property="og:image:width" content="400"/>
-        <meta property="og:image:height" content="400"/>
-    </g:if>
-    <g:else>
-        <meta property="og:image"
-              content="${grailsApplication.config.grails.serverURL}/assets/fb-mb-image-1200x630.png"/>
-        <meta property="og:image:width" content="1200"/>
-        <meta property="og:image:height" content="630"/>
-    </g:else>
-
-    <meta property="fb:app_id" content="${grailsApplication.config.fb.appid}"/>
-    <meta property="fb:admins" content="${grailsApplication.config.fb.admins}"/>
-    <meta property="og:type" content="product"/>
+    <!-- jQuery Zoom-->
+    <asset:javascript src="vendor/jquery-zoom/jquery.zoom.js"/>
 
 </head>
 
 <body>
-
 <%-- facebook page plugin placeholder--%>
-<script>
-    window.fbAsyncInit = function () {
+    <script>
+        window.fbAsyncInit = function () {
         FB.init({
             appId: "${grailsApplication.config.fb.appid}",
-            autoLogAppEvents: true,
-            xfbml: true,
-            version: 'v3.2'
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v3.2'
         });
-    };
-
-    (function (d, s, id) {
+        };
+        (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
-            return;
+        return;
         }
         js = d.createElement(s);
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
 
-<!-- COPIED IN -->
-<div class="container">
+    <section class="product-details">
+        <div class="container">
+            <div class="row"> <%-- big row, images and content --%>
+                <div class="col-lg-5 col-xl-4 pt-4 order-2 order-lg-1">
+                    <%-- for each photo tied to product --%>
+                    <g:if test="${product?.photos}">
+                        <g:each in="${product?.photos}">
+                            <g:set var="large" value="${it.photo.getCloudFile("large")}"/>
+                            <g:set var="footer" value="product.name"/>
+                            <cb:zoomGallery large="${large}" footer="${footer}" alt="it.alt"/>
+                        </g:each>
 
-    <div class="page-header">
-        <h1><g:message code="default.detail.label" args="[product.name]"/></h1>
-    </div> <!-- /.page-header -->
+                    </g:if>
 
-    <div class="row">
 
-        <div class="col-md-6">
-        <!-- left-detail -->
-
-            <g:if test="${product?.photos}">
-                <g:set var="large" value="${product.photos[0].photo.getCloudFile("large")}"/>
-                <g:set var="small" value="${product.photos[0].photo.getCloudFile("small")}"/>
-                <cb:zoomImageById gallery="gallery_01" imageId="zoom_01" large="${large}" small="${small}"/>
-
-                <div id="gallery_01">
-                    <g:each in="${product?.photos}">
-                        <g:set var="large" value="${it.photo.getCloudFile("large")}"/>
-                        <g:set var="small" value="${it.photo.getCloudFile("small")}"/>
-                        <g:set var="thumb" value="${it.photo.getCloudFile("thumb")}"/>
-                        <cb:zoomGallery gallery="gallery_01" imageId="zoom_01" large="${large}" small="${small}"
-                                        thumb="${thumb}"/>
-                    </g:each>
                 </div>
+                <div class="col-lg-7 col-xl-8 pl-lg-5 pt-4 order-1 order-lg-2">
 
-            </g:if>
+                    <div style="top: 100px;" class="sticky-top">
+                        <h1 class="h2 mb-4">${product?.name} </h1>
+                        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between mb-4">
+                            <ul class="list-inline mb-2 mb-sm-0">
+                                <g:if test="${product?.listPrice}">
+                                    <li class="list-inline-item h4 font-weight-light mb-0"><g:formatNumber number="${product.listPrice}" type="currency" currencyCode="USD"/>
+                                    </li>
+                                </g:if>
+                            </ul>
 
-            <g:if test="${product?.longDescription}">
-                <div>
-                    ${(product?.longDescription.encodeAsRaw())}
-                </div>
-            </g:if>
+                        </div>
 
-        </div> <!-- /.col -->
-    <!-- end left-detail -->
+                        <g:if test="${product?.shortDescription}">
+                            <div class="mb-4">
+                                ${product?.shortDescription.encodeAsRaw()}
+                            </div>
+                        </g:if>
 
-    <!-- right-detail -->
-        <div class="col-md-6">
+                        <g:if test="${variantMap}">
 
-            <div class="row">
-                <table class="table borderless">
-                    <tbody>
+                            <g:if test="${variantMap?.size() > 1}" >
+                                <div class="mb-4 text-muted">
+                                    If a variation combination is unavailable, try changing the other type.
+                                    For instance, a certain size may not be available in certain colors or <em>vice versa</em>.
+                                </div>
+                        </g:if>
 
-                    <g:if test="${product?.number}">
-                        <tr>
-                            <td><b><g:message code="product.number.label" default="Number"/></b></td>
-                            <td>${fieldValue(bean: product, field: "number")}</td>
-                        </tr>
-                    </g:if>
-                    <g:if test="${product?.name}">
-                        <tr>
-                            <td><b><g:message code="product.name.label" default="Name"/></b></td>
-                            <td>${fieldValue(bean: product, field: "name")}</td>
-                        </tr>
-                    </g:if>
-                    <g:if test="${product?.listPrice}">
-                        <tr>
-                            <td><b><g:message code="product.listPrice.label" default="List Price"/></b></td>
-                            <td><g:formatNumber number="${product.listPrice}" type="currency" currencyCode="USD"/></td>
-                        </tr>
-                    </g:if>
-                    </tbody>
-                </table>
-                <g:if test="${product?.largeDescription}">
+                        <div class="row">
+
+                            <g:each var="variant" in="${variantMap}">
+                                <div class="col-sm-6 col-lg-12 detail-option mb-3">
+                                    <h6 class="detail-option-heading">${variant.key} <span>(required)</span></h6>
+
+                                    <g:each var="button" in="${variant.value}">
+                                        <!-- test for size same as this product and highlight -->
+                                        <g:if test="${button.id == product.id}">
+                                            <!-- test msg value -->
+                                            <g:if test="${button.msg == 'Out of Stock'}">
+                                                <g:link controller="product" action="detail" id="${button.id}"
+                                                    class="btn btn-sm btn-outline-secondary detail-option-btn-label active">
+                                                    ${button.description}
+                                                </g:link>
+                                            </g:if>
+                                            <g:elseif test="${button.msg == 'Call for Availability'}">
+                                                <g:link controller="product" action="detail" id="${button.id}"
+                                                    class="btn btn-sm btn-outline-secondary detail-option-btn-label active">
+                                                    ${button.description}
+                                                </g:link>
+                                            </g:elseif>
+                                            <g:else>
+                                                <g:link controller="product" action="detail" id="${button.id}"
+                                                    class="btn btn-sm btn-outline-secondary detail-option-btn-label active">
+                                                    ${button.description}
+                                                </g:link>
+                                            </g:else>
+
+                                        </g:if>
+                                        <g:elseif test="${button.msg == 'No Match'}">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary detail-option-btn-label disabled">
+                                                <span style="color:red">${button.description}</span></button>
+                                            </g:elseif>
+                                            <g:else>
+                                                <!-- test msg value -->
+                                                <g:if test="${button.msg == 'Out of Stock'}">
+                                                    <g:link controller="product" action="detail" id="${button.id}"
+                                                        class="btn btn-sm btn-outline-secondary detail-option-btn-label">
+                                                        ${button.description}
+                                                    </g:link>
+                                                </g:if>
+                                                <g:elseif test="${button.msg == 'Call for Availability'}">
+                                                    <g:link controller="product" action="detail" id="${button.id}"
+                                                        class="btn btn-sm btn-outline-secondary detail-option-btn-label">
+                                                        ${button.description}
+                                                    </g:link>
+                                                </g:elseif>
+                                                <g:else>
+                                                    <g:link controller="product" action="detail" id="${button.id}"
+                                                        class="btn btn-sm btn-outline-secondary detail-option-btn-label">
+                                                        ${button.description}
+                                                    </g:link>
+                                                </g:else>
+                                            </g:else>
+                                        </g:each>
+                                </div> <%-- ./col --%>
+                            </g:each> <%-- in variantMap --%>
+                        </div> <%-- ./row --%>
+                        </g:if> <%-- variantMap --%>
+
+
+
+
+                    <%-- test for out of stock, then test for web sell, then allow paypal
+                    later - test for option categories, if none remoteLink
+                    if some, formRemote - see ttlcal detail --%>
+                    <div class="row" style="padding-top: 20px">
+                        <div class="col-sm-6">
+
+                            <g:if test="${product.outOfStock}">
+                                <span style="color:red">
+                                    <g:message code="product.outOfStock.label" default="Out of Stock"/>
+                                </span>
+                            </g:if>
+                            <g:elseif test="${!product.webSell}">
+                                <span style="color:red">
+                                    <g:message code="product.webSell.message" default="Call for Availability"/>
+                                </span>
+                            </g:elseif>
+                            <g:else>
+                                <button type="button" onclick="jsAddToCart('${product.id}');" class="btn btn-dark btn-lg mb-1" rel="nofollow">
+                                    <i class="fa fa-shopping-cart mr-2"></i>Add to Cart</button>
+                                </g:else>
+
+                        </div> <!-- /.col -->
+
+                        <div class="col-sm-6">
+                            <div id="fb-product"></div>
+                        </div>
+                    </div> <!-- ./row -->
+
+
+
+                </div> <%-- ./sticky-top --%>
+
+            </div> <%-- right column --%>
+
+        </div> <%-- ./row big one images and detail content--%>
+    </div> <%-- ./container --%>
+</section>
+
+<section class="mt-5">
+    <div class="container">
+        <ul role="tablist" class="nav nav-tabs flex-column flex-sm-row">
+            <li class="nav-item">
+                <a data-toggle="tab" href="#description" role="tab" class="nav-link detail-nav-link active">Description</a>
+            </li>
+        </ul>
+        <div class="tab-content py-4">
+            <div id="description" role="tabpanel" class="tab-pane active px-3">
+                <g:if test="${product?.longDescription}">
                     <div>
-                        ${product?.largeDescription.encodeAsRaw()}
+                        ${product?.longDescription.encodeAsRaw()}
                     </div>
                 </g:if>
+            </div>
 
-            </div> <!-- ./row -->
-
-            <g:if test="${variantMap}">
-
-                <h2>Product Variations</h2>
-                <g:if test="${variantMap?.size() > 1}">
-                    <p class="bg-info" style="color: #333; padding: 5px;">
-                        If a variation combination is unavailable, try changing the other type.
-                        For instance, a certain size may not be available in certain colors or <em>vice versa</em>.
-                    </p>
-                </g:if>
-                <div class="row">
-                    <g:each var="variant" in="${variantMap}">
-                        <div class="col-sm-6">
-                            <div id="${variant.key}">
-                                <h3>${variant.key}</h3>
-                                <g:each var="button" in="${variant.value}">
-                                    <!-- test for size same as this product and highlight -->
-                                    <g:if test="${button.id == product.id}">
-                                        <!-- test msg value -->
-                                        <g:if test="${button.msg == 'Out of Stock'}">
-                                            <g:link controller="product" action="detail" id="${button.id}"
-                                                    class="btn btn-info btn-lg btn-block">
-                                                ${button.description}
-                                            </g:link>
-                                        </g:if>
-                                        <g:elseif test="${button.msg == 'Call for Availability'}">
-                                            <g:link controller="product" action="detail" id="${button.id}"
-                                                    class="btn btn-info btn-lg btn-block">
-                                                ${button.description}
-                                            </g:link>
-                                        </g:elseif>
-                                        <g:else>
-                                            <g:link controller="product" action="detail" id="${button.id}"
-                                                    class="btn btn-info btn-lg btn-block">
-                                                ${button.description}
-                                            </g:link>
-                                        </g:else>
-
-                                    </g:if>
-                                    <g:elseif test="${button.msg == 'No Match'}">
-                                        <button type="button" class="btn btn-default btn-lg btn-block disabled">
-                                            <span style="color:red">${button.description}</span></button>
-                                    </g:elseif>
-                                    <g:else>
-                                        <!-- test msg value -->
-                                        <g:if test="${button.msg == 'Out of Stock'}">
-                                            <g:link controller="product" action="detail" id="${button.id}"
-                                                    class="btn btn-default btn-lg btn-block">
-                                                ${button.description}
-                                            </g:link>
-                                        </g:if>
-                                        <g:elseif test="${button.msg == 'Call for Availability'}">
-                                            <g:link controller="product" action="detail" id="${button.id}"
-                                                    class="btn btn-default btn-lg btn-block">
-                                                ${button.description}
-                                            </g:link>
-                                        </g:elseif>
-                                        <g:else>
-                                            <g:link controller="product" action="detail" id="${button.id}"
-                                                    class="btn btn-default btn-lg btn-block">
-                                                ${button.description}
-                                            </g:link>
-                                        </g:else>
-                                    </g:else>
-
-                                </g:each>
-                            </div><!-- variant.key -->
-                        </div> <!-- .col -->
-                    </g:each>
-                </div> <!-- ./row -->
-            </g:if>
-
-        </div><!-- /.col -->
-    <!-- end right-detail -->
-
-    </div> <!-- ./row -->
-
-
-<!-- test for out of stock, then test for web sell, then allow paypal
-  later - test for option categories, if none remoteLink
-  if some, formRemote - see ttlcal detail-->
-    <div class="row" style="padding-top: 20px">
-        <div class="col-sm-6">
-
-            <g:if test="${product.outOfStock}">
-                <span style="color:red">
-                    <g:message code="product.outOfStock.label" default="Out of Stock"/>
-                </span>
-            </g:if>
-            <g:elseif test="${!product.webSell}">
-                <span style="color:red">
-                    <g:message code="product.webSell.message" default="Call for Availability"/>
-                </span>
-            </g:elseif>
-            <g:else>
-                <g:remoteLink controller="shoppingCart" action="add2" params="${[id: product.id]}"
-                              onSuccess="${remoteFunction(action: 'ajaxUpdateCartQty', update: 'cartQty')}"
-                              onComplete="alert('added to cart');">
-                    <img src="https://www.paypal.com/en_US/i/btn/btn_cart_LG.gif">
-                </g:remoteLink>
-            </g:else>
-
-        </div> <!-- /.col -->
-
-        <div class="col-sm-6">
-            <div id="fb-product"></div>
         </div>
-    </div> <!-- ./row -->
-
-</div> <!-- /.container -->
-
-
-<script type="text/javascript">
-    //initiate the plugin and pass the id of the div containing gallery images
-    $("#zoom_01").elevateZoom({
-        gallery: 'gallery_01',
-        cursor: 'pointer',
-        galleryActiveClass: 'active',
-        imageCrossfade: true,
-        loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'
-    });
-</script>
-<script type="text/javascript">
-    //pass the images to Fancybox
-    $("#zoom_01").bind("click", function (e) {
-        var ez = $('#zoom_01').data('elevateZoom');
-        $.fancybox(ez.getGalleryList());
-        return false;
-    });
-</script>
+    </div>
+</section>
 
 <!-- add facebook buttons to product -->
 <script>
