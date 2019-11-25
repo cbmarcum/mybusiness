@@ -54,8 +54,8 @@ class Product {
 
     static search = {
         // fields
-        number index: 'yes'
-        name index: 'yes'
+        number index: 'yes', sortable: true
+        name index: 'yes', sortable: true
         brand index: 'yes'
         shortDescription index: 'yes'
         longDescription index: 'yes'
@@ -63,6 +63,7 @@ class Product {
         goodIdentifications indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
         productCategories indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
         display index: 'yes'
+        lastUpdated date: 'day', sortable: true
         salesDiscontinuationDate date: 'day'
         listPrice numeric: 2, analyze: false
         primaryVariant index: 'yes'

@@ -15,8 +15,7 @@
             <thead>
                 <tr>
 
-                    <g:sortableColumn property="id"
-                    title="${message(code: 'default.id.label', default: 'default.id.label')}"/>
+                    <td>${message(code: 'default.id.label', default: 'default.id.label')}</td>
 
                     <g:sortableColumn property="number"
                     title="${message(code: 'product.number.label', default: 'product.number.label')}"/>
@@ -24,11 +23,9 @@
                     <g:sortableColumn property="name"
                     title="${message(code: 'product.name.label', default: 'product.name.label')}"/>
 
-                    <g:sortableColumn property="variantGroupId"
-                    title="${message(code: 'product.variantGroupId.label', default: 'product.variantGroupId.label')}"/>
+                    <td>${message(code: 'product.variantGroupId.label', default: 'product.variantGroupId.label')}</td>
 
-                    <g:sortableColumn property="listPrice"
-                    title="${message(code: 'product.listPrice.label', default: 'product.listPrice.label')}"/>
+                    <td>${message(code: 'product.listPrice.label', default: 'product.listPrice.label')}</td>
 
                     <g:sortableColumn property="lastUpdated"
                     title="${message(code: 'default.lastUpdated.label', default: 'default.lastUpdated.label')}"/>

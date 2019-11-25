@@ -27,7 +27,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 
-version "3.3.17.19" // notice update
+version "3.3.18.6" // product sorting
 group "net.codebuilders"
 description 'MyBusiness - a Grails 3.3 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'

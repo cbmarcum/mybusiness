@@ -57,12 +57,12 @@ class ProductController {
 
         /* before search
         params.max = Math.min(max ?: 10, 100)
-         if (params.category) {
-             def products = productService.getProductsByProdCatAndDisplay(params)
-             respond products, model: [productCount: products.size()]
-         } else {
-             respond Product.list(params), model: [productCount: Product.count()]
-         }
+        if (params.category) {
+        def products = productService.getProductsByProdCatAndDisplay(params)
+        respond products, model: [productCount: products.size()]
+        } else {
+        respond Product.list(params), model: [productCount: Product.count()]
+        }
          */
 
         // using search
@@ -121,8 +121,8 @@ class ProductController {
 
 
             def command = [
-                    dateTo : new Date(),
-                    keyword: params.keyword // was keyword: params.list('q').join()
+                dateTo : new Date(),
+                keyword: params.keyword // was keyword: params.list('q').join()
             ]
 
 
@@ -173,7 +173,16 @@ class ProductController {
                     mustNot { keyword "display", false }
                 }
 
-                // sort "number", "asc"
+                if (params.sort) {
+                    if (params.sort == "lastUpdated") {
+                        sort "lastUpdated", params.order, Long
+                    } else {
+                        sort params.sort, params.order
+                    }
+                    
+                } else {
+                    sort "number", "asc"
+                }
 
                 // maxResults page.max
                 // offset page.offset
@@ -222,7 +231,7 @@ class ProductController {
         } else {
 
             def command = [
-                    dateTo: new Date()
+                dateTo: new Date()
             ]
 
             productList = Product.search().list {
@@ -243,7 +252,16 @@ class ProductController {
                     must { keyword "primaryVariant", true }
                 }
 
-                // sort "number", "asc"
+                if (params.sort) {
+                    if (params.sort == "lastUpdated") {
+                        sort "lastUpdated", params.order, Long
+                    } else {
+                        sort params.sort, params.order
+                    }
+                    
+                } else {
+                    sort "number", "asc"
+                }
 
                 // maxResults page.max
                 // offset page.offset
@@ -283,15 +301,15 @@ class ProductController {
         // for debugging missing photos
         /*
         productList.each {
-            log.info "${it.number} ${it.name}"
-            // log.info "photos[0].photo.name = ${it.photos[0].photo.name}"
-            if (it.photos) {
-                log.info "has ${it.photos.size()} photos."
-            } else {
-                log.info "has no photos."
-            }
+        log.info "${it.number} ${it.name}"
+        // log.info "photos[0].photo.name = ${it.photos[0].photo.name}"
+        if (it.photos) {
+        log.info "has ${it.photos.size()} photos."
+        } else {
+        log.info "has no photos."
         }
-        */
+        }
+         */
        
         log.info("params.category= ${params.category}")
         def productCategory = params.category ? ProductCategory.findById(params.category)?.description : "All Products"
