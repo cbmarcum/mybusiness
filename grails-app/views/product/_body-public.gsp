@@ -8,7 +8,10 @@
         <div class="hero-content pb-5 text-center">
             <h1 class="hero-heading"><g:message code="default.list.label" args="[entityName]"/></h1>
             <div class="row">
-                <div class="col-xl-8 offset-xl-2"><p class="lead text-muted">${entityCategory}</p></div>
+                <div class="col-xl-8 offset-xl-2"><p class="lead text-muted">${productCategory}
+                        <g:if test="${params.keyword}"> - Search for ${params.keyword} </g:if>
+                    </p>
+                </div>
             </div>
         </div>
     </div>

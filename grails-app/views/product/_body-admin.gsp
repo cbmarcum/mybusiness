@@ -6,7 +6,13 @@
 
     <div id="list-product" class="page-header">
         <h1><g:message code="default.list.label" args="[entityName]"/></h1>
-    </div>
+        <div class="row">
+            <div class="col-md-12"><p class="lead text-muted">${entityCategory}
+                    <g:if test="${params.keyword}"> - Search for ${params.keyword} </g:if>
+                    </p>
+                </div>
+            </div>
+        </div>
 
     <g:render template="/common/flash-message"/>
 
@@ -18,17 +24,20 @@
                     <td>${message(code: 'default.id.label', default: 'default.id.label')}</td>
 
                     <g:sortableColumn property="number"
-                    title="${message(code: 'product.number.label', default: 'product.number.label')}"/>
+                    title="${message(code: 'product.number.label', default: 'product.number.label')}" 
+                    params="${filterParams}" defaultOrder="desc" />
 
                     <g:sortableColumn property="name"
-                    title="${message(code: 'product.name.label', default: 'product.name.label')}"/>
+                    title="${message(code: 'product.name.label', default: 'product.name.label')}" 
+                    params="${filterParams}" defaultOrder="desc" />
 
                     <td>${message(code: 'product.variantGroupId.label', default: 'product.variantGroupId.label')}</td>
 
                     <td>${message(code: 'product.listPrice.label', default: 'product.listPrice.label')}</td>
 
                     <g:sortableColumn property="lastUpdated"
-                    title="${message(code: 'default.lastUpdated.label', default: 'default.lastUpdated.label')}"/>
+                    title="${message(code: 'default.lastUpdated.label', default: 'default.lastUpdated.label')}" 
+                    params="${filterParams}" defaultOrder="desc" />
 
                 </tr>
             </thead>
