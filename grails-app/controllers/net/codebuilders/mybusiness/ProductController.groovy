@@ -47,7 +47,7 @@ class ProductController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     ProductService productService
-    def productFeatureApplService
+    ProductFeatureApplService productFeatureApplService
     ShoppingCartService shoppingCartService
     def springSecurityService
     NoticeService noticeService
@@ -319,10 +319,14 @@ class ProductController {
         
         // used for no-image if a product is missing one.
         def noImage = Photo.findByName("no-image")?.photo?.getCloudFile("large")
+        
+        // for a params map without params.format
+        Map filterParams = params.clone()
+        filterParams.remove('format')
 
         // render(view:'index', model: [message: 'Hello world', result: result, fieldsList: indexedProperties.keySet()])
 
-        respond productList, model: [productCategory: productCategory, productCount: productCount, noticeList: notices, noImage: noImage]
+        respond productList, model: [productCategory: productCategory, productCount: productCount, noticeList: notices, noImage: noImage, filterParams: filterParams]
 
     }
 
