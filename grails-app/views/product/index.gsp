@@ -16,10 +16,10 @@
 
     <body>
     <sec:access expression="hasRole('ROLE_ADMIN')">
-        <g:render template="body-admin"/>
+        <g:render template="index-body-admin"/>
     </sec:access>
     <sec:noAccess expression="hasRole('ROLE_ADMIN')">
-        <g:render template="body-public"/>
+        <g:render template="index-body-public"/>
     </sec:noAccess>
 </body>
 </html>
