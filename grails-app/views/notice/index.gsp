@@ -41,7 +41,7 @@
                     <tbody>
                         <g:each in="${noticeList}" status="i" var="item">
                             <tr>
-                                <td><g:link action="show" id="${item.name}">${item.name}</g:link></td>
+                                <td><g:link action="show" id="${item.id}">${item.name}</g:link></td>
                                 <td>${item.page}</td>
                                 <td><g:formatDate format="yyyy-MMM-dd" date="${item.fromDate}"/></td>
                                 <td><g:formatDate format="yyyy-MMM-dd" date="${item.thruDate}"/></td>
