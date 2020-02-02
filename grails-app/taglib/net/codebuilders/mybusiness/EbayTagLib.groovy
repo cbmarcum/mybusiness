@@ -62,6 +62,7 @@ class EbayTagLib {
         if (params.categories) linkParams.categories = params.categories
         if (params.categoryName) linkParams.categoryName = params.categoryName
         if (params.storeName) linkParams.storeName = params.storeName
+        if (params.keywords) linkParams.keywords = params.keywords
 
 
         def linkTagAttrs = [action:action] 

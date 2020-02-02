@@ -12,59 +12,90 @@ class EbayController {
     def ebayService
     
     def products = []
-
-    // test passing categories instead of separate methods
-    def store() {
-        log.info("entering store action")
-        params.returnAction = params?.returnAction ?: "store"
-        log.info("params.returnAction = ${params.returnAction}")
+    
+    
+    def index() {
+        log.info("entering index action")
 
         params.storeName = params?.storeName ?: grailsApplication.config.mybusiness.ebay.storeName
         log.info("params.storeName = ${params.storeName}")
 
         params.categories = params?.categories ?: [] as String[]
         log.info("params.categories = ${params.categories}")
+        
+        
+        
+        if (params.q != null) {
+            
+            log.info "there was a search ..."
 
-        log.info("chaining to find")
-        chain(action: "find", params: params)
-    }
+            // since a search returns all params, remove the ones we don't need
+            params.remove('keywords')
+            params.remove('max')
+            params.remove('offset')
 
-    
-    def find() {
-        log.debug("entering find action")
-        
-        params.entriesPerPage = params?.entriesPerPage ?: 50
-        params.pageNumber = params?.pageNumber ?: 1
+            // check for empty search and ignore
+            if (params.q.trim() != "") {
+                log.info "there was a search and it was not blank"
+                log.info "setting keyword"
+                params.keywords = params.q.trim()
 
-        def result = ebayService.findItemsInEbayStores(params.storeName, params.entriesPerPage.toString(), params.pageNumber.toString(), params.categories)
-        params.totalPages = result?.totalPages
-        params.totalEntries = result?.totalEntries
+            } else {
+                log.info "there was a search and it was blank"
+                log.info "not setting keyword"
+            }
+
+            params.remove('q')
+
+            log.info "params at the end of search"
+            params.each { k, v ->
+                log.info "${k} = ${v}"
+            }
+        }
         
-        products = result?.items
+        params.max = Math.min(params.max ? params.int('max') : 50, 100) 
+        params.offset = params.offset ? params.int('offset') : 0
         
-        chain(action: "list", params: params, model: [items: products])
-    }
-    
-    def list() {
-        log.info("entering list action")
-        // since all categories and search use the list action we need to
-        // check for page reloads the direct back to list and send them
-        // thru the correct action first
-        // if list was properly chained to, there will be a chainModel
-        // if there was a reload from a search, there will be keywords
+        if (params.keywords) {
+
+            log.info "entered keywords ..."
+
+            log.info "params at the beginning of keywords"
+            params.each { k, v ->
+                log.info "${k} = ${v}"
+            }
+            
+            // do search
+            params.entriesPerPage = params?.entriesPerPage ?: params.max
+            
+            if (params.offset == 0) {
+                params.pageNumber = 1
+            } else {
+                params.pageNumber = (params.offset / params.max).intValue() + 1 // BigDecimal to Integer
+            }
+            def result = ebayService.searchItemsInEbayStores(params.storeName, params.entriesPerPage.toString(), params.pageNumber.toString(), params.keywords ,params.categories)
         
-        if (chainModel != null) {
-            log.info("chainModel is not null")
-            products = chainModel.items
-        } else if (params.keywords) {
-            log.info("maybe a page reload from search")
-            log.info("has a params.keywords = ${params.keywords}")
-            log.info("chaining to search")
-            chain(action: "search", params: params)
-        } else {
-            log.info("maybe a page reload of plain list")
-            log.info("chaining to ${params.returnAction}")
-            chain(action: "${params.returnAction}", params: params)
+            params.totalPages = result?.totalPages
+            params.totalEntries = result?.totalEntries
+        
+            products = result?.items
+            
+        } else { // no search, just list
+            
+            // get all
+            params.entriesPerPage = params?.entriesPerPage ?: params.max
+            if (params.offset == 0) {
+                params.pageNumber = 1
+            } else {
+                params.pageNumber = (params.offset / params.max).intValue() + 1 // BigDecimal to Integer
+            }
+
+            def result = ebayService.findItemsInEbayStores(params.storeName, params.entriesPerPage.toString(), params.pageNumber.toString(), params.categories)
+            params.totalPages = result?.totalPages
+            params.totalEntries = result?.totalEntries
+        
+            products = result?.items
+            
         }
         
         log.info("products.size = ${products.size()}")
@@ -75,64 +106,11 @@ class EbayController {
             log.info("no products")
         }
         
-        // MAYBE WE NEED TO EXPLICITLY RENDER OR PASS PRODUCTS
-        [params: params, model: [items: products]]
-    }
-    
-    def search() {
-        log.info("entering search action")
+        respond([items: products])
+        
+        
+    } // end index
 
-        // check for page reloads (q is null) and empty search (q == "")
-        
-        if (params.q != null) {
-            log.debug("params.q is not null")
-            // returns as a String first time and as a list of strings the second time
-            // may be fixed after always removing q from params now
-            // we will leave the list join method is just in case
-            log.info("params.q is a ${params.q.getClass()}")
-            log.info("params.q = ${params.q}")
-            
-            // if q is "", we don't need to do an empty search
-            // chain back to reqular method
-            if (params.q == "") {
-                log.info("params.q string is empty")
-                
-                log.info("removing q and keywords ...")
-                params.remove('q')
-                params.remove('keywords')
-                log.info("chaining to ${params.returnAction}")
-                chain(action: "${params.returnAction}", params: params)
-            }
-            
-            // grails can get a list returned from any param
-            // turn it into a string again
-            // may be fixed after always removing q from params now
-            // we will leave the list join method just in case
-            params.keywords = params.list('q').join()
-            params.remove('q')
-            
-        } else { // params.q is null - may be a reload
-            log.info("params.q is null .. may have been a page reload")
-            log.info("leaving keywords alone")
-        }
-        
-        log.info("params.keywords is now a ${params.keywords.getClass()}")
-        log.info("params.keywords = ${params.keywords}")
-
-        log.info("params.returnAction = ${params.returnAction}")
-        log.info("params.storeName = ${params.storeName}")
-        log.info("params.keywords = ${params.keywords}")
-        def result = ebayService.searchItemsInEbayStores(params.storeName, params.entriesPerPage.toString(), params.pageNumber.toString(), params.keywords ,params.categories)
-        
-        params.totalPages = result?.totalPages
-        params.totalEntries = result?.totalEntries
-        
-        products = result?.items
-        
-        chain(action: "list", params: params, model: [items: products])
-    }
-
-    
 
     def ebayResult = {
         def result = ebayService.findItemsInEbayStores(params.storeName, params.entriesPerPage, params.pageNumber)
