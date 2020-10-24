@@ -1,7 +1,7 @@
 package net.codebuilders.mybusiness
 
-import com.sun.syndication.feed.module.itunes.EntryInformationImpl
-import com.sun.syndication.feed.module.itunes.types.Duration
+import com.rometools.modules.itunes.EntryInformationImpl
+import com.rometools.modules.itunes.types.Duration
 
 class EnhancediTunesEntryInformationImpl extends EntryInformationImpl {
 

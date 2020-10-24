@@ -1,8 +1,8 @@
 package net.codebuilders.mybusiness
 
-import com.sun.syndication.feed.module.itunes.FeedInformationImpl
-import com.sun.syndication.feed.module.itunes.types.Category
-import com.sun.syndication.feed.module.itunes.types.Subcategory
+import com.rometools.modules.itunes.FeedInformationImpl
+import com.rometools.modules.itunes.types.Category
+import com.rometools.modules.itunes.types.Subcategory
 
 class EnhancediTunesFeedInformationImpl extends FeedInformationImpl {
 
