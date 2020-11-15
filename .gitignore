@@ -6,10 +6,19 @@
 # linux backup files
 *~
 
-# new for grails 3
+# updated to grails 4
+Thumbs.db
+.DS_Store
 .gradle
-/build
+build/
+out/
 .idea
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath
 
 # from grails 2
 # web application files
