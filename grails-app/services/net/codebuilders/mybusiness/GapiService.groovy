@@ -41,7 +41,11 @@ class GapiService {
                 review.put("text", text)
                 review.put("rating", rating)
                 review.put("relative_time_description", relativeTime)
-                reviews << review
+                // reviews << review
+                // filter out less than 4.0
+                if (Double.parseDouble(rating) >= Double.parseDouble(grailsApplication.config.mybusiness.places.minrating)) { // use it
+                    reviews << review
+                } // else eat it
             }
 
             result.put("reviews", reviews)
