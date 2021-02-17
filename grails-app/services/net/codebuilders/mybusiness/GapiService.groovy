@@ -1,8 +1,10 @@
 package net.codebuilders.mybusiness
 
+import grails.core.GrailsApplication
+
 class GapiService {
 
-    // def grailsApplication
+    GrailsApplication grailsApplication
 
     def getPlaceDetails(String placeId, String placesKey) {
 
