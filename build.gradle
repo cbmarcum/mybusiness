@@ -1,6 +1,10 @@
 /* build with:
-* ./gradlew publish
+* ./gradlew publish (this pushed to nexus staging repo also)
+* nexus-plugin docs say to use:
+* ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 * or:
+* ./gradlew publishToSonatype closeSonatypeStagingRepository
+* or to publish locally
 * ./gradlew publishToMavenLocal
 *
 * to update this wrapper version
@@ -17,6 +21,8 @@ buildscript {
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.10"
         // geb
         classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
+        // nexus plugin for maven central publishing
+        classpath "io.github.gradle-nexus:publish-plugin:1.0.0"
     }
 }
 
@@ -31,10 +37,11 @@ apply plugin: "org.grails.grails-gsp"
 apply plugin: "application"
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
+apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: "com.energizedwork.webdriver-binaries" // geb
 
 
-version "4.0.19.6" // rollback selfie version
+version "4.0.19.7" // nexus-publish
 group "net.codebuilders"
 description 'MyBusiness - a Grails 4.0 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'
@@ -196,20 +203,6 @@ tasks.withType(GroovyCompile) {
 // enable if you wish to package this plugin as a standalone application
 bootJar.enabled = false
 
-/*
-grailsPublish {
-    // TODO: Provide values here
-    user = 'user'
-    key = 'key'
-    githubSlug = 'foo/bar'
-    license {
-        name = 'Apache-2.0'
-    }
-    title = "My Plugin"
-    desc = "Full plugin description"
-    developers = [johndoe:"John Doe"]
-}
-*/
 
 // custom for mybusiness below here...
 
@@ -257,7 +250,7 @@ publishing {
             pom {
                 name = 'MyBusiness Plugin API'
                 packaging = 'jar'
-                description = 'MyBusiness - a Grails 3.3 plugin for E-Commerce'
+                description = 'MyBusiness - a Grails 4.1 plugin for E-Commerce'
                 url = 'http://codebuilders.net'
                 inceptionYear = '2016'
 
@@ -305,6 +298,21 @@ signing {
     required { isReleaseVersion }
     sign publishing.publications.mavenJava
     sign configurations.archives
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
+            def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
+            def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
+            // nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
+            // snapshotRepositoryUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            username = ossUser
+            password = ossPass
+            stagingProfileId = ossStagingProfileId
+        }
+    }
 }
 
 
