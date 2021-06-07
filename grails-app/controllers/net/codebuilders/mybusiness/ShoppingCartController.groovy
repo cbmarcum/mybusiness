@@ -118,41 +118,26 @@ class ShoppingCartController {
         assert payment.buyerId == 10
 
 
-
+        List doneIds=[]
         session?.cart?.each { item ->
+            if (!doneIds.contains(item.id)) {
+                int qty = session?.cartCounter[item.id]
+                Product product = Product.get(item.id as Long)
+                PaymentItem paymentItem = new PaymentItem()
+                paymentItem.itemName = product.name
+                paymentItem.description = product?.shortDescription?:''
+                paymentItem.itemNumber = (product?.id ?: "No Number")
+                paymentItem.amount = product.listPrice
+                paymentItem.quantity = qty
+                // only works with our modified paypal paymentItem
+                paymentItem.weight = product.shipWeight
+                //TODO figure out shippingAmount - based on shipping costs I guess
+                payment.addToPaymentItems(paymentItem)
+                doneIds << item?.id
+                log.info "paymentItem  ${paymentItem}"
 
-            log.info ""
-            log.info "item ="
-            item.properties.each { log.info "$it.key -> $it.value" }
-            // get the Product from the cart item
-            // def product = Product.findByShoppingItem(item) // FIX ME !!
-            def product = Product.get(item.id)
-            assert product != null
-            log.info ""
-            log.info "product = ${product}"
-            PaymentItem paymentItem = new PaymentItem()
-            assert paymentItem != null
 
-            paymentItem.itemName = product.name
-            log.info "paymentItem.itemName = ${paymentItem.itemName}"
-
-            paymentItem.itemNumber = (product.number ?: "No Number")
-            log.info "paymentItem.itemNumber = ${paymentItem.itemNumber}"
-
-            paymentItem.amount = product.listPrice
-            log.info "paymentItem.amount = ${paymentItem.amount}"
-
-            paymentItem.quantity = shoppingCartService.getQuantity(item)
-            log.info "paymentItem.quantity = ${paymentItem.quantity}"
-
-            // only works with our modified paypal paymentItem
-            paymentItem.weight = product.shipWeight
-            log.info "paymentItem.weight = ${paymentItem.weight}"
-
-            payment.addToPaymentItems(paymentItem)
-            log.info ""
-            log.info "paymentItem ="
-            paymentItem.properties.each { log.info "$it.key -> $it.value" }
+            }
         }
 
         log.info "payment before save = "
