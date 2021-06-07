@@ -21,10 +21,23 @@ class HomeController {
 
     NoticeService noticeService
     def rssFeedService
+    def shopService
 
     def index() {
         def notices = noticeService.getCurrentNoticesByPage("Home")
         def feeds = rssFeedService.getFeedsByDisplay()
-        [noticeList: notices, feedList: feeds]
+
+        if (!session?.cartCounter||!session?.cart) {
+            session.cartCounter=[:]
+            session.cart=[:]
+        }
+
+        //def categories = shopService.getCategories()
+        def windowsList = shopService.getWindowList(categories.searchParams)
+
+        //render view: 'index', model: [categories:categories.categories,noticeList: notices, windowsList: windowsList, noticeList: notices]
+
+        render view: 'index', model: [categories:[], noticeList: notices, windowsList: windowsList, noticeList: notices]
+        return
     }
 }

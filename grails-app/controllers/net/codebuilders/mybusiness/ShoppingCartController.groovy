@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2016-2020 Code Builders, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package net.codebuilders.mybusiness
+
 
 import org.grails.plugin.paypal.*
 import grails.gorm.transactions.Transactional
@@ -28,190 +29,82 @@ import grails.gorm.transactions.Transactional
 @Transactional(readOnly = true)
 class ShoppingCartController {
 
-    def shoppingCartService // inject service
-
     def index() {
+        if (!session.cart) {
+            session.cart = []
+            session.cartCounter=[:]
+        }
         // redirect(action: show, params: params)
     }
 
     // used for public cart
     def show() {
-
     }
 
     def list() {}
 
-    @Transactional
-    def add() {
-        def product
-
-        product = Product.get(params.id)
-
-        if (params.version) {
-            def version = params.version.toLong()
-            if (product.version > version) {
-                product.errors.rejectValue("version", "product.optimistic.locking.failure", message(code: "Product.already.updated"))
-            } else {
-                // product.addToShoppingCart()
-                shoppingCartService.addToShoppingCart(product)
-            }
-        } else {
-            // product.addToShoppingCart()
-            shoppingCartService.addToShoppingCart(product)
+    def add(Long id) {
+        if (!session.cart) {
+            session.cart = []
+            session.cartCounter=[:]
         }
-        // render(template:'shoppingCartContent', plugin:'shoppingCart')
-        // render(template:'shoppingCartContent')
-        redirect(action: show, params: params)
+        List allOfThisItem = session?.cart?.findAll{it.id == id}
+        Product p = Product.get(id)
+        if ( p.inventoryCount - (allOfThisItem?.size()?:0)>=1 ) {
+            session.cart << [id: id, name: p.name, listPrice: p.listPrice,
+                             age: p.age, gender: p.gender, requestGender:p.requestGender,
+                             inventoryCount: p.inventoryCount, shortDescription:p.shortDescription, photo:p?.mainPhoto ]
+            session.cartCounter[id]=session?.cart?.findAll{it.id == id}?.size()
+        }
+        render status: 200, text: ''
     }
 
-    // add to cart for js effect to render portion (last line of method)
-    @Transactional
-    def add2() {
-        def product
-
-        product = Product.get(params.id)
-
-        if (params.version) {
-            def version = params.version.toLong()
-            if (product.version > version) {
-                product.errors.rejectValue("version", "product.optimistic.locking.failure", message(code: "Product.already.updated"))
-            } else {
-                // product.addToShoppingCart()
-                shoppingCartService.addToShoppingCart(product)
-            }
+    def updateCart(Long id, int qty) {
+        List allOfThisItem = session?.cart?.findAll{it.id == id}
+        Map firstItem = [:]
+        if (!allOfThisItem) {
+            Product p = Product.get(id)
+            allOfThisItem = [id: id, name: p.name, listPrice: p.listPrice,
+                             age: p.age, gender: p.gender, requestGender:p.requestGender,
+                             inventoryCount: p.inventoryCount, shortDescription:p.shortDescription, photo:p.mainPhoto ]
+            firstItem = allOfThisItem[0]
         } else {
-            // product.addToShoppingCart()
-            shoppingCartService.addToShoppingCart(product)
-        }
-        // render(template:'shoppingCartContent', plugin:'shoppingCart')
-        render(template: 'shoppingCartContent')
+            firstItem = allOfThisItem[0]
 
+            if (qty>firstItem.inventoryCount) {
+                qty = firstItem.inventoryCount
+            }
+
+            if (qty > allOfThisItem.size() &&(firstItem.inventoryCount - (allOfThisItem?.size()?:0)>=1)) {
+                int a = allOfThisItem.size()
+                while (a <  qty) {
+                    session.cart << firstItem
+                    a++
+                }
+            } else if (qty < allOfThisItem.size()) {
+                int a = allOfThisItem.size()
+                while (qty < a) {
+                    session?.cart?.remove(session.cart.find{it.id == id})
+                    a--
+                }
+            }
+        }
+        session.cartCounter[id]=session?.cart?.findAll{it.id == id}?.size()
+        render status: 200, text: "success"
     }
 
-    // add to cart for js effect to render added to cart message
-    @Transactional
-    def add3() {
-        log.info params.toString()
-        def product
 
-        product = Product.get(params.id)
 
-        if (params.version) {
-            def version = params.version.toLong()
-            if (product.version > version) {
-                product.errors.rejectValue("version", "product.optimistic.locking.failure", message(code: "Product.already.updated"))
-            } else {
-                // product.addToShoppingCart()
-                // TODO: remove println
-                log.info("in s.c. controller add3")
-                log.info("calling addToCart")
-                log.info("service = ${shoppingCartService}")
-                log.info("product = ${product}")
-                log.info("LOG TEST")
-                log.info("LOG TEST")
-                shoppingCartService.addToShoppingCart(product)
-            }
-        } else {
-            // product.addToShoppingCart()
-            // TODO: remove println
-            log.info("in s.c. controller add3")
-            log.info("calling addToCart")
-            log.info("service = ${shoppingCartService}")
-            log.info("product = ${product}")
-            log.info("LOG TEST else")
-            log.info("LOG TEST else")
-            shoppingCartService.addToShoppingCart(product)
-        }
-
-        render(product.number + ' added to cart')
-    }
-    
-    // add to cart to render quickCartContents
-    @Transactional
-    def add4() {
-        log.info params.toString()
-        def product
-
-        product = Product.get(params.id)
-
-        if (params.version) {
-            def version = params.version.toLong()
-            if (product.version > version) {
-                product.errors.rejectValue("version", "product.optimistic.locking.failure", message(code: "Product.already.updated"))
-            } else {
-                // product.addToShoppingCart()
-                // TODO: remove println
-                log.info("in s.c. controller add4")
-                log.info("params.version = true")
-                log.info("calling addToCart")
-                log.info("service = ${shoppingCartService}")
-                log.info("product = ${product}")
-                log.info("LOG TEST 4")
-                shoppingCartService.addToShoppingCart(product)
-            }
-        } else {
-            // product.addToShoppingCart()
-            // TODO: remove println
-            log.info("in s.c. controller add4")
-            log.info("params.version = true")
-            log.info("calling addToCart")
-            log.info("service = ${shoppingCartService}")
-            log.info("product = ${product}")
-            log.info("LOG TEST 4 else")
-            shoppingCartService.addToShoppingCart(product)
-        }
-
-        render(template: 'quickCartContent')
+    @Deprecated
+    def remove(Long id) {
+        session.cart = session?.cart?.remove(session.cart.find{it.id == id})
+        render status: 200, text: 'good'
     }
 
-    @Transactional
-    def remove() {
-        def product
-
-        product = Product.get(params.id)
-
-
-        if (params.version) {
-            def version = params.version.toLong()
-            if (product.version > version) {
-                product.errors.rejectValue("version", "product.optimistic.locking.failure", message(code: "Product.already.updated"))
-            } else {
-                // product.removeFromShoppingCart()
-                shoppingCartService.removeFromShoppingCart(product)
-            }
-        } else {
-            // product.removeFromShoppingCart()
-            shoppingCartService.removeFromShoppingCart(product)
-        }
-
-        // render(template:'shoppingCartContent', plugin:'shoppingCart')
-        render(template: 'shoppingCartContent')
-        // redirect(action:show, params:params)
-    }
-
-    @Transactional
-    def removeAll() {
-        def product
-
-        product = Product.get(params.id)
-
-
-        if (params.version) {
-            def version = params.version.toLong()
-            if (product.version > version) {
-                product.errors.rejectValue("version", "product.optimistic.locking.failure", message(code: "Product.already.updated"))
-            } else {
-                // product.removeQuantityFromShoppingCart(shoppingCartService.getQuantity(product))
-                shoppingCartService.removeFromShoppingCart(product, shoppingCartService.getQuantity(product))
-            }
-        } else {
-            // product.removeQuantityFromShoppingCart(shoppingCartService.getQuantity(product))
-            shoppingCartService.removeFromShoppingCart(product, shoppingCartService.getQuantity(product))
-        }
-
-        // render(template:'shoppingCartContent', plugin:'shoppingCart')
-        render(template: 'shoppingCartContent')
-        // redirect(action:show, params:params)
+    @Deprecated
+    def removeAll(Long id) {
+        session?.cart?.removeAll {it.id == id}
+        render status: 200, text: 'good'
     }
 
     @Transactional
@@ -226,14 +119,14 @@ class ShoppingCartController {
 
 
 
-        shoppingCartService.getItems().each { item ->
+        session?.cart?.each { item ->
 
             log.info ""
             log.info "item ="
             item.properties.each { log.info "$it.key -> $it.value" }
             // get the Product from the cart item
             // def product = Product.findByShoppingItem(item) // FIX ME !!
-            def product = Product.find(item)
+            def product = Product.get(item.id)
             assert product != null
             log.info ""
             log.info "product = ${product}"
@@ -283,8 +176,8 @@ class ShoppingCartController {
         m.properties.each { log.info "$it.key -> $it.value" }
 
         // empty the cart
-        shoppingCartService.emptyShoppingCart()
-
+        session.cart = []
+        session.cartCounter=[:]
 
         log.info "calling redirect..."
         redirect(controller: 'paypal', action: 'uploadCart', params: m)
@@ -299,18 +192,18 @@ class ShoppingCartController {
         def payment = Payment.findByTransactionId(params.transactionId)
         log.info payment
     }
-    
-    
+
+
     // COPIED these 2 actions FROM ProductController
     // TODO: test using these from everywhere and removing the 2 in product controller.
     def ajaxUpdateCartQty() {
 
         log.info "entered ajaxUpdateCartQty"
-        def cartQty = shoppingCartService.getItems().size()
+        def cartQty = session?.cart?.size()
         log.info "qty=${cartQty}"
         render "${cartQty}"
     }
-    
+
     def ajaxUpdateQuickCartContent() {
 
         log.info "entered ajaxUpdateQuickCartContent"
