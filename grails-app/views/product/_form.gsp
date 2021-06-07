@@ -57,6 +57,15 @@
                  value="${fieldValue(bean: product, field: 'listPrice')}" required="true" 
                      min="0" step="0.01" />
     </div>
+    <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'inventoryCount', 'error')}">
+        <label for="inventoryCount">
+            <g:message code="product.inventoryCount.label" default="product.inventoryCount.label"/>
+            <span class="required-indicator">*</span>
+        </label>
+        <g:field type="number" class="form-control" name="inventoryCount"
+                 value="${product.inventoryCount}" required="true"
+                 min="1"  />
+    </div>
 
     <div class="form-group col-md-6 ${hasErrors(bean: product, field: 'shipWeight', 'error')}">
         <label for="shipWeight">

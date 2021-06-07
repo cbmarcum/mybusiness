@@ -26,6 +26,7 @@ package net.codebuilders.mybusiness
 class Product {
 
     static constraints = {
+        inventoryCount (nullable:true)
         number(maxSize: 40)
         name(maxSize: 80, nullable: true)
         brand(maxSize: 60, nullable: true)
@@ -86,6 +87,8 @@ class Product {
     List<ProductFeatureAppl> productFeatureAppls = []
     List<String> otherAttributes = []
     List <Photo> photos = []
+
+    Integer inventoryCount
 
     // sku, upc, etc can also be in GoodIdentification
     // this number is easier to show in product list
