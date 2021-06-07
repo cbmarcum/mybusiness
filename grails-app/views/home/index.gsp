@@ -113,7 +113,7 @@
                     if (method=='addToCart') {
                         location.reload();
                     } else {
-                        window.location.href="${createLink(controller:'shoppingCart', action: "checkout")}";
+                        window.location.href="${createLink(controller:'shoppingCart', action: "cart")}";
                         e.stopPropagation();
                         e.preventDefault();
                     }
@@ -128,7 +128,7 @@
             if (method=='addToCart') {
                 location.reload();
             } else {
-                window.location.href="${createLink(controller:'shoppingCart', action: "checkout")}";
+                window.location.href="${createLink(controller:'shoppingCart', action: "cart")}";
             }
         }
 

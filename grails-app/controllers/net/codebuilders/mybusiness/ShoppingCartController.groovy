@@ -59,6 +59,17 @@ class ShoppingCartController {
         render status: 200, text: ''
     }
 
+    def cart() {
+        validateCart
+        //  render view:'cart'
+    }
+
+    private getValidateCart() {
+        if (session?.cart && session?.cart?.size()==0||!session.cart) {
+            redirect(controller:'shop', action:'index')
+        }
+    }
+
     def updateCart(Long id, int qty) {
         List allOfThisItem = session?.cart?.findAll{it.id == id}
         Map firstItem = [:]
