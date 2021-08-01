@@ -41,7 +41,7 @@ apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: "com.energizedwork.webdriver-binaries" // geb
 
 
-version "4.0.19.7" // nexus-publish
+version "4.0.20.0" // full-text-search
 group "net.codebuilders"
 description 'MyBusiness - a Grails 4.0 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'
@@ -53,11 +53,8 @@ ext {
 }
 
 repositories {
-    // mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
-    // maven { url "http://dl.bintray.com/stefanogualdi/plugins" } // ckeditor
-    maven { url "http://dl.bintray.com/lgrignon/plugins" } // hibernate search
-    maven { url "https://dl.bintray.com/cmarcum/maven/" } // our grails-paypal and grails-ckeditor
+    mavenLocal() // our grails-paypal and grails-ckeditor until they're in maven central
 }
 
 // new block for grails 4
@@ -145,14 +142,6 @@ dependencies {
 
     // for paypal
     compile 'net.codebuilders:grails-paypal:4.0.1'
-
-    // for hibernate search
-    compile "org.grails.plugins:hibernate-search:2.4.0"
-    compile "org.grails.plugins:hibernate5:7.0.4"
-    compile "org.hibernate:hibernate-core:5.4.18.Final"
-    compile "org.hibernate:hibernate-ehcache:5.4.18.Final"
-    // see https://github.com/mathpere/grails-hibernate-search-plugin/issues/45
-    compile "org.hibernate:hibernate-search-orm:5.11.4.Final"
 
     // for excel import - not yet used
     // compile 'org.grails.plugins:excel-import:3.0.0' // grails 3.2 - 3.0.1 didn't work
