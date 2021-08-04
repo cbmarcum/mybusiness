@@ -1,12 +1,6 @@
 package net.codebuilders.mybusiness
 
-// for hibernate search
-import org.grails.orm.hibernate.HibernateMappingContextSessionFactoryBean
-import org.hibernate.search.cfg.EntityDescriptor
-import org.hibernate.search.cfg.PropertyDescriptor
-
 import grails.core.GrailsApplication
-import grails.plugins.hibernate.search.HibernateSearchGrailsPlugin
 
 import grails.plugin.springsecurity.SpringSecurityUtils
 

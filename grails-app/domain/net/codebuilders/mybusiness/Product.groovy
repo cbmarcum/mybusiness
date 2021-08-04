@@ -39,36 +39,6 @@ class Product {
         supportDiscontinuationDate(nullable: true)
     }
 
-    // for searchable plugin
-    // UPDATE FOR HIBERNATE SEARCH
-    /*
-    static searchable = {
-        mapping {
-            productCategories component: true
-            // goodIdentifications component: true // compile failed
-            spellCheck "include"
-        }
-    }
-    */
-
-
-    static search = {
-        // fields
-        number index: 'yes', sortable: true
-        name index: 'yes', sortable: true
-        brand index: 'yes'
-        shortDescription index: 'yes'
-        longDescription index: 'yes'
-        largeDescription index: 'yes'
-        goodIdentifications indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
-        productCategories indexEmbedded: [includeEmbeddedObjectId: true, depth: 1]
-        display index: 'yes'
-        lastUpdated date: 'day', sortable: true
-        salesDiscontinuationDate date: 'day'
-        listPrice numeric: 2, analyze: false
-        primaryVariant index: 'yes'
-    }
-
 
     // ProductCategory is used to group products that could be in
     // multiple groups.

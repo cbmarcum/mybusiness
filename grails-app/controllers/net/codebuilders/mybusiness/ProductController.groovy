@@ -18,21 +18,10 @@
 package net.codebuilders.mybusiness
 
 import javax.sql.rowset.spi.TransactionalWriter
-
 import static org.springframework.http.HttpStatus.*
-
 import grails.gorm.transactions.Transactional
-
-// for hibernate search
-import org.grails.orm.hibernate.HibernateMappingContextSessionFactoryBean
-import org.hibernate.search.cfg.EntityDescriptor
-import org.hibernate.search.cfg.PropertyDescriptor
-
 import grails.core.GrailsApplication
-import grails.plugins.hibernate.search.HibernateSearchGrailsPlugin
-
 import grails.plugin.springsecurity.SpringSecurityUtils
-
 import net.codebuilders.mybusiness.ProductCategory
 
 
@@ -65,231 +54,19 @@ class ProductController {
         }
          */
 
-        // using search
+        // removed search
+
+        params.max = Math.min(max ?: 10, 100)
 
         List<Product> productList
         Integer productCount = 0
 
-        if (params.q != null) {
-
-            log.info "there was a search ..."
-
-            // since a search returns all params, remove the ones we don't need
-            params.remove('keyword')
-            params.remove('max')
-            params.remove('offset')
-
-            // check for empty search and ignore
-            if (params.q.trim() != "") {
-                log.info "there was a search and it was not blank"
-                log.info "setting keyword"
-                params.keyword = params.q.trim()
-
-            } else {
-                log.info "there was a search and it was blank"
-                log.info "not setting keyword"
-            }
-
-            params.remove('q')
-
-
-            log.info "params at the end of search"
-            params.each { k, v ->
-                log.info "${k} = ${v}"
-
-            }
-        }
-
-        params.max = Math.min(params.max ? params.int('max') : 12, 100) 
-        params.offset = params.offset ? params.int('offset') : 0
-
-        if (params.keyword) {
-
-            log.info "entered keyword ..."
-
-            log.info "params at the beginning of keyword"
-            params.each { k, v ->
-                log.info "${k} = ${v}"
-            }
-
-            // log.debug("params.search is not null")
-            // returns as a String first time and as a list of strings the second time
-            // may be fixed after always removing q from params now
-            // we will leave the list join method is just in case
-            // log.info("params.q is a ${params.q.getClass()}")
-            // log.info("params.q = ${params.q}")
-
-
-            def command = [
-                dateTo : new Date(),
-                keyword: params.keyword // was keyword: params.list('q').join()
-            ]
-
-
-            productList = Product.search().list {
-
-                // allows for filtering on multiple properties when
-                // delimited by a colon
-
-                // for (String filterDef : params.search.split("[:]")) {
-
-                // if using field_filterValue
-                //    String field = filterDef.split('[_]')[0]
-                //     String filterValue = filterDef.split('[_]')[1]
-                //     println "filter $field = $filterValue"
-                //    wildcard field, "*" + filterValue + "*"
-
-                // }
-
-                // we're using filter only and allowing multiple words
-                // split command.keyword by spaces and add wildcards for each field
-                if (command.keyword) {
-                    should {
-                        command.keyword.tokenize().each { keyword ->
-
-                            def wild = keyword.toLowerCase() + '*'
-
-                            wildcard "number", wild
-                            wildcard "name", wild
-                            wildcard "brand", wild
-                            wildcard "shortDescription", wild
-                            wildcard "longDescription", wild
-                            wildcard "largeDescription", wild
-                            wildcard "goodIdentifications.value", wild
-                            wildcard "productCategories.description", wild
-                        }
-                    }
-                }
-
-                if (params.category) {
-                    must { keyword "productCategories.id", params.category }
-                }
-
-                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
-                    if (command.dateTo) {
-                        above "salesDiscontinuationDate", command.dateTo
-                    }
-
-                    mustNot { keyword "display", false }
-                }
-
-                if (params.sort) {
-                    if (params.sort == "lastUpdated") {
-                        sort "lastUpdated", params.order, Long
-                    } else {
-                        sort params.sort, params.order
-                    }
-                    
-                } else {
-                    sort "number", "asc"
-                }
-
-                // maxResults page.max
-                // offset page.offset
-                maxResults params.max
-                offset params.offset
-            }
-
-            // get the count
-            productCount = Product.search().count {
-
-                // we're using filter only and allowing multiple words
-                // split command.keyword by spaces and add wildcards for each field
-                if (command.keyword) {
-                    should {
-                        command.keyword.tokenize().each { keyword ->
-
-                            def wild = keyword.toLowerCase() + '*'
-
-                            wildcard "number", wild
-                            wildcard "name", wild
-                            wildcard "brand", wild
-                            wildcard "shortDescription", wild
-                            wildcard "longDescription", wild
-                            wildcard "largeDescription", wild
-                            wildcard "goodIdentifications.value", wild
-                            wildcard "productCategories.description", wild
-                        }
-                    }
-                }
-
-                if (params.category) {
-                    must { keyword "productCategories.id", params.category }
-                }
-
-
-                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
-                    if (command.dateTo) {
-                        above "salesDiscontinuationDate", command.dateTo
-                    }
-
-                    mustNot { keyword "display", false }
-                }
-            }
-
-
+        if (params.category) {
+            productList = productService.getProductsByProdCatAndDisplay(params)
         } else {
-
-            def command = [
-                dateTo: new Date()
-            ]
-
-            productList = Product.search().list {
-
-                wildcard "number", "*"
-
-                if (params.category) {
-                    must { keyword "productCategories.id", params.category }
-                }
-
-                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
-                    if (command.dateTo) {
-                        above "salesDiscontinuationDate", command.dateTo
-                    }
-
-                    mustNot { keyword "display", false }
-
-                    must { keyword "primaryVariant", true }
-                }
-
-                if (params.sort) {
-                    if (params.sort == "lastUpdated") {
-                        sort "lastUpdated", params.order, Long
-                    } else {
-                        sort params.sort, params.order
-                    }
-                    
-                } else {
-                    sort "number", "asc"
-                }
-
-                // maxResults page.max
-                // offset page.offset
-                maxResults params.max
-                offset params.offset
-            }
-
-            // get the count
-            productCount = Product.search().count {
-
-                wildcard "number", "*"
-
-                if (params.category) {
-                    must { keyword "productCategories.id", params.category }
-                }
-
-                if (SpringSecurityUtils.ifNotGranted('ROLE_ADMIN')) {
-                    if (command.dateTo) {
-                        above "salesDiscontinuationDate", command.dateTo
-                    }
-
-                    mustNot { keyword "display", false }
-
-                    must { keyword "primaryVariant", true }
-                }
-
-            }
+            productList = Product.list(params)
         }
+        productCount = productList.size()
 
         log.info "${productList.size()} results"
 
