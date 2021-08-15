@@ -114,17 +114,17 @@ class PhotoTagLib {
         // def cloudUrlThumb = attrs.thumb
 
         /*
-        <a href="img/mpp/camo-hoodie-green_large.jpg" data-footer="Modern Jacket 1 - Caption text" data-toggle="lightbox" data-gallery="product-gallery" class="d-block mb-4">
-        <div data-toggle="zoom" data-image="img/mpp/camo-hoodie-green_large.jpg">
-        <img src="img/mpp/camo-hoodie-green_large.jpg" alt="Modern Jacket 1" class="img-fluid">
+        <a class="glightbox d-block mb-4" href="img/mpp/camo-hoodie-green_large.jpg" data-title="Modern Jacket 1 - Caption text" data-gallery="product-gallery">
+        <div data-bs-toggle="zoom" data-image="img/mpp/camo-hoodie-green_large.jpg">
+        <img class="img-fluid" src="img/mpp/camo-hoodie-green_large.jpg" alt="Modern Jacket 1" >
         </div>
         </a>
         
          */
-        out << "<a href=\"${basePath}/${bucket}/${cloudUrlLarge}\" "
-        out << "data-footer=\"${footer}\" data-toggle=\"lightbox\" data-gallery=\"product-gallery\" class=\"d-block mb-4\" >"
-        out << "<div data-toggle=\"zoom\" data-image=\"${basePath}/${bucket}/${cloudUrlLarge}\" >"
-        out << "<img src=\"${basePath}/${bucket}/${cloudUrlLarge}\" alt=\"${alt}\" class=\"img-fluid\" />"
+        out << "<a class=\"glightbox d-block mb-4\" href=\"${basePath}/${bucket}/${cloudUrlLarge}\" "
+        out << "data-title=\"${footer}\" data-gallery=\"product-gallery\" >"
+        out << "<div data-bs-toggle=\"zoom\" data-image=\"${basePath}/${bucket}/${cloudUrlLarge}\" >"
+        out << "<img class=\"img-fluid\"  src=\"${basePath}/${bucket}/${cloudUrlLarge}\" alt=\"${alt}\" />"
         out << "</div>"
         out << "</a>"
 

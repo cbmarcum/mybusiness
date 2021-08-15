@@ -39,27 +39,27 @@
     <section class="product-details">
         <div class="container">
             <div class="row"> <%-- big row, images and content --%>
-                <div class="col-lg-5 col-xl-4 pt-4 order-2 order-lg-1">
+                <div class="col-lg-4 col-xl-3 pt-4 order-2 order-lg-1">
                     <%-- for each photo tied to product --%>
                     <g:if test="${product?.photos}">
                         <g:each in="${product?.photos}">
                             <g:set var="large" value="${it.photo.getCloudFile("large")}"/>
-                            <g:set var="footer" value="product.name"/>
-                            <cb:zoomGallery large="${large}" footer="${footer}" alt="it.alt"/>
+                            <g:set var="footer" value="${product?.name}"/>
+                            <cb:zoomGallery large="${large}" footer="${footer}" alt="${it.alt}"/>
                         </g:each>
 
                     </g:if>
 
 
                 </div>
-                <div class="col-lg-7 col-xl-8 pl-lg-5 pt-4 order-1 order-lg-2">
+                <div class="col-lg-8 col-xl-9 ps-lg-5 pt-4 order-1 order-lg-2">
 
                     <div style="top: 100px;" class="sticky-top">
                         <h1 class="h2 mb-4">${product?.name} </h1>
                         <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between mb-4">
                             <ul class="list-inline mb-2 mb-sm-0">
                                 <g:if test="${product?.listPrice}">
-                                    <li class="list-inline-item h4 font-weight-light mb-0"><g:formatNumber number="${product.listPrice}" type="currency" currencyCode="USD"/>
+                                    <li class="list-inline-item h4 fw-light mb-0"><g:formatNumber number="${product.listPrice}" type="currency" currencyCode="USD"/>
                                     </li>
                                 </g:if>
                             </ul>
