@@ -32,23 +32,28 @@ class ReviewTagLib {
      */
     def faReviewStars = { attr, body ->
 
-        Double rating = Double.parseDouble(body().toString())
-        def hasDecimal = true
         def emptyStars = attr.totalStars.toInteger()
 
-        // use modulo check for decimal
-        if ((rating % 1) == 0) {
-            hasDecimal = false
+        // make sure it's not null or empty
+        if (body().toString()) {
+            Double rating = Double.parseDouble(body().toString())
+            def hasDecimal = true
+
+            // use modulo check for decimal
+            if ((rating % 1) == 0) {
+                hasDecimal = false
+            }
+
+            for (int i = 0; i < rating.intValue(); i++) {
+                out << '<i class="fa fa-star"></i>'
+                emptyStars--
+            }
+            if (hasDecimal) {
+                out << '<i class="fa fa-star-half-o"></i>'
+                emptyStars--
+            }
         }
 
-        for (int i = 0; i < rating.intValue(); i++) {
-            out << '<i class="fa fa-star"></i>'
-            emptyStars--
-        }
-        if (hasDecimal) {
-            out << '<i class="fa fa-star-half-o"></i>'
-            emptyStars--
-        }
         for (int i = 0; i < emptyStars; i++) {
             out << '<i class="fa fa-star-o"></i>'
         }
