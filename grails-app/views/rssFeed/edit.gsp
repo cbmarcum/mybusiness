@@ -27,7 +27,7 @@
                 <fieldset class="form">
                     <g:render template="form"/>
                 </fieldset>
-                <div>
+                <div class="mb-3">
                     <input class="btn btn-success" type="submit"
                     value="${message(code: 'default.button.update.label', default: 'Update')}"/>
                 </div>
