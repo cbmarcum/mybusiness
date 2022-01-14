@@ -109,18 +109,33 @@
                                 style="height:150px" required="true"/>
                 </div>
 
-                <!-- using recaptcha plugin -->
+                <!-- using simple math captcha -->
                 <div class="form-group col-md-6">
 
-                    <recaptcha:ifEnabled>
-                        <recaptcha:recaptcha theme="${grailsApplication.config.mybusiness.recaptcha.style}"/>
-                    </recaptcha:ifEnabled>
+                <!-- START CAPTCHA -->
+                <br>
+                <div class="capbox">
+
+                    <div id="captchaDiv">${params.captcha1} ${params.captcha2}</div>
+
+                    <div class="capbox-inner">
+                        Add the two numbers:<br>
+
+                        <input type="hidden" id="captcha1" name="captcha1" value="${params.captcha1}">
+                        <input type="hidden" id="captcha2" name="captcha2" value="${params.captcha2}">
+                        <input type="text" name="captchaInput" id="captchaInput" size="15"><br>
+
+                    </div>
+                </div>
+                <br><br>
+                <!-- END CAPTCHA -->
                 </div>
 
                 <div class="form-group col-sm-10 col-md-6">
 
                     <g:actionSubmit class="btn btn-default" action="email"
                                     value="${message(code: 'default.button.submit.label', default: 'Submit')}"/>
+
                 </div>
             </div> <!-- /.row -->
         </fieldset>

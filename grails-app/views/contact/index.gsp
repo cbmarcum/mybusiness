@@ -6,6 +6,40 @@
     <title><g:message code="title.tag.contact"/></title>
     <meta name="description" content="${g.message(code: 'meta.description.contact')}"/>
 
+    <style>
+    /* STACKED CAPTCHA WHITE */
+    .capbox {
+        width: 100%;
+        max-width: 240px;
+        background: #FFFFFF;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        display: inline-block;
+        padding: 3px 10px 5px 15px;
+    }
+    .capbox-inner {
+        font: normal 15px arial, sans-serif;
+        color: #000000;
+        background: transparent;
+        margin: 3px auto 0px auto;
+        padding: 0px 10px 5px 3px;
+        border-radius: 4px;
+    }
+    #captchaDiv {
+        font: normal 35px Impact, Charcoal, arial, sans-serif;
+        font-style: italic;
+        color: #000000;
+        background: transparent;
+        user-select: none;
+        padding: 4px;
+        border-radius: 4px;
+    }
+    #captchaInput {
+        margin: 3px 0px 1px 0px;
+        width: 98%;
+    }
+    </style>
 </head>
 
 <body>

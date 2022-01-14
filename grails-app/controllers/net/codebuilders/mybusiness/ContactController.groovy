@@ -19,13 +19,8 @@ package net.codebuilders.mybusiness
 import groovy.text.SimpleTemplateEngine
 import org.springframework.mail.MailException
 import grails.util.Environment
-import com.megatome.grails.RecaptchaService
 
 class ContactController {
-
-
-    // def simpleCaptchaService
-    RecaptchaService recaptchaService
 
     // map of contact_names and email@address
     // names use underscores for URL's
@@ -33,18 +28,25 @@ class ContactController {
     // list of the contactMap keys for select box
     List contactList = contactMap.keySet() as List
 
-
-
-
     def index() {
+
+        def a = (int)Math.ceil(Math.random() * 9)+ ''
+        def b = (int)Math.ceil(Math.random() * 9)+ ''
+        def c = (int)Math.ceil(Math.random() * 9)+ ''
+        def d = (int)Math.ceil(Math.random() * 9)+ ''
+        def e = (int)Math.ceil(Math.random() * 9)+ ''
+        def f = (int)Math.ceil(Math.random() * 9)+ ''
+
+        def code1 = a + b + c + d + e
+
+        params.captcha1 = code1
+        params.captcha2 = f
 
         [contactList: contactList, params: params]
     }
 
 
     def email() {
-
-
 
         def orderContact = new OrderContact()
 
@@ -65,11 +67,9 @@ class ContactController {
 
         } else {
 
-            boolean captchaValid = true
+            boolean captchaValid = false
 
-            if (!recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)) {
-                captchaValid = false
-            }
+            captchaValid = captchaValidate(params.captcha1, params.captcha2, params.captchaInput)
 
             if (captchaValid == true) {
                 def date = new Date()
@@ -109,25 +109,40 @@ class ContactController {
                 // pass contact to view
                 flash['contact'] = orderContact
 
-                // cleanup captcha
-                recaptchaService.cleanUp(session)
-
-                // return true
-
-
 
             } else {
                 // captcha not ok
                 log.info "Captcha did not match"
-                flash.message = "Access code did not match"
+                flash.message = "Captcha code did not match"
                 render(view: 'index', model: [orderContact: orderContact, contactList: contactList])
             }
-
 
         } // orderContact.validate else
 
         // render the email view
         [orderContact: orderContact, params: params]
     } // email action
+
+    boolean captchaValidate(String captcha1, String captcha2, String answer) {
+
+        int x, y, z
+        try {
+            x = Integer.parseInt(captcha1)
+            y = Integer.parseInt(captcha2)
+            z = Integer.parseInt(answer.trim())
+        } catch (NumberFormatException nfe) {
+            log.error(nfe.toString())
+            return false
+        }
+        log.info("x = ${x}")
+        log.info("y = ${y}")
+        log.info("z = ${z}")
+
+        if (x + y == z) {
+            return true
+        } else {
+            return false
+        }
+    }
 
 } // class
