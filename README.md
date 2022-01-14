@@ -8,23 +8,26 @@ The goal of MyBusiness is to create a foundation for a product content managemen
 More information can be found on the MyBusiness Plugin project [documentation page](http://cbmarcum.github.io/mybusiness/).
 
 ## Building
-The MyBusiness plugin has a dependency on our updated version of the grails-paypal plugin.  
-When working with a MyBusiness Client application the paypal plugin can be part of a gradle multi-project build. However when working on the MyBusiness plugin this dependency needs to be resolved and currently is not in an online repository and needs to be installed in the local maven cache.
-
-Build the plugin and install locally (check version!):
-```Shell Console
-$ pwd
-/home/carl/dev-git/grails-paypal
-$ ./gradlew assemble
-$ cd build/libs
-$ mvn install:install-file \
-  -DgroupId=org.grails.plugin \
-  -DartifactId=grails-paypal \
-  -Dpackaging=jar \
-  -Dversion=1.1.1 \
-  -Dfile=grails-paypal-1.1.1.jar \
-  -DgeneratePom=true
+Build with:
+```shell
+./gradlew uploadArchives
 ```
+This will put the mybusiness library, source, and javadoc jars into build/myRepo/ sign and checksum the jars.
+However the Maven nexus repository (oss.sonatype.org) requires a signature with the POM file also.
+The checksums are not required either as the repo manager will generate its own.
+
+## Preparing the bundle for upload
+Delete the sha1 and md5 checksums.
+
+Sign the pom file
+```shell
+gpg -ab mybusiness-3.3.16.x
+```
+Create the bundle
+```shell
+jar -cvf mybusiness-3.3.16.x *.*
+```
+Login to oss.sonatype.org and upload the bundle jar to Staging.
 
 ## License
 This software is licensed under the Apache License 2.0
