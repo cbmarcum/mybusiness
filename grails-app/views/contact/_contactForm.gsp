@@ -23,44 +23,44 @@
             <div class="row">
 
                 <!-- Contact -->
-                <div class="form-group col-md-6">
-                    <label for="mbContact"><g:message code="default.form.contact.label" default="Contact Name"/></label>
-                    <g:select class="form-control" name="mbContact" from="${contactList}" value="${contactCurrent}"/>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="mbContact"><g:message code="default.form.contact.label" default="Contact Name"/></label>
+                    <g:select class="form-select" name="mbContact" from="${contactList}" value="${contactCurrent}"/>
                 </div>
 
 
                 <!-- Full Name -->
-                <div class="form-group col-md-6">
-                    <label for="name"><g:message code="default.form.fullname.label" default="Full Name"/>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="name"><g:message code="default.form.fullname.label" default="Full Name"/>
                         <span class="required-indicator">*</span></label>
                     <g:field type="text" class="form-control" name="name" value="${orderContact?.fullName}"
                              placeholder="Full Name" maxLength="50" required="true"/>
                 </div>
 
                 <!-- Company Name -->
-                <div class="form-group col-md-6">
-                    <label for="company"><g:message code="default.form.company.label" default="Company"/></label>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="company"><g:message code="default.form.company.label" default="Company"/></label>
                     <g:field type="text" class="form-control" name="company" value="${orderContact?.company}"
                              placeholder="Company Name"/>
                 </div>
 
                 <!-- Address -->
-                <div class="form-group col-md-6">
-                    <label for="address"><g:message code="default.form.address.label" default="Address"/></label>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="address"><g:message code="default.form.address.label" default="Address"/></label>
                     <g:field type="text" class="form-control" name="address" value="${orderContact?.address}"
                              placeholder="Address"/>
                 </div>
 
                 <!-- City -->
-                <div class="form-group col-md-6">
-                    <label for="city"><g:message code="default.form.city.label" default="City"/></label>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="city"><g:message code="default.form.city.label" default="City"/></label>
                     <g:field type="text" class="form-control" name="city" value="${orderContact?.city}"
                              placeholder="City"/>
                 </div>
 
                 <!-- State -->
-                <div class="form-group col-md-6">
-                    <label for="state"><g:message code="default.form.state.label" default="State"/></label>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="state"><g:message code="default.form.state.label" default="State"/></label>
                     <g:field type="text" class="form-control" name="state" value="${orderContact?.state}"
                              placeholder="State"/>
                 </div>
@@ -68,24 +68,24 @@
 
 
                 <!-- Postal Code -->
-                <div class="form-group col-md-6">
-                    <label for="postal"><g:message code="default.form.postalcode.label" default="Postal Code"/></label>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="postal"><g:message code="default.form.postalcode.label" default="Postal Code"/></label>
                     <g:field type="text" class="form-control" name="postal" value="${orderContact?.postal}"
                              placeholder="Postal Code"/>
                 </div>
 
 
                 <!-- email -->
-                <div class="form-group col-md-6">
-                    <label for="email1"><g:message code="default.form.email.label" default="E-Mail"/>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="email1"><g:message code="default.form.email.label" default="E-Mail"/>
                         <span class="required-indicator">*</span></label>
                     <g:field type="email" class="form-control" name="email1" value="${orderContact?.email}"
                              placeholder="E-Mail" required="true"/>
                 </div>
 
                 <!-- phone -->
-                <div class="form-group col-md-6">
-                    <label for="phone"><g:message code="default.form.phone.label" default="Phone"/>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="phone"><g:message code="default.form.phone.label" default="Phone"/>
                         <span class="required-indicator">*</span></label>
                     <g:field type="tel" class="form-control" name="phone" value="${orderContact?.phone}"
                              placeholder="(XXX) XXX-XXXX"
@@ -93,16 +93,16 @@
                 </div>
 
                 <!-- cc me checkbox -->
-                <div class="col-md-12">
-                    <div class="checkbox">
-                        <g:checkBox name="ccMe" value="${true}" style="margin-left:0;"/>
-                        <label for="ccMe"><g:message code="default.form.ccme.label" default="cc Me"/></label>
+                <div class="col-md-12 mb-3">
+                    <div class="form-check">
+                        <g:checkBox class="form-check-input" id="ccMe" name="ccMe" value="${true}" />
+                        <label class="form-check-label" for="ccMe"><g:message code="default.form.ccme.label" default="cc Me"/></label>
                     </div>
                 </div>
 
                 <!-- Questions or Comments -->
-                <div class="form-group col-md-6">
-                    <label for="comment"><g:message code="default.form.comments.label" default="Comments"/>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="comment"><g:message code="default.form.comments.label" default="Comments"/>
                         <span class="required-indicator">*</span></label>
                     <g:textArea class="form-control" name="comment" value="${orderContact?.comment}" rows="30"
                                 columns="400"
@@ -110,17 +110,32 @@
                 </div>
 
                 <!-- using recaptcha plugin -->
-                <div class="form-group col-md-6">
+                <div class="col-md-6 mb-3">
 
-                    <recaptcha:ifEnabled>
-                        <recaptcha:recaptcha theme="${grailsApplication.config.mybusiness.recaptcha.style}"/>
-                    </recaptcha:ifEnabled>
+                <!-- START CAPTCHA -->
+                <br>
+                <div class="capbox">
+
+                    <div id="captchaDiv">${params.captcha1} ${params.captcha2}</div>
+
+                    <div class="capbox-inner">
+                        Add the two numbers:<br>
+
+                        <input type="hidden" id="captcha1" name="captcha1" value="${params.captcha1}">
+                        <input type="hidden" id="captcha2" name="captcha2" value="${params.captcha2}">
+                        <input type="text" name="captchaInput" id="captchaInput" size="15"><br>
+
+                    </div>
+                </div>
+                <br><br>
+                <!-- END CAPTCHA -->
                 </div>
 
-                <div class="form-group col-sm-10 col-md-6">
+                <div class="col-sm-10 col-md-6 mb-3">
 
                     <g:actionSubmit class="btn btn-default" action="email"
                                     value="${message(code: 'default.button.submit.label', default: 'Submit')}"/>
+
                 </div>
             </div> <!-- /.row -->
         </fieldset>

@@ -16,7 +16,7 @@
             <h1>Thank You</h1>
         </div> <!-- /.page-header -->
 
-        <div style="float:left"><strong>${flash.contact.fullName}</strong>
+        <div><strong>${flash.contact.fullName}</strong>
             for your comments.<br/>
             The following information has been submitted:
             <br/>
