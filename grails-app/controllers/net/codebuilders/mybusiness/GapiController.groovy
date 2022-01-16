@@ -31,6 +31,8 @@ class GapiController {
 
         result = gapiService.getPlaceDetails("${grailsApplication.config.mybusiness.places.id}", "${grailsApplication.config.mybusiness.places.key}")
 
+
+
         [results: result] // plural key name for use in view
 
     } // index

@@ -23,6 +23,7 @@ class GapiService {
 
     def getPlaceDetails(String placeId, String placesKey) {
 
+        log.info("entered GapiService getPlaceDetails...")
         // had trouble getting json to work
         def base = "https://maps.googleapis.com/maps/api/place/details/xml?"
 
@@ -30,12 +31,14 @@ class GapiService {
         qs << "placeid=${placeId}"
         qs << "key=${placesKey}"
         def url = new URL(base + qs.join("&"))
-        // log.info(url)
+        log.info("gapi url: ${url}")
         def connection = url.openConnection()
 
         def result = [:]
 
         if (connection.responseCode == 200) {
+
+            log.info("connection response: OK")
 
             def xml = connection.content.text
             def response = new XmlSlurper().parseText(xml)
@@ -65,9 +68,9 @@ class GapiService {
 
         } else {
             log.error("GoogleMaps Service FAILED")
-            log.error(url)
-            log.error(connection.responseCode)
-            log.error(connection.responseMessage)
+            log.error("gapi url: ${url}")
+            log.error("Response Code: ${connection.responseCode}")
+            log.error(" Message: ${connection.responseMessage}")
         }
 
         // hack to fix photo urls returned beginning with "//"
