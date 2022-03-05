@@ -27,7 +27,7 @@ class EbayService {
 
     def findItemsInEbayStores(String storeName, String entriesPerPage, String pageNumber, String[] categories) {
 
-        def base = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsIneBayStores&SERVICE-VERSION=1.0.0&"
+        def base = "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsIneBayStores&SERVICE-VERSION=1.0.0&"
 
         def qs = []
         qs << "SECURITY-APPNAME=${grailsApplication.config.mybusiness.ebay.security.appname}"
@@ -39,7 +39,7 @@ class EbayService {
         qs << "sortOrder=CurrentPriceHighest"
         // test for large pictures
         qs << "outputSelector=PictureURLLarge"
-        categories.eachWithIndex() { obj, i -> qs << "categoryId[${i}]=" + URLEncoder.encode(obj, "UTF-8") };
+        categories.eachWithIndex() { obj, i -> qs << "categoryId(${i})=" + URLEncoder.encode(obj, "UTF-8") }
         
         
 
@@ -81,7 +81,7 @@ class EbayService {
     
     def searchItemsInEbayStores(String storeName, String entriesPerPage, String pageNumber, String keywords, String[] categories) {
 
-        def base = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsIneBayStores&SERVICE-VERSION=1.0.0&"
+        def base = "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsIneBayStores&SERVICE-VERSION=1.0.0&"
         
         def qs = []
         qs << "SECURITY-APPNAME=${grailsApplication.config.mybusiness.ebay.security.appname}"
@@ -94,7 +94,7 @@ class EbayService {
         // test for large pictures
         qs << "outputSelector=PictureURLLarge"
         qs << "keywords=" + URLEncoder.encode(keywords)
-        categories.eachWithIndex() { obj, i -> qs << "categoryId[${i}]=" + URLEncoder.encode(obj) };
+        categories.eachWithIndex() { obj, i -> qs << "categoryId(${i})=" + URLEncoder.encode(obj) }
         
         def url = new URL(base + qs.join("&"))
         log.info(url.toString())
