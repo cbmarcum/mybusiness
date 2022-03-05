@@ -41,12 +41,11 @@ class GapiService {
             log.info("connection response: OK")
 
             def xml = connection.content.text
+            log.info("XML: ${xml}")
             def response = new XmlSlurper().parseText(xml)
 
             result.rating = response.result.rating.text() as String
             log.info("result.rating = ${result.rating}")
-
-
 
             // created an ArrayList
             def reviews = []

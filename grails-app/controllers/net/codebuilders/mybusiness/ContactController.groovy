@@ -89,7 +89,10 @@ class ContactController {
                             subject "Website Contact"
                             html g.render(template:'/contact/contactEmail', model: [orderContact: orderContact])
                         }
-                    } catch (MailException ex) {
+                    } catch (MailException mex) {
+                        log.error("Failed to send emails", mex)
+                        return false
+                    } catch (Exception ex) {
                         log.error("Failed to send emails", ex)
                         return false
                     }
@@ -103,7 +106,10 @@ class ContactController {
                             subject "Website Contact"
                             html g.render(template:'/contact/contactEmail', model: [orderContact: orderContact])
                         }
-                    } catch (MailException ex) {
+                    } catch (MailException mex) {
+                        log.error("Failed to send emails", mex)
+                        return false
+                    } catch (Exception ex) {
                         log.error("Failed to send emails", ex)
                         return false
                     }
