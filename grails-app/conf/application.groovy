@@ -89,6 +89,9 @@ mybusiness.recaptcha.style = "light"
 // google places api id
 // mybusiness.places.id = "YOUR_PLACES_ID"
 
+// google places review threshold - rating must equal or exceed this double value
+mybusiness.places.minrating = "0.0" // default
+
 // google map src
 mybusiness.map.src = "https://www.google.com/maps/embed?pb=!1m19!1m8!1m3!1d48969.617373514775!2d-84.227148!3d39.9055628!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x883f7eb8cdfed0f1%3A0x7d07f86955cce608!2sWright+Brothers+Aeroplane%2C+3555+Hangar+Dr%2C+Vandalia%2C+OH+45377!3m2!1d39.903591399999996!2d-84.2050347!5e0!3m2!1sen!2sus!4v1482770754729"
 

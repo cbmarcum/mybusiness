@@ -43,7 +43,7 @@ apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: "com.energizedwork.webdriver-binaries" // geb
 
 
-version "4.0.20.3" // add logging to gapi end contact controllers
+version "4.0.20.4" // gapi review filter
 group "net.codebuilders"
 description 'MyBusiness - a Grails 4.0 plugin for E-Commerce'
 mainClassName = 'net.codebuilders.mybusiness.Application'
